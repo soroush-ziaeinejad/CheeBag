@@ -35,5 +35,29 @@ services:
       postgres:
         condition: service_healthy
 
+  store-api:
+    build: ./store_api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      DATABASE_URL: postgresql+psycopg://roomcraft:roomcraft@postgres:5432/roomcraft
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./store_api:/app   # code changes reload without rebuilding
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  agent:
+    build: ./agent
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    env_file:
+      - path: .env
+        required: false   # the service still starts without it; /chat then returns 502
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./agent:/app   # code changes reload without rebuilding
+
 volumes:
   pgdata:
