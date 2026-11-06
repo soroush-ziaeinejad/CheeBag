@@ -1,0 +1,71 @@
+{% extends "store/base.html" %}
+{% load humanize %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block style %}
+.back { display:inline-block; margin-bottom:16px; color:var(--muted); text-decoration:none; }
+.detail { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1.1fr); gap:32px; align-items:start; }
+.detail .img { background:#fff; aspect-ratio:1; display:flex; align-items:center; justify-content:center; padding:32px; }
+.detail .img img { max-width:100%; max-height:100%; object-fit:contain; }
+.cat { color:var(--muted); font-size:13px; margin-bottom:6px; }
+.full-title { color:var(--muted); font-size:13px; margin:6px 0 14px; }
+.price-row { display:flex; align-items:baseline; gap:14px; margin:12px 0 4px; }
+.price { font-size:28px; font-weight:750; }
+.stock { font-size:14px; margin-bottom:18px; }
+.stock.out { color:#b42318; font-weight:650; }
+.specs { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+.specs th { text-align:left; color:var(--muted); font-weight:500; width:110px; padding:7px 0; border-top:1px solid var(--line); vertical-align:top; }
+.specs td { padding:7px 0; border-top:1px solid var(--line); }
+.desc { font-size:14px; color:#3b362f; }
+.reviews { margin-top:40px; }
+.review { padding:16px 18px; margin-bottom:12px; }
+.review .stars { color:#b7791f; letter-spacing:1px; }
+.review .head { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; }
+.review .title { font-weight:650; }
+.review .meta { font-size:12px; color:var(--muted); margin:2px 0 8px; }
+.review p { margin:0; font-size:14px; white-space:pre-line; }
+@media (max-width: 760px) { .detail { grid-template-columns:1fr; } }
+{% endblock %}
+{% block content %}
+<a class="back" href="{% url 'product_list' %}">← Back to shop</a>
+<div class="detail">
+  <div class="card img"><img src="{{ product.image_url }}" alt="{{ product.name }}"></div>
+  <div>
+    <div class="cat">{{ product.category }}{% if product.brand %} · {{ product.brand }}{% endif %}</div>
+    <h1>{{ product.name }}</h1>
+    {% if product.full_title != product.name %}<div class="full-title">{{ product.full_title }}</div>{% endif %}
+    <div class="price-row">
+      <span class="price">${{ product.price }}</span>
+      <span class="muted">★ {{ product.rating }} · {{ product.rating_count|intcomma }} ratings</span>
+    </div>
+    {% if product.stock_quantity == 0 %}
+      <div class="stock out">Out of stock</div>
+    {% else %}
+      <div class="stock muted">{{ product.stock_quantity }} in stock</div>
+    {% endif %}
+
+    <a class="btn ghost" href="{% url 'home' %}?product={{ product.pk }}#see-in-room" style="margin-bottom:6px">
+      <svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg> See it in my room</a>
+
+    <table class="specs">
+      {% if product.color %}<tr><th>Color</th><td>{{ product.color }}</td></tr>{% endif %}
+      {% if product.material %}<tr><th>Material</th><td>{{ product.material }}</td></tr>{% endif %}
+      {% if product.dimensions %}<tr><th>Dimensions</th><td>{{ product.dimensions }}</td></tr>{% endif %}
+      <tr><th>Product ID</th><td>{{ product.pk }} · ASIN {{ product.source_asin }}</td></tr>
+    </table>
+    {% if product.description %}<p class="desc">{{ product.description }}</p>{% endif %}
+  </div>
+</div>
+
+<section class="reviews">
+  <h2>Customer reviews <span class="muted">· {{ review_count|intcomma }} on Amazon, most helpful first</span></h2>
+  {% for r in reviews %}
+    <div class="card review">
+      <div class="head"><span class="stars">{{ r.stars }}</span>{% if r.title %}<span class="title">{{ r.title }}</span>{% endif %}</div>
+      <div class="meta">{{ r.review_date|date:"M j, Y" }}{% if r.verified_purchase %} · Verified purchase{% endif %}{% if r.variation %} · {{ r.variation }}{% endif %}{% if r.helpful_count %} · {{ r.helpful_count }} found helpful{% endif %}</div>
+      <p>{{ r.body|truncatewords:120 }}</p>
+    </div>
+  {% empty %}
+    <p class="muted">No reviews yet.</p>
+  {% endfor %}
+</section>
+{% endblock %}

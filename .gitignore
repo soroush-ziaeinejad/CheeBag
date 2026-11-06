@@ -1,0 +1,19 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# editors and macOS
+.idea/
+.vscode/
+.DS_Store
+
+# secrets (none yet, but never commit them)
+.env
+
+# raw downloaded datasets: too big for GitHub (up to 2.6 GB); the generated CSVs in RoomCraft/data/ are committed
+RoomCraft/data/storage/
+
+# empty folder Docker created from the old compose mount
+RoomCraft/data/postgreSQL/data/

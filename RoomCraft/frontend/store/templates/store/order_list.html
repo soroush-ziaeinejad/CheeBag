@@ -1,0 +1,52 @@
+{% extends "store/base.html" %}
+{% block title %}My orders{% endblock %}
+{% block style %}
+.empty { padding:40px; text-align:center; max-width:520px; margin:40px auto; }
+.filters { display:flex; gap:8px; flex-wrap:wrap; margin:18px 0; }
+.filters a { text-decoration:none; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:#fff; font-size:13px; font-weight:550; }
+.filters a.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+table.orders { width:100%; border-collapse:collapse; overflow:hidden; }
+.orders th { text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:600; padding:12px 16px; border-bottom:1px solid var(--line); }
+.orders td { padding:14px 16px; border-bottom:1px solid var(--line); }
+.orders tr:last-child td { border-bottom:0; }
+.orders tbody tr:hover { background:#fbf9f6; }
+.orders .num { text-align:right; font-variant-numeric:tabular-nums; }
+.orders a { font-weight:650; text-decoration:none; }
+{% endblock %}
+{% block content %}
+{% if not customer %}
+  <div class="card empty">
+    <h1>My orders</h1>
+    <p class="muted">Choose a demo customer in the top right to see their orders. There's no real login in this demo; each customer is a simulated shopper with their own order history.</p>
+  </div>
+{% else %}
+  <h1>Orders for {{ customer.first_name }} {{ customer.last_name }}</h1>
+  <p class="muted">{{ customer.email }} · customer since {{ customer.created_at|date:"F Y" }}</p>
+
+  <div class="filters">
+    <a href="{% url 'order_list' %}" class="{% if not status %}on{% endif %}">All · {{ total_count }}</a>
+    {% for s, n in status_filters %}{% if n %}
+      <a href="?status={{ s }}" class="{% if s == status %}on{% endif %}" style="text-transform:capitalize">{{ s }} · {{ n }}</a>
+    {% endif %}{% endfor %}
+  </div>
+
+  <div class="card">
+    <table class="orders">
+      <thead><tr><th>Order</th><th>Placed</th><th class="num">Items</th><th class="num">Total</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for o in orders %}
+          <tr>
+            <td><a href="{% url 'order_detail' o.pk %}">#{{ o.pk }}</a></td>
+            <td>{{ o.order_date|date:"M j, Y" }}</td>
+            <td class="num">{{ o.item_count }}</td>
+            <td class="num">${{ o.total_amount }}</td>
+            <td><span class="chip {{ o.status }}">{{ o.status }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">No orders with this status.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

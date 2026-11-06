@@ -1,0 +1,103 @@
+{% extends "store/base.html" %}
+{% block title %}Order #{{ order.pk }}{% endblock %}
+{% block style %}
+.back { display:inline-block; margin-bottom:16px; color:var(--muted); text-decoration:none; }
+.title-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.layout { display:grid; grid-template-columns:minmax(0, 1.6fr) minmax(0, 1fr); gap:20px; margin-top:22px; align-items:start; }
+.box { padding:18px 20px; margin-bottom:20px; }
+.item { display:grid; grid-template-columns:56px 1fr auto; gap:14px; align-items:center; padding:12px 0; border-top:1px solid var(--line); }
+.item:first-of-type { border-top:0; }
+.item img { width:56px; height:56px; object-fit:contain; background:#fff; border:1px solid var(--line); border-radius:8px; padding:4px; }
+.item a { text-decoration:none; font-weight:600; }
+.item .sub { font-size:13px; color:var(--muted); }
+.item .amt { font-weight:650; font-variant-numeric:tabular-nums; }
+.total { display:flex; justify-content:space-between; border-top:2px solid var(--ink); padding-top:12px; margin-top:4px; font-weight:750; font-size:17px; }
+dl { display:grid; grid-template-columns:auto 1fr; gap:6px 14px; margin:0; font-size:14px; }
+dt { color:var(--muted); }
+dd { margin:0; }
+.alert { background:#fde6d4; color:#7c2d12; border-radius:8px; padding:10px 12px; font-size:13px; margin-bottom:12px; }
+.timeline { list-style:none; margin:0; padding:0; }
+.timeline li { position:relative; padding:0 0 16px 22px; font-size:14px; }
+.timeline li::before { content:""; position:absolute; left:3px; top:6px; width:9px; height:9px; border-radius:50%; background:var(--accent); }
+.timeline li::after { content:""; position:absolute; left:7px; top:17px; bottom:0; width:1px; background:var(--line); }
+.timeline li:last-child::after { display:none; }
+.timeline .when { color:var(--muted); font-size:12px; }
+@media (max-width: 860px) { .layout { grid-template-columns:1fr; } }
+{% endblock %}
+{% block content %}
+<a class="back" href="{% url 'order_list' %}">← All orders</a>
+<div class="title-row">
+  <h1>Order #{{ order.pk }}</h1>
+  <span class="chip {{ order.status }}">{{ order.status }}</span>
+  {% if delayed %}<span class="chip delayed">Delayed</span>{% endif %}
+</div>
+<p class="muted">Placed {{ order.order_date|date:"M j, Y, g:i a" }} · last updated {{ order.updated_at|date:"M j, Y" }}</p>
+
+<div class="layout">
+  <div>
+    <div class="card box">
+      <h2>Items</h2>
+      {% for i in items %}
+        <div class="item">
+          <img src="{{ i.product.image_url }}" alt="">
+          <div>
+            <a href="{% url 'product_detail' i.product.pk %}">{{ i.product.name }}</a>
+            <div class="sub">{{ i.quantity }} × ${{ i.unit_price }}</div>
+          </div>
+          <div class="amt">${{ i.line_total }}</div>
+        </div>
+      {% endfor %}
+      <div class="total"><span>Total</span><span>${{ order.total_amount }}</span></div>
+    </div>
+
+    <div class="card box">
+      <h2>Order history</h2>
+      <ul class="timeline">
+        {% for label, when in timeline %}<li>{{ label }}<div class="when">{{ when|date:"M j, Y, g:i a" }}</div></li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div>
+    <div class="card box">
+      <h2>Shipment</h2>
+      {% if shipment %}
+        {% if delayed %}<div class="alert">This package is past its estimated delivery date ({{ shipment.estimated_delivery|date:"M j" }}).</div>{% endif %}
+        <dl>
+          <dt>Status</dt><dd><span class="chip {{ shipment.status }}">{{ shipment.status_label }}</span></dd>
+          <dt>Carrier</dt><dd>{{ shipment.carrier }}</dd>
+          <dt>Tracking</dt><dd>{{ shipment.tracking_number|default:"Not dispatched yet" }}</dd>
+          {% if shipment.delivered_at %}
+            <dt>Delivered</dt><dd>{{ shipment.delivered_at|date:"M j, Y" }}</dd>
+          {% else %}
+            <dt>Estimated</dt><dd>{{ shipment.estimated_delivery|date:"M j, Y" }}</dd>
+          {% endif %}
+        </dl>
+      {% elif order.status == "cancelled" %}
+        <p class="muted">This order was cancelled before it shipped.</p>
+      {% else %}
+        <p class="muted">Not shipped yet. A shipment is created once the order is processed.</p>
+      {% endif %}
+    </div>
+
+    <div class="card box">
+      <h2>Payment</h2>
+      {% if payment %}
+        <dl>
+          <dt>Status</dt><dd><span class="chip {{ payment.status }}">{{ payment.status }}</span></dd>
+          <dt>Method</dt><dd>{{ payment.method_label }}</dd>
+          <dt>Amount</dt><dd>${{ payment.amount }}</dd>
+          <dt>Reference</dt><dd>{{ payment.transaction_reference }}</dd>
+        </dl>
+      {% else %}
+        <p class="muted">No payment recorded.</p>
+      {% endif %}
+    </div>
+
+    <div class="card box">
+      <h2>Shipping address</h2>
+      <p style="margin:0">{{ order.shipping_address|default:"No address on file" }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
