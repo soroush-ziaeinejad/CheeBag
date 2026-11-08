@@ -70,12 +70,12 @@ class OrderSummaryOut(Schema):
     order_date: datetime
     status: str
     total_amount: Decimal
+    items: list[OrderItemOut]
 
 
 class OrderDetailOut(OrderSummaryOut):
     customer_id: int
     shipping_address: str | None
     updated_at: datetime
-    items: list[OrderItemOut]
     payment: PaymentOut | None
     shipment: ShipmentOut | None

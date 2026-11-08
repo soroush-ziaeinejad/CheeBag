@@ -31,12 +31,15 @@ def list_products(
     limit: int = Query(22, ge=1, le=110),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
+    max_price: float | None = None,
 ):
     stmt = select(Product).where(Product.active)
     if q:
         stmt = stmt.where(or_(Product.name.ilike(f"%{q}%"), Product.brand.ilike(f"%{q}%")))
     if category:
         stmt = stmt.where(Product.category.ilike(f"%{category}%"))
+    if max_price is not None:
+        stmt = stmt.where(Product.price <= max_price)
     stmt = stmt.order_by(Product.rating_count.desc().nulls_last(), Product.id).limit(limit).offset(offset)
     return db.scalars(stmt).all()
 
