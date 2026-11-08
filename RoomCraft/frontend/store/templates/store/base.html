@@ -5,22 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}Shop{% endblock %} · RoomCraft AI</title>
 <style>
-:root { --bg:#f7f4ef; --card:#fff; --ink:#1f1c18; --muted:#6f675d; --line:#e6dfd4; --accent:#a4471f; --accent-soft:#f6e7df; --warm:#efe7dc; }
+:root { --bg:#f7f4ef; --card:#fff; --ink:#1f1c18; --ink-2:#2b2722; --muted:#6f675d; --line:#e6dfd4; --accent:#a4471f; --accent-2:#c25a2b; --accent-soft:#f6e7df; --warm:#efe7dc; }
 * { box-sizing:border-box; }
 body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 a { color:inherit; }
 svg.i { width:20px; height:20px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-.wrap { max-width:1600px; margin:0 auto; padding:0 20px; }
-.demo-banner { background:var(--ink); color:#efe9df; font-size:13px; text-align:center; padding:6px 12px; }
+svg.spark { fill:currentColor; stroke:none; }
+.wrap { max-width:1360px; margin:0 auto; padding:0 20px; }
+.demo-banner { background:var(--ink); color:#cfc6b8; font-size:12.5px; text-align:center; padding:6px 12px; }
 
 /* header */
 header { background:var(--card); border-bottom:1px solid var(--line); position:relative; z-index:10; }
-header .wrap { display:flex; align-items:center; gap:26px; min-height:68px; }
-.brand { display:flex; align-items:center; gap:9px; font-weight:750; font-size:21px; letter-spacing:-.02em; text-decoration:none; white-space:nowrap; }
-.brand svg { width:30px; height:30px; color:var(--accent); stroke-width:2; }
+header .wrap { display:flex; align-items:center; gap:26px; min-height:66px; }
+.brand { display:flex; align-items:center; gap:9px; font-weight:750; font-size:20px; letter-spacing:-.02em; text-decoration:none; white-space:nowrap; }
+.brand svg { width:28px; height:28px; color:var(--accent); stroke-width:2; }
 .brand span span { color:var(--accent); }
-nav { display:flex; gap:4px; }
-nav > a, nav .drop > a { display:flex; align-items:center; gap:4px; padding:22px 12px; text-decoration:none; color:var(--muted); font-weight:550; border-bottom:2px solid transparent; white-space:nowrap; }
+nav { display:flex; gap:2px; }
+nav > a, nav .drop > a { display:flex; align-items:center; gap:4px; padding:21px 12px; text-decoration:none; color:var(--muted); font-weight:550; border-bottom:2px solid transparent; white-space:nowrap; }
 nav a.active { color:var(--ink); border-bottom-color:var(--accent); }
 nav a:hover { color:var(--ink); }
 nav .drop { position:relative; }
@@ -30,24 +31,27 @@ nav .drop:hover .menu, nav .drop:focus-within .menu { display:block; }
 nav .menu a { display:flex; justify-content:space-between; padding:8px 10px; border-radius:8px; text-decoration:none; font-size:14px; }
 nav .menu a:hover { background:var(--bg); }
 nav .menu a span { color:var(--muted); }
-.search { flex:1; display:flex; align-items:center; gap:8px; max-width:560px; margin-left:auto; padding:0 14px; border:1px solid var(--line); border-radius:999px; background:var(--bg); color:var(--muted); }
-.search input[type=search] { flex:1; border:0; background:transparent; padding:10px 0; outline:none; font:inherit; color:var(--ink); }
-.icons { display:flex; align-items:center; gap:6px; }
-.icon-btn { width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; color:var(--ink); text-decoration:none; position:relative; }
-.icon-btn:hover { background:var(--bg); }
+.search { flex:1; display:flex; align-items:center; gap:8px; max-width:440px; margin-left:auto; padding:0 14px; border:1px solid var(--line); border-radius:999px; background:var(--bg); color:var(--muted); }
+.search input[type=search] { flex:1; border:0; background:transparent; padding:9px 0; outline:none; font:inherit; color:var(--ink); }
+.ask-ai { display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:999px; border:0; background:var(--ink); color:#fff; font-weight:650; cursor:pointer; white-space:nowrap; }
+.ask-ai svg.spark { width:16px; height:16px; color:#f0a37c; }
+.ask-ai:hover { background:var(--ink-2); }
+.icons { display:flex; align-items:center; gap:4px; }
+.icon-btn { width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; color:var(--muted); position:relative; }
 .icon-btn svg.i { width:22px; height:22px; }
-.icon-btn.soon { color:var(--muted); cursor:default; }
 .account { position:relative; }
 .account summary { list-style:none; cursor:pointer; }
 .account summary::-webkit-details-marker { display:none; }
 .avatar { width:40px; height:40px; border-radius:50%; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; }
-.account .panel { position:absolute; right:0; top:48px; width:300px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; box-shadow:0 12px 30px rgba(31,28,24,.12); font-size:13px; color:var(--muted); }
+.account .panel { position:absolute; right:0; top:48px; width:300px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; box-shadow:0 12px 30px rgba(31,28,24,.12); font-size:13px; color:var(--muted); z-index:40; }
 .account .panel select { width:100%; margin-top:6px; }
 
-select, input, button { font:inherit; }
+select, input, button, textarea { font:inherit; }
 select, input[type=search] { padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); }
 button, .btn { display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border:0; border-radius:8px; background:var(--accent); color:#fff; cursor:pointer; text-decoration:none; font-weight:600; }
 .btn.ghost { background:#fff; color:var(--ink); border:1px solid var(--line); }
+.btn.ai { background:var(--ink); color:#fff; }
+.btn.ai svg.spark { width:15px; height:15px; color:#f0a37c; }
 .btn:disabled, button:disabled { opacity:.55; cursor:not-allowed; }
 main { padding:24px 0 64px; }
 h1 { font-size:27px; letter-spacing:-.02em; margin:0 0 4px; line-height:1.25; }
@@ -63,16 +67,94 @@ h2 { font-size:17px; margin:0 0 12px; }
 .chip.delayed { background:#fde6d4; color:#9a3412; }
 .chip.soon { background:var(--accent-soft); color:var(--accent); text-transform:none; }
 footer { color:var(--muted); font-size:13px; padding:22px 0; border-top:1px solid var(--line); }
+
+/* ---------- AI assistant drawer ---------- */
+.as-launch { position:fixed; right:22px; bottom:22px; z-index:50; padding:12px 18px; box-shadow:0 10px 30px rgba(31,28,24,.25); }
+body.as-open .as-launch { display:none; }
+.as-backdrop { position:fixed; inset:0; background:rgba(31,28,24,.28); opacity:0; pointer-events:none; transition:opacity .2s; z-index:59; }
+body.as-open .as-backdrop { opacity:1; pointer-events:auto; }
+.assistant { position:fixed; top:0; right:0; height:100%; width:min(440px, 100%); z-index:60; background:#fff; display:flex; flex-direction:column; transform:translateX(100%); transition:transform .22s ease; box-shadow:-10px 0 40px rgba(31,28,24,.15); }
+body.as-open .assistant { transform:none; }
+.as-head { background:var(--ink); color:#fff; padding:16px 16px 14px; display:flex; align-items:center; gap:12px; }
+.as-logo { width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); display:flex; align-items:center; justify-content:center; flex:none; }
+.as-logo svg.spark { width:22px; height:22px; color:#fff; }
+.as-head b { display:block; font-size:15.5px; }
+.as-head small { color:#cfc6b8; font-size:12px; display:flex; align-items:center; gap:6px; }
+.as-head small i { width:7px; height:7px; border-radius:50%; background:#4ade80; display:inline-block; }
+.as-head .x { margin-left:auto; display:flex; gap:4px; }
+.as-head .x button { background:transparent; color:#cfc6b8; padding:6px 8px; font-weight:500; font-size:13px; }
+.as-head .x button:hover { color:#fff; background:rgba(255,255,255,.08); }
+.as-context { padding:9px 16px; font-size:12.5px; color:var(--muted); background:var(--warm); border-bottom:1px solid var(--line); }
+.as-context b { color:var(--ink); }
+.as-log { flex:1; overflow-y:auto; padding:18px 16px; display:flex; flex-direction:column; gap:14px; }
+.as-empty { margin:auto 0; text-align:center; color:var(--muted); font-size:14px; }
+.as-empty .as-logo { margin:0 auto 12px; width:48px; height:48px; border-radius:14px; }
+.as-empty h3 { color:var(--ink); margin:0 0 4px; font-size:17px; }
+.as-suggest { display:flex; flex-direction:column; gap:8px; margin-top:16px; text-align:left; }
+.as-suggest button { justify-content:flex-start; background:#fff; color:var(--ink); border:1px solid var(--line); font-weight:500; font-size:13.5px; padding:10px 12px; }
+.as-suggest button:hover { border-color:var(--accent); }
+.msg { display:flex; flex-direction:column; max-width:88%; }
+.msg.user { align-self:flex-end; }
+.msg .b { padding:10px 13px; border-radius:14px; font-size:14px; line-height:1.5; word-wrap:break-word; }
+.msg.user .b { background:var(--ink); color:#fff; border-bottom-right-radius:4px; }
+.msg.bot .b { background:var(--bg); border-bottom-left-radius:4px; }
+.msg.err .b { background:#fbe3e3; color:#8a1c12; }
+.msg .meta { font-size:11.5px; color:var(--muted); margin-top:5px; display:flex; flex-wrap:wrap; gap:5px; align-items:center; }
+.tool { display:inline-flex; align-items:center; gap:4px; background:#fff; border:1px solid var(--line); border-radius:6px; padding:1px 7px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:11px; color:var(--ink); }
+.tool.bad { border-color:#f3b8b0; color:#8a1c12; }
+.typing { display:flex; gap:4px; padding:12px 14px; background:var(--bg); border-radius:14px; align-self:flex-start; }
+.typing span { width:7px; height:7px; border-radius:50%; background:var(--muted); animation:blink 1.2s infinite; }
+.typing span:nth-child(2) { animation-delay:.2s; } .typing span:nth-child(3) { animation-delay:.4s; }
+@keyframes blink { 0%, 80%, 100% { opacity:.25; } 40% { opacity:1; } }
+.as-compose { border-top:1px solid var(--line); padding:12px 14px 14px; }
+.as-compose form { display:flex; gap:8px; align-items:flex-end; }
+.as-compose textarea { flex:1; resize:none; max-height:120px; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:var(--bg); color:var(--ink); outline:none; }
+.as-compose textarea:focus { border-color:var(--accent); background:#fff; }
+.as-compose button { padding:10px 12px; border-radius:12px; background:var(--accent); }
+.as-note { font-size:11.5px; color:var(--muted); margin-top:8px; text-align:center; }
+.as-gate { margin:auto 0; text-align:center; font-size:14px; color:var(--muted); }
+.as-gate select { width:100%; margin-top:12px; }
+
+/* ---------- Crafty, the assistant mascot ---------- */
+.mascot { width:100%; height:100%; overflow:visible; display:block; }
+.mascot .m-head { fill:#fbf4ec; stroke:#3a332c; stroke-width:3; }
+.mascot .m-screen { fill:#2b2722; }
+.mascot .m-eye { fill:#f0a37c; transform-box:fill-box; transform-origin:center; animation:m-blink 4.6s infinite; }
+.mascot .m-eyes { transition:transform .12s ease-out; }
+.mascot .m-smile { fill:none; stroke:#f0a37c; stroke-width:3.2; stroke-linecap:round; }
+.mascot .m-cheek { fill:#f4a98a; opacity:.55; }
+.mascot .m-ear { fill:var(--accent); }
+.mascot .m-line { stroke:#3a332c; stroke-width:3; stroke-linecap:round; }
+.mascot .m-bulb { fill:#f0a37c; animation:m-glow 1.8s ease-in-out infinite; }
+.mascot .m-shadow { fill:#000; opacity:.14; transform-box:fill-box; transform-origin:center; animation:m-shadow 3.2s ease-in-out infinite; }
+.mascot .m-float { animation:m-float 3.2s ease-in-out infinite; }
+@keyframes m-float { 0%, 100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+@keyframes m-shadow { 0%, 100% { transform:scaleX(1); opacity:.14; } 50% { transform:scaleX(.8); opacity:.08; } }
+@keyframes m-blink { 0%, 93%, 100% { transform:scaleY(1); } 96% { transform:scaleY(.1); } }
+@keyframes m-glow { 0%, 100% { opacity:1; } 50% { opacity:.35; } }
+@keyframes m-hop { 0%, 100% { transform:translateY(0) rotate(0); } 30% { transform:translateY(-14px) rotate(-6deg); } 60% { transform:translateY(0) rotate(4deg); } }
+.hop .mascot .m-float { animation:m-hop .7s ease-out; }
+.busy .mascot .m-bulb { animation-duration:.45s; }
+.busy .mascot .m-eyes { transform:translate(3px, -4px) !important; }
+.as-avatar { width:46px; height:46px; flex:none; background:#fbf4ec22; border-radius:14px; padding:2px; }
+.as-hero-mascot { width:96px; height:96px; margin:0 auto 10px; }
+.as-launch .m-wrap { width:30px; height:30px; margin:-6px 0 -6px -6px; }
+.as-launch { animation:launch-in .5s ease-out both; }
+.as-launch:hover .m-float { animation:m-hop .7s ease-out; }
+@keyframes launch-in { from { transform:translateY(20px) scale(.9); opacity:0; } to { transform:none; opacity:1; } }
+@media (prefers-reduced-motion: reduce) { .mascot *, .as-launch { animation:none !important; } }
+
 @media (max-width: 980px) {
   header .wrap { flex-wrap:wrap; gap:10px; padding-top:10px; padding-bottom:10px; }
   nav > a, nav .drop > a { padding:8px 10px; }
   .search { order:5; flex-basis:100%; max-width:none; }
+  .ask-ai .lbl { display:none; }
 }
 {% block style %}{% endblock %}
 </style>
 </head>
 <body>
-<div class="demo-banner">Demo store: customers, orders and payments are simulated. Product data and reviews come from Amazon.</div>
+<div class="demo-banner">Portfolio demo: customers, orders and payments are simulated. Product data and reviews come from Amazon.</div>
 <header>
   <div class="wrap">
     <a class="brand" href="{% url 'home' %}">
@@ -89,23 +171,21 @@ footer { color:var(--muted); font-size:13px; padding:22px 0; border-top:1px soli
           {% for c in nav_categories %}<a href="{% url 'product_list' %}?category={{ c.category|urlencode }}">{{ c.category }} <span>{{ c.n }}</span></a>{% endfor %}
         </div>
       </div>
-      <a href="{% url 'home' %}#see-in-room">AI Design</a>
       <a href="{% url 'order_list' %}" class="{% if 'order' in page %}active{% endif %}">Orders</a>
     </nav>
     {% endwith %}
 
     <form class="search" action="{% url 'product_list' %}" method="get">
       <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Search kitchen, home and decor…" aria-label="Search">
+      <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Search products…" aria-label="Search">
     </form>
 
+    <button class="ask-ai" type="button" data-open-assistant>
+      <svg class="spark" viewBox="0 0 24 24"><path d="M12 2l2.2 6.3L20.5 10.5l-6.3 2.2L12 19l-2.2-6.3L3.5 10.5l6.3-2.2z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></svg>
+      <span class="lbl">Ask AI</span>
+    </button>
+
     <div class="icons">
-      <span class="icon-btn soon" title="Wishlist: coming soon">
-        <svg class="i" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
-      </span>
-      <span class="icon-btn soon" title="Cart: coming soon">
-        <svg class="i" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11h10.2L20 7H6.2"/><circle cx="9" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/></svg>
-      </span>
       <details class="account">
         <summary class="avatar" title="Choose a demo customer">
           {% if current_customer %}{{ current_customer.first_name|first }}{{ current_customer.last_name|first }}{% else %}<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>{% endif %}
@@ -126,6 +206,185 @@ footer { color:var(--muted); font-size:13px; padding:22px 0; border-top:1px soli
   </div>
 </header>
 <main><div class="wrap">{% block content %}{% endblock %}</div></main>
-<footer><div class="wrap">RoomCraft AI · portfolio demo</div></footer>
+<footer><div class="wrap">RoomCraft AI · portfolio demo · Django storefront, FastAPI Store API, Claude-powered AI service</div></footer>
+
+<!-- ---------- AI assistant (on every page) ---------- -->
+<button class="ask-ai as-launch" type="button" data-open-assistant aria-label="Open the AI assistant">
+  <span class="m-wrap">{% include "store/_mascot.html" %}</span> Ask Crafty
+</button>
+<div class="as-backdrop" data-close-assistant></div>
+<aside class="assistant" id="assistant" aria-label="AI assistant"
+       data-customer="{{ current_customer.pk|default:'' }}" data-url="{% url 'assistant_chat' %}">
+  <div class="as-head">
+    <span class="as-avatar">{% include "store/_mascot.html" %}</span>
+    <div><b>Crafty · your AI assistant</b><small><i></i>Powered by Claude Haiku</small></div>
+    <div class="x">
+      <button type="button" data-new-chat title="Start a new conversation">New chat</button>
+      <button type="button" data-close-assistant aria-label="Close">✕</button>
+    </div>
+  </div>
+  <div class="as-context">
+    {% if current_customer %}Signed in as <b>{{ current_customer.first_name }} {{ current_customer.last_name }}</b>. The assistant only sees this customer's orders.
+    {% else %}No customer selected. Pick a demo customer to start.{% endif %}
+  </div>
+  <div class="as-log" aria-live="polite">
+    {% if not current_customer %}
+      <div class="as-gate">
+        <div class="as-hero-mascot hop">{% include "store/_mascot.html" %}</div>
+        <b style="color:var(--ink)">Who's shopping?</b><br>The assistant answers for one signed-in customer. Choose a demo customer to try it.
+        <form method="post" action="{% url 'switch_customer' %}">{% csrf_token %}
+          <select name="customer_id" onchange="this.form.submit()" aria-label="Choose a demo customer">
+            <option value="">Choose a demo customer</option>
+            {% for c in demo_customers %}<option value="{{ c.pk }}">{{ c.first_name }} {{ c.last_name }} · {{ c.order_count }} order{{ c.order_count|pluralize }}</option>{% endfor %}
+          </select>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+  <div class="as-compose">
+    <form data-chat-form>
+      <textarea rows="1" placeholder="Ask about products or your orders…" aria-label="Message" {% if not current_customer %}disabled{% endif %}></textarea>
+      <button type="submit" aria-label="Send" {% if not current_customer %}disabled{% endif %}><svg class="i" viewBox="0 0 24 24"><path d="M4 12 20 4l-6 16-3-7z"/></svg></button>
+    </form>
+    <div class="as-note">AI can make mistakes. It never changes an order without your confirmation.</div>
+  </div>
+</aside>
+
+<template id="mascot-tpl">{% include "store/_mascot.html" %}</template>
+<script>
+(() => {
+  const panel = document.getElementById("assistant");
+  const log = panel.querySelector(".as-log");
+  const form = panel.querySelector("[data-chat-form]");
+  const input = form.querySelector("textarea");
+  const sendBtn = form.querySelector("button");
+  const customer = panel.dataset.customer;            // "" when no demo customer is chosen
+  const storeKey = "roomcraft-chat-" + customer;      // one conversation per customer, per browser tab
+  const SUGGESTIONS = ["Where is my latest order?", "Find me a kettle under $40", "Which of my orders are still on the way?", "Can I cancel an order?"];
+  let history = [];
+  let busy = false;
+
+  try { history = JSON.parse(sessionStorage.getItem(storeKey) || "[]"); } catch (e) { history = []; }
+  const save = () => { try { sessionStorage.setItem(storeKey, JSON.stringify(history)); } catch (e) {} };
+
+  const csrf = () => (document.cookie.match(/csrftoken=([^;]+)/) || [])[1] || "";
+  const esc = (s) => s.replace(/[&<>"']/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+  // tiny, safe formatter for the model's replies: escape first, then **bold**, bullets and line breaks
+  const format = (text) => esc(text)
+    .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
+    .replace(/^\s*[-*] (.*)$/gm, "• $1")
+    .replace(/\n/g, "<br>");
+
+  function addMessage(role, text, meta) {
+    log.querySelector(".as-empty")?.remove();
+    const el = document.createElement("div");
+    el.className = "msg " + role;
+    el.innerHTML = '<div class="b"></div>';
+    const bubble = el.firstChild;
+    if (role === "user") bubble.textContent = text; else bubble.innerHTML = format(text);
+    if (meta) {
+      const m = document.createElement("div");
+      m.className = "meta";
+      (meta.tools || []).forEach((t) => {
+        const chip = document.createElement("span");
+        chip.className = "tool" + (t.is_error ? " bad" : "");
+        chip.textContent = (t.is_error ? "✕ " : "✓ ") + t.tool;
+        chip.title = JSON.stringify(t.input) + (t.ms != null ? " · " + t.ms + " ms" : "");
+        m.appendChild(chip);
+      });
+      if (meta.tokens) m.appendChild(document.createTextNode(meta.tokens + " tokens"));
+      el.appendChild(m);
+    }
+    log.appendChild(el);
+    log.scrollTop = log.scrollHeight;
+    return el;
+  }
+
+  function renderEmpty() {
+    if (!customer) return;  // the server already rendered the "choose a customer" gate
+    const el = document.createElement("div");
+    el.className = "as-empty";
+    el.innerHTML = '<div class="as-hero-mascot hop">' + document.getElementById("mascot-tpl").innerHTML + '</div>'
+      + "<h3>Hi, I'm Crafty!</h3>Ask me about products or your orders.<div class=\"as-suggest\"></div>";
+    SUGGESTIONS.forEach((s) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.textContent = s; b.dataset.ask = s;
+      el.querySelector(".as-suggest").appendChild(b);
+    });
+    log.appendChild(el);
+  }
+
+  function render() {
+    log.querySelectorAll(".msg, .as-empty").forEach((n) => n.remove());
+    if (!history.length) return renderEmpty();
+    history.forEach((m) => addMessage(m.role === "user" ? "user" : "bot", m.content, m.meta));
+  }
+
+  async function send(text) {
+    text = (text || "").trim();
+    if (!text || busy || !customer) return;
+    busy = true; panel.classList.add("busy"); input.value = ""; input.style.height = ""; sendBtn.disabled = true;
+    history.push({ role: "user", content: text });
+    save();
+    const userBubble = addMessage("user", text);
+    const typing = document.createElement("div");
+    typing.className = "typing"; typing.innerHTML = "<span></span><span></span><span></span>";
+    log.appendChild(typing); log.scrollTop = log.scrollHeight;
+
+    try {
+      const res = await fetch(panel.dataset.url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-CSRFToken": csrf() },
+        body: JSON.stringify({ messages: history.map(({ role, content }) => ({ role, content })) }),
+      });
+      const data = await res.json().catch(() => ({}));
+      typing.remove();
+      if (!res.ok || !data.reply) throw new Error(data.error || "The assistant is unavailable right now.");
+      const meta = { tools: data.tool_calls || [], tokens: (data.input_tokens || 0) + (data.output_tokens || 0) };
+      history.push({ role: "assistant", content: data.reply, meta });
+      save();
+      addMessage("bot", data.reply, meta);
+    } catch (err) {
+      typing.remove();
+      history.pop();  // forget the unanswered message so the conversation stays valid
+      userBubble.remove();  // and take it off the screen; the text goes back into the input box
+      save();
+      addMessage("err", err.message + " Your message was not sent; try again.");
+      input.value = text;
+    } finally {
+      busy = false; panel.classList.remove("busy"); sendBtn.disabled = false; input.focus();
+    }
+  }
+
+  const open = () => { document.body.classList.add("as-open"); if (customer) setTimeout(() => input.focus(), 220); };
+  const close = () => document.body.classList.remove("as-open");
+  window.roomcraftAsk = (text) => { open(); if (text) send(text); };
+
+  document.addEventListener("click", (e) => {
+    const ask = e.target.closest("[data-ask]");
+    if (ask) { e.preventDefault(); window.roomcraftAsk(ask.dataset.ask); return; }
+    if (e.target.closest("[data-open-assistant]")) open();
+    if (e.target.closest("[data-close-assistant]")) close();
+    if (e.target.closest("[data-new-chat]")) { history = []; save(); render(); }
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+  form.addEventListener("submit", (e) => { e.preventDefault(); send(input.value); });
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input.value); } });
+  input.addEventListener("input", () => { input.style.height = ""; input.style.height = Math.min(input.scrollHeight, 120) + "px"; });
+
+  // Crafty's eyes follow the mouse (every mascot on the page)
+  document.addEventListener("mousemove", (e) => {
+    document.querySelectorAll(".mascot .m-eyes").forEach((eyes) => {
+      const box = eyes.closest("svg").getBoundingClientRect();
+      if (!box.width) return;
+      const dx = e.clientX - (box.left + box.width / 2), dy = e.clientY - (box.top + box.height / 2);
+      const d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 300);
+      eyes.style.transform = `translate(${(dx / d) * 4 * k}px, ${(dy / d) * 3 * k}px)`;
+    });
+  });
+
+  render();
+})();
+</script>
 </body>
 </html>

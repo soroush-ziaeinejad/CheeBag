@@ -30,6 +30,9 @@ dd { margin:0; }
   <h1>Order #{{ order.pk }}</h1>
   <span class="chip {{ order.status }}">{{ order.status }}</span>
   {% if delayed %}<span class="chip delayed">Delayed</span>{% endif %}
+  <button class="btn ai" type="button" style="margin-left:auto"
+          data-ask="{% if delayed %}My order #{{ order.pk }} is late. Where is it?{% else %}What's the status of my order #{{ order.pk }}?{% endif %}">
+    <svg class="spark" viewBox="0 0 24 24"><path d="M12 2l2.2 6.3L20.5 10.5l-6.3 2.2L12 19l-2.2-6.3L3.5 10.5l6.3-2.2z"/></svg> Ask AI about this order</button>
 </div>
 <p class="muted">Placed {{ order.order_date|date:"M j, Y, g:i a" }} · last updated {{ order.updated_at|date:"M j, Y" }}</p>
 

@@ -43,8 +43,12 @@
       <div class="stock muted">{{ product.stock_quantity }} in stock</div>
     {% endif %}
 
-    <a class="btn ghost" href="{% url 'home' %}?product={{ product.pk }}#see-in-room" style="margin-bottom:6px">
-      <svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg> See it in my room</a>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+      <button class="btn ai" type="button" data-ask="Tell me about product #{{ product.pk }}, the {{ product.name }}. What are its main features, and is it a good choice?">
+        <svg class="spark" viewBox="0 0 24 24"><path d="M12 2l2.2 6.3L20.5 10.5l-6.3 2.2L12 19l-2.2-6.3L3.5 10.5l6.3-2.2z"/></svg> Ask AI about this product</button>
+      <a class="btn ghost" href="{% url 'home' %}?product={{ product.pk }}#see-in-room">
+        <svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg> See it in my room</a>
+    </div>
 
     <table class="specs">
       {% if product.color %}<tr><th>Color</th><td>{{ product.color }}</td></tr>{% endif %}

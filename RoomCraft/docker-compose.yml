@@ -27,6 +27,7 @@ services:
       DB_NAME: roomcraft
       DB_USER: roomcraft
       DB_PASSWORD: roomcraft
+      AGENT_URL: http://agent:8000   # Django forwards chat messages here
     ports:
       - "8000:8000"
     volumes:
@@ -34,6 +35,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      agent:
+        condition: service_started
 
   store-api:
     build: ./store_api
@@ -51,6 +54,8 @@ services:
   agent:
     build: ./agent
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+        STORE_API_URL: http://store-api:8000
     env_file:
       - path: .env
         required: false   # the service still starts without it; /chat then returns 502
@@ -58,6 +63,8 @@ services:
       - "8002:8000"
     volumes:
       - ./agent:/app   # code changes reload without rebuilding
+    depends_on:
+      - store-api
 
 volumes:
   pgdata:

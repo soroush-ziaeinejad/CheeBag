@@ -42,6 +42,9 @@ DATABASES = {"default": {
     "PASSWORD": os.environ.get("DB_PASSWORD", "roomcraft"),
 }}
 
+# the AI service (agent container); the browser never talks to it directly
+AGENT_URL = os.environ.get("AGENT_URL", "http://agent:8000")
+
 # the demo persona lives in a signed cookie, so Django needs no tables of its own
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 

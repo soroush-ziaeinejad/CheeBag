@@ -1,6 +1,11 @@
+import json
+import urllib.error
+import urllib.request
+
+from django.conf import settings
 from django.core.paginator import Paginator
 from django.db.models import Count, F, Q, Sum
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -148,3 +153,40 @@ def order_detail(request, pk):
         "timeline": timeline,
         "delayed": delayed,
     })
+
+
+# messages shown to the visitor when the AI service fails; details stay in the agent's logs
+AGENT_ERRORS = {
+    422: (400, "The assistant couldn't read that message."),
+    503: (503, "The assistant isn't configured yet."),
+}
+
+
+@require_POST
+def assistant_chat(request):
+    """Browser -> Django -> AI service.
+
+    The customer comes from the server-side session, never from the browser, so a visitor
+    can't ask the assistant about someone else's orders by editing the request.
+    """
+    customer = current_customer(request)
+    if customer is None:
+        return JsonResponse({"error": "Choose a demo customer first."}, status=403)
+    try:
+        messages = json.loads(request.body)["messages"]
+    except (ValueError, KeyError, TypeError):
+        return JsonResponse({"error": "Bad request."}, status=400)
+
+    agent_request = urllib.request.Request(
+        f"{settings.AGENT_URL}/chat",
+        data=json.dumps({"customer_id": customer.pk, "messages": messages}).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(agent_request, timeout=60) as response:
+            return JsonResponse(json.loads(response.read()))
+    except urllib.error.HTTPError as e:
+        status, message = AGENT_ERRORS.get(e.code, (502, "The assistant is unavailable right now."))
+        return JsonResponse({"error": message}, status=status)
+    except (urllib.error.URLError, TimeoutError, ValueError):
+        return JsonResponse({"error": "The assistant is unavailable right now."}, status=502)
