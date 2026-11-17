@@ -3,7 +3,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql+psycopg://roomcraft:roomcraft@localhost:5432/roomcraft")
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql+psycopg://chideman:chideman@localhost:5432/chideman")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)

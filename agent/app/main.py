@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 from .agent import MODEL, run_agent
 
 
-app = FastAPI(title="RoomCraft AI Service")
+app = FastAPI(title="Chideman AI · CHEE Service")
 API_KEY_SET = bool(os.environ.get("ANTHROPIC_API_KEY"))
 
 
@@ -42,7 +42,7 @@ def health():
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
     if not API_KEY_SET:
-        print("ANTHROPIC_API_KEY is not set: add it to RoomCraft/.env and restart the agent")
+        print("ANTHROPIC_API_KEY is not set: add it to the project .env and restart the agent")
         raise HTTPException(503, "The AI service is not configured yet.")
     try:
         result = run_agent([m.model_dump() for m in request.messages], request.customer_id)
