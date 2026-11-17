@@ -1,0 +1,120 @@
+{
+  "note": "Fictional demonstration data for the Chideman AI portfolio project; not legally reviewed policies.",
+  "documents": [
+    {
+      "seller_id": 1,
+      "seller_name": "Copperline Kitchen Supply",
+      "legal_name": "Copperline Kitchen Supply LLC",
+      "pdf_path": "data/policies/Copperline_Kitchen_Supply_Policies.pdf",
+      "policy_version": "3.2",
+      "effective_date": "2026-11-01",
+      "product_categories": [
+        "Bakeware",
+        "Dining & Entertaining",
+        "Kitchen & Table Linens",
+        "Kitchen Utensils & Gadgets",
+        "Storage & Organization"
+      ],
+      "product_count": 23,
+      "page_count": 12,
+      "document_checksum": "sha256:5752827f9103e63a810b0bc64a387a1ce8728e5e87f9ac52d0e80024e7516d5d",
+      "is_current": true
+    },
+    {
+      "seller_id": 2,
+      "seller_name": "Kettle & Crema Co.",
+      "legal_name": "Kettle and Crema Company Inc.",
+      "pdf_path": "data/policies/Kettle_Crema_Co_Policies.pdf",
+      "policy_version": "2.0",
+      "effective_date": "2026-10-15",
+      "product_categories": [
+        "Coffee, Tea & Espresso",
+        "Small Appliances"
+      ],
+      "product_count": 35,
+      "page_count": 11,
+      "document_checksum": "sha256:dce5c927690cd842f1f34ebf2717b378925642cb8e183a49393f7f62f7b6cae8",
+      "is_current": true
+    },
+    {
+      "seller_id": 3,
+      "seller_name": "Cork & Pour Barware",
+      "legal_name": "Cork and Pour Barware LLC",
+      "pdf_path": "data/policies/Cork_Pour_Barware_Policies.pdf",
+      "policy_version": "1.4",
+      "effective_date": "2026-11-01",
+      "product_categories": [
+        "Dining & Entertaining",
+        "Favors",
+        "Kitchen Utensils & Gadgets",
+        "Wine Accessories"
+      ],
+      "product_count": 28,
+      "page_count": 11,
+      "document_checksum": "sha256:c750294fc9c3f0eaf91f5145e30bd38a087c9105d5294fc96cc875eef5ca3bf1",
+      "is_current": true
+    },
+    {
+      "seller_id": 4,
+      "seller_name": "Trailmate Drinkware",
+      "legal_name": "Trailmate Outfitters Inc.",
+      "pdf_path": "data/policies/Trailmate_Drinkware_Policies.pdf",
+      "policy_version": "4.1",
+      "effective_date": "2026-09-01",
+      "product_categories": [
+        "Dining & Entertaining",
+        "Storage & Organization"
+      ],
+      "product_count": 22,
+      "page_count": 11,
+      "document_checksum": "sha256:2d3567951e76a354e6d240c730aaec15bab115a52cba6da009718960568cbc83",
+      "is_current": true
+    },
+    {
+      "seller_id": 5,
+      "seller_name": "Breezeway Home Appliances",
+      "legal_name": "Breezeway Home Appliances Corp.",
+      "pdf_path": "data/policies/Breezeway_Home_Appliances_Policies.pdf",
+      "policy_version": "5.0",
+      "effective_date": "2026-10-01",
+      "product_categories": [
+        "Air Conditioners",
+        "Bathroom Accessories",
+        "Household Fans",
+        "Parts & Accessories",
+        "Vacuum Parts & Accessories",
+        "Vacuums"
+      ],
+      "product_count": 13,
+      "page_count": 12,
+      "document_checksum": "sha256:b22858667784dcf1192d3ec62630b3ee6f05a39ae639c5e32092e3e07a3c2db9",
+      "is_current": true
+    },
+    {
+      "seller_id": 6,
+      "seller_name": "Nestwell Bed & Bath",
+      "legal_name": "Nestwell Home Goods LLC",
+      "pdf_path": "data/policies/Nestwell_Bed_Bath_Policies.pdf",
+      "policy_version": "2.3",
+      "effective_date": "2026-11-01",
+      "product_categories": [
+        "Bath Rugs",
+        "Bathroom Accessories",
+        "Bed Pillows & Positioners",
+        "Clothing & Closet Storage",
+        "Decorative Pillows, Inserts & Covers",
+        "Home Décor Accents",
+        "Kids' Bedding",
+        "Laundry Storage & Organization",
+        "Mattress Protectors & Encasements",
+        "Photo Albums, Frames & Accessories",
+        "Sheets & Pillowcases",
+        "Storage & Organization"
+      ],
+      "product_count": 15,
+      "page_count": 12,
+      "document_checksum": "sha256:575de70fd577b92471d9e245edc3d451cd17d2e77096569f0e1a09014c858d7f",
+      "is_current": true
+    }
+  ]
+}

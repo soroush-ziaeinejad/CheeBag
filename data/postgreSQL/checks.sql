@@ -49,4 +49,15 @@ JOIN customers c USING (customer_id)
 LEFT JOIN shipments s USING (order_id)
 WHERE o.order_date < c.created_at
    OR s.shipped_at < o.order_date
-   OR s.delivered_at < s.shipped_at;
+   OR s.delivered_at < s.shipped_at
+
+UNION ALL
+SELECT 'every product has a valid seller', count(*)
+FROM products p
+LEFT JOIN sellers s USING (seller_id)
+WHERE s.seller_id IS NULL
+
+UNION ALL
+SELECT 'every seller sells at least one product', count(*)
+FROM sellers s
+WHERE NOT EXISTS (SELECT 1 FROM products p WHERE p.seller_id = s.seller_id);
