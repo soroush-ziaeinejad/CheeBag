@@ -1,0 +1,24 @@
+{# Demo-customer picker. Used in the header menu, the home hero, the chat drawer and the orders page. #}
+{# include with compact=True for the short version (featured customers only). #}
+<form class="personas" method="post" action="{% url 'switch_customer' %}">
+  {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+  {% for c, label in featured_customers %}
+    <button class="persona{% if current_customer.pk == c.pk %} on{% endif %}" type="submit" name="customer_id" value="{{ c.pk }}">
+      <span class="avatar sm">{{ c.first_name|first }}{{ c.last_name|first }}</span>
+      <span class="who"><b>{{ c.first_name }} {{ c.last_name }}</b><small>{{ label }}{% if not compact %} · {{ c.order_count }} order{{ c.order_count|pluralize }}{% endif %}</small></span>
+    </button>
+  {% endfor %}
+</form>
+{% if not compact %}
+<form class="persona-all" method="post" action="{% url 'switch_customer' %}">
+  {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+  <label for="persona-{{ where }}">Or pick any of the {{ demo_customers|length }} demo customers</label>
+  <select id="persona-{{ where }}" name="customer_id" onchange="this.form.submit()">
+    <option value="">Choose a customer…</option>
+    {% for c in demo_customers %}
+      <option value="{{ c.pk }}" {% if current_customer and c.pk == current_customer.pk %}selected{% endif %}>{{ c.first_name }} {{ c.last_name }} · {{ c.order_count }} order{{ c.order_count|pluralize }}</option>
+    {% endfor %}
+  </select>
+  <noscript><button type="submit">Switch</button></noscript>
+</form>
+{% endif %}

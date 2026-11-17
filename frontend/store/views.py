@@ -8,6 +8,7 @@ from django.db.models import Count, F, Q, Sum
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from .context import current_customer
@@ -48,15 +49,11 @@ def home(request):
         tiles.setdefault(p.category, p)
     categories = sorted(tiles.items(), key=lambda item: -counts[item[0]])[:12]
 
-    selected_id = request.GET.get("product", "")
-    selected = products.filter(pk=selected_id).first() if selected_id.isdigit() else None
-
     return render(request, "store/home.html", {
         "picks": picks,
         "tab": tab,
         "tabs": PICK_TABS,
         "categories": categories,
-        "selected": selected or picks[0],
     })
 
 
@@ -97,7 +94,13 @@ def switch_customer(request):
         request.session["customer_id"] = int(customer_id)
     else:
         request.session.pop("customer_id", None)
-    return redirect("order_list")
+    # stay on the page the switch was made from; only same-site paths are accepted
+    next_url = request.POST.get("next", "")
+    if not url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+        next_url = "order_list"
+    elif next_url.startswith("/orders/") and next_url != "/orders/":
+        next_url = "order_list"  # an order page of the previous customer would be a 404
+    return redirect(next_url)
 
 
 def order_list(request):

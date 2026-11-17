@@ -1,0 +1,110 @@
+/* Chideman AI theme: warm editorial interiors. Loaded after base.html's styles and before each page's own styles. */
+
+:root {
+  --bg:#faf7ef; --card:#fffdf8; --ink:#243e36; --ink-2:#32574b; --muted:#626b60; --line:#dedfd2;
+  --accent:#a64228; --accent-2:#c85e3c; --accent-soft:#fae5d9; --warm:#edf0e4; --sage:#dce6d8; --yellow:#f1d693;
+}
+
+/* nothing may push the page sideways; clip (unlike hidden) keeps sticky elements working */
+html, body { overflow-x:clip; max-width:100%; }
+img, svg, video { max-width:100%; }
+
+body { font-family:"Avenir Next", Avenir, "Segoe UI", sans-serif; font-size:15px; -webkit-font-smoothing:antialiased; }
+h1, h2, .brand { font-family:"Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; font-weight:500; }
+
+button, .btn { min-height:42px; border-radius:12px; transition:background .18s, box-shadow .18s; }
+button:hover, .btn:hover { box-shadow:0 3px 12px #243e3618; }
+button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+.btn.ghost { background:var(--card); }
+.card { border-radius:18px; }
+
+.skip-link { position:fixed; top:-80px; left:16px; background:var(--ink); color:#fff; padding:12px; z-index:100; }
+.skip-link:focus { top:12px; }
+
+/* header */
+.wrap { max-width:1320px; padding-left:32px; padding-right:32px; }
+.demo-banner { background:var(--ink); color:#f4eedf; font-size:11px; letter-spacing:.025em; padding:7px 16px; }
+header { background:var(--bg); }
+header .wrap { min-height:84px; gap:22px; }
+.brand { font-size:29px; gap:10px; letter-spacing:-1.2px; }
+.brand svg { width:34px; height:34px; color:var(--ink); }
+.brand .brand-ai { font:11px "Avenir Next", sans-serif; letter-spacing:.06em; background:var(--sage); border-radius:6px; padding:4px 5px; margin-left:4px; vertical-align:middle; color:var(--ink); }
+.brand small { display:block; font:10px "Avenir Next", sans-serif; letter-spacing:1px; color:var(--muted); margin-top:1px; }
+nav > a, nav .drop > a { font-size:13px; padding:30px 10px; }
+.search { background:var(--card); max-width:320px; min-width:0; }
+.search input[type=search] { min-width:0; width:100%; font-size:13px; }
+main { padding-top:28px; }
+footer { padding-bottom:90px; background:var(--warm); }
+
+/* CHEE mascot colours */
+.mascot .m-eye { fill:#284c43; }
+.mascot .m-smile { stroke:#284c43; stroke-width:3; fill:none; }
+.mascot .m-cheek { fill:#e98e72; opacity:.65; }
+.mascot .m-bulb { fill:#e8b859; }
+
+/* chat drawer */
+.as-launch { border:1px solid #ffffff40; }
+.assistant { width:min(460px, 100%); background:var(--card); height:100dvh; }
+/* the closed drawer sits just off-screen: hide it fully so its shadow doesn't show and Safari can't scroll to it */
+.assistant { visibility:hidden; box-shadow:none; transition:transform .22s ease, visibility 0s linear .22s; }
+body.as-open .assistant { visibility:visible; box-shadow:-10px 0 40px rgba(31,28,24,.15); transition:transform .22s ease; }
+body.as-open { overflow:hidden; }
+.as-avatar { width:48px; height:48px; background:#f0e7d5; border-radius:16px; }
+.as-head { padding:14px 16px; }
+.as-head b { font-size:16px; letter-spacing:.06em; }
+.as-head small { font-size:11px; color:#d9e5d7; }
+.as-head .x button { font-size:12px; }
+.as-context { font-size:12px; line-height:1.5; }
+.as-log { padding:18px 16px; gap:14px; }
+.as-suggest button { background:var(--card); border-radius:12px; }
+.msg.bot { max-width:95%; }
+.msg.bot .b { background:var(--warm); padding:12px 14px; border:1px solid #dfe3d5; border-radius:16px 16px 16px 4px; }
+.as-compose textarea { min-width:0; }
+.as-compose button { min-height:44px; }
+.as-note { font-size:10.5px; }
+
+@media (max-width: 1100px) {
+  header .wrap { flex-wrap:wrap; gap:12px; padding-top:14px; padding-bottom:14px; }
+  .search { order:5; flex-basis:100%; max-width:none; }
+  nav > a, nav .drop > a { padding:10px; }
+}
+
+@media (max-width: 760px) {
+  .wrap { padding-left:16px; padding-right:16px; }
+  header .wrap { gap:10px; padding-top:10px; padding-bottom:10px; }
+  .brand { font-size:24px; }
+  .brand svg { width:28px; }
+  .brand small { font-size:9px; }
+  nav { order:4; width:100%; justify-content:center; border-top:1px solid var(--line); }
+  nav > a, nav .drop > a { padding:8px 18px; }
+  .pm-text small { display:none; }
+
+  /* shop page */
+  .grid { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; }
+  .product .meta { flex-wrap:wrap; }
+  .toolbar > * { max-width:100%; }
+  .toolbar input[type=search] { min-width:0; flex-basis:100%; }
+  .toolbar select { flex:1; min-width:0; }
+
+  /* chat drawer takes the whole phone screen */
+  .assistant { width:100%; }
+
+  /* orders table becomes stacked rows: #id + status on top, date + total below */
+  table.orders thead { display:none; }
+  table.orders tbody tr { display:grid; grid-template-columns:1fr auto; align-items:center; row-gap:4px; padding:12px 16px; border-bottom:1px solid var(--line); }
+  table.orders tbody tr:last-child { border-bottom:0; }
+  table.orders td { padding:0; border:0; }
+  table.orders td:nth-child(1) { grid-column:1; grid-row:1; font-weight:700; }
+  table.orders td:nth-child(5) { grid-column:2; grid-row:1; text-align:right; }
+  table.orders td:nth-child(2) { grid-column:1; grid-row:2; color:var(--muted); font-size:14px; }
+  table.orders td:nth-child(4) { grid-column:2; grid-row:2; text-align:right; font-weight:650; }
+  table.orders td:nth-child(3) { display:none; }
+  table.orders td[colspan] { grid-column:1 / -1; }
+
+  /* any other wide table scrolls inside its own card instead of moving the page */
+  .card:has(> table:not(.orders)) { overflow-x:auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+}

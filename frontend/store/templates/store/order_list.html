@@ -1,7 +1,8 @@
 {% extends "store/base.html" %}
 {% block title %}My orders{% endblock %}
 {% block style %}
-.empty { padding:40px; text-align:center; max-width:520px; margin:40px auto; }
+.empty { padding:32px; max-width:480px; margin:32px auto; }
+.empty .muted { margin:4px 0 16px; }
 .filters { display:flex; gap:8px; flex-wrap:wrap; margin:18px 0; }
 .filters a { text-decoration:none; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:#fff; font-size:13px; font-weight:550; }
 .filters a.on { background:var(--ink); color:#fff; border-color:var(--ink); }
@@ -17,7 +18,8 @@ table.orders { width:100%; border-collapse:collapse; overflow:hidden; }
 {% if not customer %}
   <div class="card empty">
     <h1>My orders</h1>
-    <p class="muted">Choose a demo customer in the top right to see their orders. There's no real login in this demo; each customer is a simulated shopper with their own order history.</p>
+    <p class="muted">There's no real login in this demo. Pick a simulated shopper to see their order history.</p>
+    {% include "store/_personas.html" with where="orders" %}
   </div>
 {% else %}
   <h1>Orders for {{ customer.first_name }} {{ customer.last_name }}</h1>

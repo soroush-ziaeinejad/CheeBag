@@ -6,7 +6,7 @@
 .detail { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1.1fr); gap:32px; align-items:start; }
 .detail .img { background:#fff; aspect-ratio:1; display:flex; align-items:center; justify-content:center; padding:32px; }
 .detail .img img { max-width:100%; max-height:100%; object-fit:contain; }
-.cat { color:var(--muted); font-size:13px; margin-bottom:6px; }
+.crumb { color:var(--muted); font-size:13px; margin-bottom:6px; }
 .full-title { color:var(--muted); font-size:13px; margin:6px 0 14px; }
 .price-row { display:flex; align-items:baseline; gap:14px; margin:12px 0 4px; }
 .price { font-size:28px; font-weight:750; }
@@ -15,7 +15,8 @@
 .specs { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
 .specs th { text-align:left; color:var(--muted); font-weight:500; width:110px; padding:7px 0; border-top:1px solid var(--line); vertical-align:top; }
 .specs td { padding:7px 0; border-top:1px solid var(--line); }
-.desc { font-size:14px; color:#3b362f; }
+.desc { font-size:14px; line-height:1.6; color:#3b362f; margin-bottom:6px; }
+.desc.clamp { display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden; }
 .reviews { margin-top:40px; }
 .review { padding:16px 18px; margin-bottom:12px; }
 .review .stars { color:#b7791f; letter-spacing:1px; }
@@ -30,7 +31,7 @@
 <div class="detail">
   <div class="card img"><img src="{{ product.image_url }}" alt="{{ product.name }}"></div>
   <div>
-    <div class="cat">{{ product.category }}{% if product.brand %} · {{ product.brand }}{% endif %}</div>
+    <div class="crumb">{{ product.category }}{% if product.brand %} · {{ product.brand }}{% endif %}</div>
     <h1>{{ product.name }}</h1>
     {% if product.full_title != product.name %}<div class="full-title">{{ product.full_title }}</div>{% endif %}
     <div class="price-row">
@@ -43,12 +44,8 @@
       <div class="stock muted">{{ product.stock_quantity }} in stock</div>
     {% endif %}
 
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px">
-      <button class="btn ai" type="button" data-ask="Tell me about product #{{ product.pk }}, the {{ product.name }}. What are its main features, and is it a good choice?">
-        <svg class="spark" viewBox="0 0 24 24"><path d="M12 2l2.2 6.3L20.5 10.5l-6.3 2.2L12 19l-2.2-6.3L3.5 10.5l6.3-2.2z"/></svg> Ask AI about this product</button>
-      <a class="btn ghost" href="{% url 'home' %}?product={{ product.pk }}#see-in-room">
-        <svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg> See it in my room</a>
-    </div>
+    <button class="btn ai" type="button" data-ask="Tell me about product #{{ product.pk }}, the {{ product.name }}. What are its main features, and is it a good choice?">
+      <svg class="spark" viewBox="0 0 24 24"><path d="M12 2l2.2 6.3L20.5 10.5l-6.3 2.2L12 19l-2.2-6.3L3.5 10.5l6.3-2.2z"/></svg> Ask CHEE about this product</button>
 
     <table class="specs">
       {% if product.color %}<tr><th>Color</th><td>{{ product.color }}</td></tr>{% endif %}
@@ -56,7 +53,10 @@
       {% if product.dimensions %}<tr><th>Dimensions</th><td>{{ product.dimensions }}</td></tr>{% endif %}
       <tr><th>Product ID</th><td>{{ product.pk }} · ASIN {{ product.source_asin }}</td></tr>
     </table>
-    {% if product.description %}<p class="desc">{{ product.description }}</p>{% endif %}
+    {% if product.description %}
+      <p class="desc clamp" id="desc">{{ product.description }}</p>
+      <button class="link-btn" type="button" onclick="this.previousElementSibling.classList.toggle('clamp'); this.textContent = this.textContent === 'Show more' ? 'Show less' : 'Show more'">Show more</button>
+    {% endif %}
   </div>
 </div>
 
