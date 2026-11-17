@@ -1,11 +1,12 @@
-# RoomCraft: run everything from RoomCraft/ with `docker compose up -d --build`
+# Chideman AI, local development: run from the project folder with `docker compose up -d --build`
+name: chideman
 services:
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_USER: roomcraft
-      POSTGRES_PASSWORD: roomcraft
-      POSTGRES_DB: roomcraft
+      POSTGRES_USER: chideman
+      POSTGRES_PASSWORD: chideman #${DB_PASSWORD:-chideman}
+      POSTGRES_DB: chideman
     ports:
       - "5432:5432"
     volumes:
@@ -15,18 +16,20 @@ services:
       - ./data/postgreSQL/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
       - ./data/postgreSQL/load.sql:/docker-entrypoint-initdb.d/02_load.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U roomcraft -d roomcraft"]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U chideman -d chideman"]
       interval: 3s
       timeout: 3s
       retries: 30
 
   frontend:
     build: ./frontend
+    command: python manage.py runserver 0.0.0.0:8000
     environment:
+      DEBUG: "True"
       DB_HOST: postgres
-      DB_NAME: roomcraft
-      DB_USER: roomcraft
-      DB_PASSWORD: roomcraft
+      DB_NAME: chideman
+      DB_USER: chideman
+      DB_PASSWORD: chideman #${DB_PASSWORD:-chideman}
       AGENT_URL: http://agent:8000   # Django forwards chat messages here
     ports:
       - "8000:8000"
@@ -42,7 +45,7 @@ services:
     build: ./store_api
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     environment:
-      DATABASE_URL: postgresql+psycopg://roomcraft:roomcraft@postgres:5432/roomcraft
+      DATABASE_URL: postgresql+psycopg://chideman:chideman@postgres:5432/chideman
     ports:
       - "8001:8000"
     volumes:
