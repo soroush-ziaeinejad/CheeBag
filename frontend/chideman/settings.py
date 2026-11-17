@@ -9,6 +9,12 @@ ALLOWED_HOSTS = os.getenv(
     "localhost,127.0.0.1"
 ).split(",")
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-not-a-secret")
+
+# HTTPS behind Caddy (production). Caddy tells Django the visitor used https, so redirects,
+# CSRF checks and cookies all treat the request as secure.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+CSRF_TRUSTED_ORIGINS = [o for o in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o]
+SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE = not DEBUG  # cookies only over https in production
 # DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 # ALLOWED_HOSTS = ["*"]  # local development only
 

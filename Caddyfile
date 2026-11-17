@@ -1,3 +1,10 @@
-http://3.217.102.231 {
-    reverse_proxy frontend:8000
+# Chideman AI. DOMAIN comes from the server's .env (e.g. DOMAIN=chidemanai.com).
+# Caddy gets and renews the HTTPS certificate by itself and redirects http to https.
+{$DOMAIN} {
+	encode gzip
+	reverse_proxy frontend:8000
+}
+
+www.{$DOMAIN} {
+	redir https://{$DOMAIN}{uri} permanent
 }

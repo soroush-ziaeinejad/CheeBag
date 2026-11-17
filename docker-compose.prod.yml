@@ -1,13 +1,20 @@
 # Chideman AI, production: `docker compose -f docker-compose.prod.yml up -d --build`
+# The server's .env sets DOMAIN, DB_PASSWORD, DJANGO_SECRET_KEY, ANTHROPIC_API_KEY and CLAUDE_MODEL.
 name: chideman-prod
 services:
   caddy:
     image: caddy:2
     restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?DOMAIN is required, e.g. chidemanai.com}
     ports:
-      - "80:80"
+      - "80:80"        # http: certificate checks, then redirect to https
+      - "443:443"      # https
+      - "443:443/udp"  # https over HTTP/3
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data        # the certificates; keep them so Caddy doesn't request new ones on every restart
+      - caddy_config:/config
     depends_on:
       - frontend
   postgres:
@@ -37,7 +44,8 @@ services:
     environment:
       DEBUG: "False"
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?required}
-      DJANGO_ALLOWED_HOSTS: "54.221.38.43,localhost,127.0.0.1"
+      DJANGO_ALLOWED_HOSTS: "${DOMAIN},www.${DOMAIN},localhost,127.0.0.1"
+      DJANGO_CSRF_TRUSTED_ORIGINS: "https://${DOMAIN},https://www.${DOMAIN}"
       DB_HOST: postgres
       DB_NAME: chideman
       DB_USER: chideman
@@ -78,3 +86,5 @@ services:
 
 volumes:
   pgdata:
+  caddy_data:
+  caddy_config:
