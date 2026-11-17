@@ -25,9 +25,15 @@ STATUSES = {
     "cancelled": (10, 1, 365),
 }
 CARRIERS = ["UPS", "FedEx", "USPS", "DHL"]
+CANADA_SHARE = 0.55                                   # share of customers with a Canadian address
+CANADA_CARRIERS = {"USPS": "Canada Post", "DHL": "Purolator"}  # UPS and FedEx deliver in both countries
 PAYMENT_METHODS = ["credit_card", "paypal", "gift_card"]
 
 fake = Faker("en_US")
+# Canadian addresses come from their own generators, so adding them doesn't change any other generated value
+fake_ca = Faker("en_CA")
+fake_ca.seed_instance(SEED + 1)
+geo = random.Random(SEED + 2)
 
 
 def make_customers():
@@ -43,6 +49,11 @@ def make_customers():
             "created_at": NOW - timedelta(days=random.randint(400, 900)),
             "address": fake.address().replace("\n", ", "),  # used as default shipping address
         })
+        if geo.random() < CANADA_SHARE:
+            customers[-1].update(country="Canada", phone=fake_ca.phone_number(),
+                                 address=fake_ca.address().replace("\n", ", ") + ", Canada")
+        else:
+            customers[-1].update(country="USA", address=customers[-1]["address"] + ", USA")
     return customers
 
 
@@ -79,6 +90,8 @@ def make_order(order_id, customer, products):
         updated_at = order_date + timedelta(hours=random.randint(1, 48))
     elif status in ("processing", "shipped", "delivered"):
         carrier = random.choice(CARRIERS)
+        if customer["country"] == "Canada":
+            carrier = CANADA_CARRIERS.get(carrier, carrier)
         shipped_at = order_date + timedelta(days=random.uniform(1, 2)) if status != "processing" else None
         estimated = (shipped_at or order_date) + timedelta(days=random.randint(3, 6))
         delivered_at = shipped_at + timedelta(days=random.uniform(2, 6)) if status == "delivered" else None

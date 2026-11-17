@@ -239,7 +239,7 @@ class Handbook:
                   "handbook governs it. A brand's own manufacturer warranty may apply in addition to the warranty described "
                   "in Section 9."),
                 self.h2("Definitions"),
-                bullets([f"Business day: Monday to Friday, excluding US federal holidays.",
+                bullets([f"Business day: Monday to Friday, excluding statutory holidays in Canada and federal holidays in the United States.",
                          "Order statuses: Pending (payment authorized, not yet being prepared), Processing (being picked and "
                          "packed), Shipped (handed to the carrier, tracking available), Delivered, and Cancelled.",
                          "Delivery date: the date the carrier's tracking shows the package as delivered.",
@@ -272,7 +272,7 @@ class Handbook:
                  "cancellation when asked. You receive a confirmation email once it is done."),
                B("Refund of cancelled orders:", f"the payment authorization is released or refunded within "
                  f"{c['refund_business_days']} business day{'s' if c['refund_business_days'] > 1 else ''} of cancellation."
-                 + (f" A {money(c['fee_after_window_usd'])} fee applies in the case described above." if c["fee_after_window_usd"] else "")),
+                 + (f" A {money(c['fee_after_window_cad'])} fee applies in the case described above." if c["fee_after_window_cad"] else "")),
                P("Orders that have already shipped cannot be cancelled. You can refuse the delivery or return the items "
                  "under Section 6.")]
         out += [self.h2("Orders we may cancel"),
@@ -289,13 +289,14 @@ class Handbook:
         return [self.h1("Payments, Billing and Taxes"),
                 self.h2("Payment methods"),
                 P(f"We accept {', '.join(PLATFORM['payment_methods'][:-1])} and {PLATFORM['payment_methods'][-1]}, processed "
-                  "securely by Chideman. All prices are in US dollars (USD)."),
+                  "securely by Chideman. All prices are in Canadian dollars (CAD), including for orders shipped to the United States."),
                 self.h2("When you are charged"),
                 P("Your payment is authorized when you place the order and captured when the order moves to Processing. "
                   f"Charges appear on your statement as CHIDEMAN*{short}. If a payment cannot be authorized within 48 hours, "
                   "the order is cancelled automatically."),
                 self.h2("Taxes"),
-                P("Sales tax is calculated from the shipping address at checkout and shown before you pay. When you return "
+                P("Sales tax is calculated from the shipping address at checkout and shown before you pay: GST/HST, plus PST or "
+                  "QST where it applies, for Canadian addresses, and state sales tax for US addresses. When you return "
                   "items, the sales tax on them is refunded in proportion. Tax-exempt purchases are not supported on "
                   "Chideman at this time."),
                 self.h2("Billing questions"),
@@ -307,23 +308,25 @@ class Handbook:
         s, f = self.s, self.f
         sh = f["shipping"]
         rows = [("Method", "Cost", "Delivery time after dispatch"),
-                ("Standard", f"Free on orders of {money(sh['free_threshold_usd'])} or more; otherwise {money(sh['standard_fee_usd'])}",
+                ("Standard", f"Free on orders of {money(sh['free_threshold_cad'])} or more; otherwise {money(sh['standard_fee_cad'])}",
                  days_range(sh["standard_business_days"])),
-                ("Expedited", money(sh["expedited_fee_usd"]), days_range(sh["expedited_business_days"]))]
-        if sh["overnight_fee_usd"]:
-            rows.append(("Overnight", money(sh["overnight_fee_usd"]), "1 business day (order by 12 pm ET)"))
+                ("Expedited", money(sh["expedited_fee_cad"]), days_range(sh["expedited_business_days"]))]
+        if sh["overnight_fee_cad"]:
+            rows.append(("Overnight", money(sh["overnight_fee_cad"]), "1 business day (order by 12 pm ET)"))
         return [self.h1("Shipping and Delivery"),
                 self.h2("Processing time"),
                 P(f"Orders are dispatched within {sh['handling_business_days']} business day{'s' if sh['handling_business_days'] > 1 else ''} "
                   "of being placed. The delivery times below start when the order ships."),
                 self.h2("Shipping options and costs"),
                 *table(rows, (1.2, 3.2, 2.3)),
-                P(f"The free-shipping threshold of {money(sh['free_threshold_usd'])} is based on the order subtotal from "
+                P(f"The free-shipping threshold of {money(sh['free_threshold_cad'])} is based on the order subtotal from "
                   f"{s['name']} after discounts and before tax."),
                 self.h2("Where we ship"),
                 bullets([f"We ship to {PLATFORM['ships_to']}.",
-                         f"Orders to Alaska and Hawaii ship by standard service only, with a {money(sh['alaska_hawaii_surcharge_usd'])} surcharge, "
-                         "and take 4 to 6 business days longer.",
+                         f"Orders to remote areas (Alaska, Hawaii, Yukon, the Northwest Territories and Nunavut) ship by standard service only, "
+                         f"with a {money(sh['remote_area_surcharge_cad'])} surcharge, and take 4 to 6 business days longer.",
+                         f"Orders that cross the Canada-US border may take {days_range(PLATFORM['cross_border_extra_business_days'])} "
+                         "longer because of customs. Duties and import fees are included in the price, so nothing more is charged at delivery.",
                          "We ship to PO boxes (standard shipping only)." if sh["po_boxes"] else "We do not ship to PO boxes.",
                          f"We ship with {', '.join(PLATFORM['carriers'])}, depending on the destination and package size."]),
                 self.h2("Tracking and delays"),
@@ -350,11 +353,11 @@ class Handbook:
               "instead of a parcel service."),
             self.h2("Freight delivery"),
             *table([("Detail", "Oversized items"),
-                    ("Delivery fee", f"{money(li['fee_usd'])} flat per order ({li['service']}); not covered by free shipping"),
+                    ("Delivery fee", f"{money(li['fee_cad'])} flat per order ({li['service']}); not covered by free shipping"),
                     ("Delivery time", days_range(li["business_days"]) + " after dispatch"),
                     ("Appointment", f"The carrier calls to book a {li['appointment_window_hours']}-hour delivery window"),
                     ("Signature", "Required; someone 18 or older must be present"),
-                    ("In-home placement", f"{money(li['in_home_placement_fee_usd'])} extra: carried to the room of your choice and packaging removed"),
+                    ("In-home placement", f"{money(li['in_home_placement_fee_cad'])} extra: carried to the room of your choice and packaging removed"),
                     ("Not available to", ", ".join(li["excluded_regions"])),
                     ("Expedited shipping", "Not available for oversized items")], (1.6, 5.1)),
             self.h2("Missed deliveries and inspection"),
@@ -362,7 +365,7 @@ class Handbook:
               "appointment incurs a $39 redelivery fee. Inspect the box with the driver and note any visible damage on the "
               "delivery receipt before signing (see Section 8)."),
             self.h2("Returning an oversized item"),
-            P(f"Oversized returns are picked up by freight for {money(li['oversized_return_pickup_usd'])}, deducted from the refund. "
+            P(f"Oversized returns are picked up by freight for {money(li['oversized_return_pickup_cad'])}, deducted from the refund. "
               "Pickup is free when the item is defective, damaged or incorrect.")]
 
     # ---- 6
@@ -484,7 +487,7 @@ class Handbook:
                             "stock items and follow the normal return rules in Section 6.")]
         window = self.f["cancellation"].get("engraved_window_hours") or self.f["cancellation"].get("monogram_window_hours")
         return out + [
-            P(f"We offer {p['what']} for {money(p['fee_usd'])} per item."),
+            P(f"We offer {p['what']} for {money(p['fee_cad'])} per item."),
             bullets([f"Personalized orders take {p['extra_business_days']} extra business days before they ship.",
                      f"They can only be cancelled within {hours(window)} of ordering, because work starts right away.",
                      "Personalized items are final sale and cannot be returned or exchanged, unless they arrive damaged or "
@@ -500,9 +503,9 @@ class Handbook:
         if pr.get("welcome_discount_percent"):
             items.insert(0, f"New customers who join our newsletter get {pr['welcome_discount_percent']}% off their first order (once per customer).")
         for key, label in (("bundle", "Bundle offer"), ("bulk_discount", "Bulk discount"), ("multi_buy", "Multi-buy offer"),
-                           ("subscription", "Subscription"), ("gift_wrap_usd", "Gift wrap")):
+                           ("subscription", "Subscription"), ("gift_wrap_cad", "Gift wrap")):
             if key in pr:
-                value = f"{money(pr[key])} per item" if key == "gift_wrap_usd" else pr[key]
+                value = f"{money(pr[key])} per item" if key == "gift_wrap_cad" else pr[key]
                 items.insert(0, f"{label}: {value}.")
         n = f["price_adjustment_days"]
         adj = (f"If the price of an item drops within {n} days of your order, we refund the difference once per item. Ask "
@@ -556,7 +559,7 @@ class Handbook:
                 bullets([f"Your purchase contract is with {s['legal_name']}. Chideman operates the marketplace and processes payments.",
                          "Our liability for any order is limited to the amount you paid for it, except where the law does not allow this limitation.",
                          "If a product is recalled for safety reasons, we contact affected customers and offer a refund, repair or replacement.",
-                         f"These policies are governed by the laws of the State of {f['governing_law']}. Disputes are handled first "
+                         f"These policies are governed by the laws of the {f['governing_law']}. Disputes are handled first "
                          "through customer service and Chideman mediation (Section 14); you may also bring a claim in small claims court.",
                          "Nothing in this handbook limits your statutory rights as a consumer.",
                          "If any part of this handbook is found unenforceable, the rest remains in effect. If a product page and "
@@ -572,8 +575,8 @@ class Handbook:
              f"{r['window_days']} days from the delivery date. Items must be {r['condition']}. See Section 6 for items that cannot be returned."),
             ("Can I cancel my order?", c["rule"]),
             ("How much is shipping, and when is it free?",
-             f"Standard shipping is free on orders of {money(sh['free_threshold_usd'])} or more and costs {money(sh['standard_fee_usd'])} "
-             f"otherwise. Expedited shipping costs {money(sh['expedited_fee_usd'])}."),
+             f"Standard shipping is free on orders of {money(sh['free_threshold_cad'])} or more and costs {money(sh['standard_fee_cad'])} "
+             f"otherwise. Expedited shipping costs {money(sh['expedited_fee_cad'])}."),
             ("How long will my order take to arrive?",
              f"We dispatch within {sh['handling_business_days']} business day{'s' if sh['handling_business_days'] > 1 else ''}; standard "
              f"delivery then takes {days_range(sh['standard_business_days'])} and expedited delivery {days_range(sh['expedited_business_days'])}."),
@@ -590,9 +593,10 @@ class Handbook:
             ("The price dropped after I bought it. Can I get the difference?",
              f"Yes, within {f['price_adjustment_days']} days of your order, once per item." if f["price_adjustment_days"]
              else "No. We do not offer price adjustments after an order is placed."),
-            ("Do you ship to Alaska, Hawaii, PO boxes or other countries?",
-             f"Alaska and Hawaii: yes, standard shipping only, with a {money(sh['alaska_hawaii_surcharge_usd'])} surcharge. "
-             f"PO boxes: {'yes, standard shipping only' if sh['po_boxes'] else 'no'}. We do not ship outside the United States."),
+            ("Do you ship to the United States, remote areas, PO boxes or other countries?",
+             "We ship anywhere in Canada and the United States. "
+             f"Alaska, Hawaii, Yukon, the Northwest Territories and Nunavut: yes, standard shipping only, with a {money(sh['remote_area_surcharge_cad'])} surcharge. "
+             f"PO boxes: {'yes, standard shipping only' if sh['po_boxes'] else 'no'}. We do not ship to other countries."),
             ("Can I exchange an item?",
              f"Yes, within {f['exchanges']['window_days']} days of delivery; shipping is {f['exchanges']['shipping']}." if f["exchanges"]["allowed"]
              else "We don't offer exchanges. Return the item for a refund and place a new order."),
@@ -623,19 +627,19 @@ class Handbook:
                 ("Free cancellation", f"Within {hours(c['free_window_hours'])} if not shipped" if c["free_window_hours"] else "While status is " + " or ".join(c["allowed_statuses"])),
                 ("Order changes", "While Pending" if mod is None else f"Within {hours(mod)}"),
                 ("Refund processing", f"{f['refund_processing_business_days']} business days after the return arrives"),
-                ("Free shipping threshold", money(sh["free_threshold_usd"])),
-                ("Standard shipping", f"{money(sh['standard_fee_usd'])}, {days_range(sh['standard_business_days'])}"),
-                ("Expedited shipping", f"{money(sh['expedited_fee_usd'])}, {days_range(sh['expedited_business_days'])}"),
+                ("Free shipping threshold", money(sh["free_threshold_cad"])),
+                ("Standard shipping", f"{money(sh['standard_fee_cad'])}, {days_range(sh['standard_business_days'])}"),
+                ("Expedited shipping", f"{money(sh['expedited_fee_cad'])}, {days_range(sh['expedited_business_days'])}"),
                 ("Dispatch time", f"{sh['handling_business_days']} business day{'s' if sh['handling_business_days'] > 1 else ''}"),
                 ("Report damage within", f"{f['damage_report_days']} days of delivery"),
                 ("Lost package claims", f"Within {f['lost_package_claim_days']} days of delivery"),
                 ("Price adjustment", f"{f['price_adjustment_days']} days" if f["price_adjustment_days"] else "Not offered")]
         if f["large_items"]:
-            rows.append(("Oversized delivery", f"{money(f['large_items']['fee_usd'])} curbside, {days_range(f['large_items']['business_days'])}"))
+            rows.append(("Oversized delivery", f"{money(f['large_items']['fee_cad'])} curbside, {days_range(f['large_items']['business_days'])}"))
         rows += [("Warranty: " + w["covers"], months(w["months"])) for w in f["warranty"]]
         if f["personalization"]:
             p = f["personalization"]
-            rows.append(("Personalization", f"{money(p['fee_usd'])} per item, +{p['extra_business_days']} business days, final sale"))
+            rows.append(("Personalization", f"{money(p['fee_cad'])} per item, +{p['extra_business_days']} business days, final sale"))
         rows += [("First response time", f"{f['service']['first_response_hours']} hours"),
                  ("Data retention", f"{f['data_retention_years']} years"), ("Governing law", f["governing_law"])]
         return [self.h1("Key Policies at a Glance"), *table(rows, (2.6, 4.1))]
@@ -658,19 +662,19 @@ def key_values(seller, f):
     out = {"seller_id": seller["seller_id"], "seller_name": seller["name"], "policy_version": f["policy_version"],
            "effective_date": f["effective_date"],
            "return_window_days": r["window_days"], "restocking_fee_percent": r["restocking_fee_percent"],
-           "return_label_fee_usd": r["return_label_fee_usd"], "exchanges_allowed": f["exchanges"]["allowed"],
+           "return_label_fee_cad": r["return_label_fee_cad"], "exchanges_allowed": f["exchanges"]["allowed"],
            "free_cancellation_window_hours": c["free_window_hours"], "cancellable_statuses": c["allowed_statuses"],
-           "cancellation_fee_after_window_usd": c["fee_after_window_usd"], "order_modification_window_hours": f["order_modification_window_hours"],
+           "cancellation_fee_after_window_cad": c["fee_after_window_cad"], "order_modification_window_hours": f["order_modification_window_hours"],
            "refund_processing_business_days": f["refund_processing_business_days"], "cancellation_refund_business_days": c["refund_business_days"],
-           "free_shipping_threshold_usd": sh["free_threshold_usd"], "standard_shipping_fee_usd": sh["standard_fee_usd"],
-           "standard_delivery_business_days": sh["standard_business_days"], "expedited_shipping_fee_usd": sh["expedited_fee_usd"],
+           "free_shipping_threshold_cad": sh["free_threshold_cad"], "standard_shipping_fee_cad": sh["standard_fee_cad"],
+           "standard_delivery_business_days": sh["standard_business_days"], "expedited_shipping_fee_cad": sh["expedited_fee_cad"],
            "expedited_delivery_business_days": sh["expedited_business_days"], "dispatch_business_days": sh["handling_business_days"],
-           "alaska_hawaii_surcharge_usd": sh["alaska_hawaii_surcharge_usd"], "ships_to_po_boxes": sh["po_boxes"],
+           "remote_area_surcharge_cad": sh["remote_area_surcharge_cad"], "ships_to_po_boxes": sh["po_boxes"],
            "damage_report_days": f["damage_report_days"], "lost_package_claim_days": f["lost_package_claim_days"],
            "price_adjustment_days": f["price_adjustment_days"],
            "warranties": [{"covers": w["covers"], "months": w["months"]} for w in f["warranty"]],
            "personalization_offered": bool(f["personalization"]),
-           "oversized_delivery_fee_usd": f["large_items"]["fee_usd"] if f["large_items"] else None,
+           "oversized_delivery_fee_cad": f["large_items"]["fee_cad"] if f["large_items"] else None,
            "first_response_hours": f["service"]["first_response_hours"], "data_retention_years": f["data_retention_years"],
            "governing_law": f["governing_law"]}
     return out

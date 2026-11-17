@@ -66,7 +66,7 @@ def main():
         sh, r = f["shipping"], f["returns"]
         must_contain = [s["name"], s["legal_name"], f"Version {f['policy_version']}", f"Effective {f['effective_date']}",
                         f"Chideman seller ID {s['seller_id']}", f"within {r['window_days']} days of the delivery date",
-                        f"orders of {money(sh['free_threshold_usd'])} or more", money(sh["standard_fee_usd"]),
+                        f"orders of {money(sh['free_threshold_cad'])} or more", money(sh["standard_fee_cad"]),
                         days_range(sh["standard_business_days"]), f"within {f['refund_processing_business_days']} business days",
                         f"within {f['damage_report_days']} days of the delivery date", f["cancellation"]["rule"][:60],
                         "Frequently Asked Questions", "Key Policies at a Glance", "Fictional demonstration document"]
@@ -82,8 +82,8 @@ def main():
           sorted(x["key_values"]["seller_id"] for x in facts) == sorted(seller_ids)
           and all(x["details"] == json.loads(json.dumps(POLICIES[x["key_values"]["seller_id"]])) for x in facts))
     kv = [x["key_values"] for x in facts]
-    for field in ("return_window_days", "free_shipping_threshold_usd", "refund_processing_business_days",
-                  "damage_report_days", "standard_shipping_fee_usd"):
+    for field in ("return_window_days", "free_shipping_threshold_cad", "refund_processing_business_days",
+                  "damage_report_days", "standard_shipping_fee_cad"):
         distinct = len({json.dumps(k[field]) for k in kv})
         check(f"sellers differ on {field} ({distinct} distinct values)", distinct >= 4)
 
@@ -93,7 +93,7 @@ def main():
         ok = (not p or ("engraved_window_hours" in c or "monogram_window_hours" in c)) \
             and (bool(f["returns"]["restocking_fee_percent"]) == ("restocking" in f["returns"]["condition"] or "restocking_fee_applies_to" in f["returns"])) \
             and (f["exchanges"]["allowed"] == (f["exchanges"]["window_days"] > 0)) \
-            and (c["fee_after_window_usd"] is None or c["free_window_hours"] is not None)
+            and (c["fee_after_window_cad"] is None or c["free_window_hours"] is not None)
         check(f"seller {sid}: rules are internally consistent", ok)
     check("only sellers with oversized products have freight rules",
           {sid for sid, f in POLICIES.items() if f["large_items"]} == {5})

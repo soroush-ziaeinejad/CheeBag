@@ -1,7 +1,7 @@
 seller_id,name,legal_name,description,support_email,support_phone,headquarters,founded_year
-1,Copperline Kitchen Supply,Copperline Kitchen Supply LLC,"Cooking tools, kitchen gadgets, kitchen linens, tableware and kitchen storage.",care@copperline.example,1-800-555-0141,"Columbus, Ohio",2009
-2,Kettle & Crema Co.,Kettle and Crema Company Inc.,"Electric kettles, coffee and tea makers, mug warmers and countertop appliances.",hello@kettleandcrema.example,1-800-555-0152,"Portland, Oregon",2014
+1,Copperline Kitchen Supply,Copperline Kitchen Supply Ltd.,"Cooking tools, kitchen gadgets, kitchen linens, tableware and kitchen storage.",care@copperline.example,1-800-555-0141,"Toronto, Ontario",2009
+2,Kettle & Crema Co.,Kettle and Crema Company Inc.,"Electric kettles, coffee and tea makers, mug warmers and countertop appliances.",hello@kettleandcrema.example,1-800-555-0152,"Vancouver, British Columbia",2014
 3,Cork & Pour Barware,Cork and Pour Barware LLC,"Wine and bar tools, bottle stoppers, pourers, ice buckets and party supplies.",cheers@corkandpour.example,1-800-555-0163,"Sonoma, California",2017
 4,Trailmate Drinkware,Trailmate Outfitters Inc.,"Insulated water bottles, tumblers, travel mugs, lunch bags and can coolers.",support@trailmate.example,1-800-555-0174,"Boulder, Colorado",2012
-5,Breezeway Home Appliances,Breezeway Home Appliances Corp.,"Portable air conditioners, fans, vacuums, air and vacuum filters, and home comfort appliances.",service@breezewayhome.example,1-800-555-0185,"Charlotte, North Carolina",2006
-6,Nestwell Bed & Bath,Nestwell Home Goods LLC,"Bedding, pillows, mattress protectors, bath accessories, laundry and closet storage, and home decor.",help@nestwell.example,1-800-555-0196,"Asheville, North Carolina",2011
+5,Breezeway Home Appliances,Breezeway Home Appliances Corp.,"Portable air conditioners, fans, vacuums, air and vacuum filters, and home comfort appliances.",service@breezewayhome.example,1-800-555-0185,"Mississauga, Ontario",2006
+6,Nestwell Bed & Bath,Nestwell Home Goods Ltd.,"Bedding, pillows, mattress protectors, bath accessories, laundry and closet storage, and home decor.",help@nestwell.example,1-800-555-0196,"Halifax, Nova Scotia",2011

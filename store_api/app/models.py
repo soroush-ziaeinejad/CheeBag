@@ -2,12 +2,20 @@
 from datetime import date, datetime
 from decimal import Decimal
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import DateTime, ForeignKey
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 class Base(DeclarativeBase):
     pass
+
+
+class Seller(Base):
+    __tablename__ = "sellers"
+
+    seller_id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
 
 
 class Product(Base):
@@ -33,6 +41,9 @@ class Product(Base):
     rating_count: Mapped[int | None]
     stock_quantity: Mapped[int]
     active: Mapped[bool]
+    seller_id: Mapped[int] = mapped_column(ForeignKey("sellers.seller_id"))
+
+    seller: Mapped[Seller] = relationship()
 
 
 class Customer(Base):
@@ -107,3 +118,34 @@ class Shipment(Base):
     shipped_at: Mapped[datetime | None]
     estimated_delivery: Mapped[date | None]
     delivered_at: Mapped[datetime | None]
+
+
+class PendingAction(Base):
+    """An action CHEE proposed (data/postgreSQL/migrations/001_actions.sql)."""
+    __tablename__ = "pending_actions"
+
+    action_id: Mapped[int] = mapped_column(primary_key=True)
+    token_hash: Mapped[str]
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.customer_id"))
+    action_type: Mapped[str]
+    order_id: Mapped[int | None] = mapped_column(ForeignKey("orders.order_id"))
+    payload: Mapped[dict] = mapped_column(JSONB)
+    expected_status: Mapped[str | None]
+    expected_updated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    status: Mapped[str] = mapped_column(default="pending")
+    result: Mapped[dict | None] = mapped_column(JSONB)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    resolved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class OrderEvent(Base):
+    __tablename__ = "order_events"
+
+    event_id: Mapped[int] = mapped_column(primary_key=True)
+    order_id: Mapped[int | None] = mapped_column(ForeignKey("orders.order_id"))
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.customer_id"))
+    action_id: Mapped[int | None] = mapped_column(ForeignKey("pending_actions.action_id"))
+    event_type: Mapped[str]
+    detail: Mapped[dict] = mapped_column(JSONB)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))

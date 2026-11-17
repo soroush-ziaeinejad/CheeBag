@@ -10,6 +10,7 @@
 .full-title { color:var(--muted); font-size:13px; margin:6px 0 14px; }
 .price-row { display:flex; align-items:baseline; gap:14px; margin:12px 0 4px; }
 .price { font-size:28px; font-weight:750; }
+.price .cur { font-size:13px; font-weight:600; color:var(--muted); letter-spacing:.04em; }
 .stock { font-size:14px; margin-bottom:18px; }
 .stock.out { color:#b42318; font-weight:650; }
 .specs { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
@@ -35,7 +36,7 @@
     <h1>{{ product.name }}</h1>
     {% if product.full_title != product.name %}<div class="full-title">{{ product.full_title }}</div>{% endif %}
     <div class="price-row">
-      <span class="price">${{ product.price }}</span>
+      <span class="price">${{ product.price }} <small class="cur">CAD</small></span>
       <span class="muted">★ {{ product.rating }} · {{ product.rating_count|intcomma }} ratings</span>
     </div>
     {% if product.stock_quantity == 0 %}

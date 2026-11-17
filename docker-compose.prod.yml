@@ -22,6 +22,7 @@ services:
       # run once, only when the database volume is empty: create tables, then load the CSVs
       - ./data/postgreSQL/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
       - ./data/postgreSQL/load.sql:/docker-entrypoint-initdb.d/02_load.sql:ro
+      - ./data/postgreSQL/migrations/001_actions.sql:/docker-entrypoint-initdb.d/03_actions.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U chideman -d chideman"]
       interval: 3s
@@ -58,6 +59,8 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000
     environment:
       DATABASE_URL: postgresql+psycopg://chideman:${DB_PASSWORD}@postgres:5432/chideman
+    volumes:
+      - ./data/policies:/policies:ro   # seller cancellation rules (policy_facts.json)
     depends_on:
       postgres:
         condition: service_healthy

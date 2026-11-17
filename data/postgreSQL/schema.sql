@@ -1,6 +1,6 @@
 -- Chideman store schema. Safe to re-run: drops and recreates all tables.
 
-DROP TABLE IF EXISTS reviews, shipments, payments, order_items, orders, customers, products, sellers;
+DROP TABLE IF EXISTS order_events, pending_actions, reviews, shipments, payments, order_items, orders, customers, products, sellers;
 
 -- the (fictional) retailers that sell and ship products; not the same as brands/manufacturers
 CREATE TABLE sellers (
@@ -24,7 +24,7 @@ CREATE TABLE products (
     description      TEXT,
     original_price   NUMERIC(10, 2),                     -- Amazon price, NULL if unknown
     price            NUMERIC(10, 2) NOT NULL CHECK (price >= 0),
-    currency         CHAR(3) NOT NULL DEFAULT 'USD',
+    currency         CHAR(3) NOT NULL DEFAULT 'CAD',
     image_url        TEXT,
     brand            TEXT,
     color            TEXT,

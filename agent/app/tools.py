@@ -42,7 +42,7 @@ TOOLS = [
             "properties": {
                 "query": {"type": "string", "description": "The search term to match in the product name or brand, e.g. 'coffee mugs'"},
                 "category": {"type": "string", "description": "The exact category name, e.g. 'Small Appliances'"},
-                "max_price": {"type": "number", "description": "The maximum price in USD"},
+                "max_price": {"type": "number", "description": "The maximum price in Canadian dollars (CAD)"},
 
                 "in_stock": {"type": "boolean", "description": "Whether the product is in stock"},
             },

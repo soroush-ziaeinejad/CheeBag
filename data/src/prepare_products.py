@@ -15,7 +15,7 @@ IN_PATH = os.path.join(HERE, "storage", "home&kitchen.csv")
 OUT_PATH = os.path.join(HERE, "products_clean.csv")
 SEED = 42
 
-# simulated price range (USD) per category, used when the description shows no price
+# simulated price range (CAD) per category, used when the description shows no price
 PRICE_RANGES = {
     "Kitchen Utensils & Gadgets": (8, 35),
     "Coffee, Tea & Espresso": (15, 120),
@@ -113,7 +113,7 @@ def main():
             "description": about_section(r.description),
             "original_price": original,  # from Amazon description, empty if not shown
             "price": original or simulated_price(cat),  # storefront price
-            "currency": "USD",
+            "currency": "CAD",
             "image_url": full_size_image(r.main_image),
             "brand": ch.get("Brand Name"),
             "color": ch.get("Color"),

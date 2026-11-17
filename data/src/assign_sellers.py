@@ -14,14 +14,14 @@ import pandas as pd
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # the data/ folder (scripts live in data/src/)
 
 SELLERS = [
-    {"seller_id": 1, "name": "Copperline Kitchen Supply", "legal_name": "Copperline Kitchen Supply LLC",
+    {"seller_id": 1, "name": "Copperline Kitchen Supply", "legal_name": "Copperline Kitchen Supply Ltd.",
      "description": "Cooking tools, kitchen gadgets, kitchen linens, tableware and kitchen storage.",
      "support_email": "care@copperline.example", "support_phone": "1-800-555-0141",
-     "headquarters": "Columbus, Ohio", "founded_year": 2009},
+     "headquarters": "Toronto, Ontario", "founded_year": 2009},
     {"seller_id": 2, "name": "Kettle & Crema Co.", "legal_name": "Kettle and Crema Company Inc.",
      "description": "Electric kettles, coffee and tea makers, mug warmers and countertop appliances.",
      "support_email": "hello@kettleandcrema.example", "support_phone": "1-800-555-0152",
-     "headquarters": "Portland, Oregon", "founded_year": 2014},
+     "headquarters": "Vancouver, British Columbia", "founded_year": 2014},
     {"seller_id": 3, "name": "Cork & Pour Barware", "legal_name": "Cork and Pour Barware LLC",
      "description": "Wine and bar tools, bottle stoppers, pourers, ice buckets and party supplies.",
      "support_email": "cheers@corkandpour.example", "support_phone": "1-800-555-0163",
@@ -33,11 +33,11 @@ SELLERS = [
     {"seller_id": 5, "name": "Breezeway Home Appliances", "legal_name": "Breezeway Home Appliances Corp.",
      "description": "Portable air conditioners, fans, vacuums, air and vacuum filters, and home comfort appliances.",
      "support_email": "service@breezewayhome.example", "support_phone": "1-800-555-0185",
-     "headquarters": "Charlotte, North Carolina", "founded_year": 2006},
-    {"seller_id": 6, "name": "Nestwell Bed & Bath", "legal_name": "Nestwell Home Goods LLC",
+     "headquarters": "Mississauga, Ontario", "founded_year": 2006},
+    {"seller_id": 6, "name": "Nestwell Bed & Bath", "legal_name": "Nestwell Home Goods Ltd.",
      "description": "Bedding, pillows, mattress protectors, bath accessories, laundry and closet storage, and home decor.",
      "support_email": "help@nestwell.example", "support_phone": "1-800-555-0196",
-     "headquarters": "Asheville, North Carolina", "founded_year": 2011},
+     "headquarters": "Halifax, Nova Scotia", "founded_year": 2011},
 ]
 
 # rules are checked in order; the first match wins. Matching uses category + full product title.

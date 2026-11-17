@@ -1,13 +1,15 @@
 {
   "note": "Fictional demonstration data for the Chideman AI portfolio project; not legally reviewed policies.",
   "platform": {
-    "currency": "USD",
+    "currency": "CAD",
     "payment_methods": [
       "credit card",
       "PayPal",
       "Chideman gift card"
     ],
     "carriers": [
+      "Canada Post",
+      "Purolator",
       "UPS",
       "FedEx",
       "USPS",
@@ -20,40 +22,45 @@
       "Delivered",
       "Cancelled"
     ],
-    "ships_to": "all 50 US states (no international shipping)"
+    "ships_to": "all Canadian provinces and territories and all 50 US states (no other countries)",
+    "cross_border_extra_business_days": [
+      1,
+      3
+    ],
+    "duties_included": true
   },
   "sellers": [
     {
       "key_values": {
         "seller_id": 1,
         "seller_name": "Copperline Kitchen Supply",
-        "policy_version": "3.2",
-        "effective_date": "2026-11-01",
+        "policy_version": "3.3",
+        "effective_date": "2026-11-17",
         "return_window_days": 60,
         "restocking_fee_percent": 0,
-        "return_label_fee_usd": 5.95,
+        "return_label_fee_cad": 5.95,
         "exchanges_allowed": true,
         "free_cancellation_window_hours": null,
         "cancellable_statuses": [
           "Pending"
         ],
-        "cancellation_fee_after_window_usd": null,
+        "cancellation_fee_after_window_cad": null,
         "order_modification_window_hours": 1,
         "refund_processing_business_days": 5,
         "cancellation_refund_business_days": 2,
-        "free_shipping_threshold_usd": 35,
-        "standard_shipping_fee_usd": 5.99,
+        "free_shipping_threshold_cad": 35,
+        "standard_shipping_fee_cad": 5.99,
         "standard_delivery_business_days": [
           3,
           5
         ],
-        "expedited_shipping_fee_usd": 12.99,
+        "expedited_shipping_fee_cad": 12.99,
         "expedited_delivery_business_days": [
           2,
           2
         ],
         "dispatch_business_days": 1,
-        "alaska_hawaii_surcharge_usd": 9.95,
+        "remote_area_surcharge_cad": 9.95,
         "ships_to_po_boxes": true,
         "damage_report_days": 3,
         "lost_package_claim_days": 5,
@@ -77,21 +84,21 @@
           }
         ],
         "personalization_offered": false,
-        "oversized_delivery_fee_usd": null,
+        "oversized_delivery_fee_cad": null,
         "first_response_hours": 24,
         "data_retention_years": 3,
-        "governing_law": "Ohio"
+        "governing_law": "Province of Ontario"
       },
       "details": {
-        "policy_version": "3.2",
-        "effective_date": "2026-11-01",
-        "governing_law": "Ohio",
+        "policy_version": "3.3",
+        "effective_date": "2026-11-17",
+        "governing_law": "Province of Ontario",
         "cancellation": {
           "free_window_hours": null,
           "allowed_statuses": [
             "Pending"
           ],
-          "fee_after_window_usd": null,
+          "fee_after_window_cad": null,
           "rule": "Orders can be cancelled free of charge while their status is Pending. Once an order moves to Processing (usually within 2 business hours) it can no longer be cancelled and must be returned after delivery instead.",
           "refund_business_days": 2
         },
@@ -101,7 +108,7 @@
           "condition": "unused, in original packaging",
           "restocking_fee_percent": 0,
           "return_shipping": "free prepaid label for orders of $25 or more; otherwise $5.95 is deducted from the refund",
-          "return_label_fee_usd": 5.95,
+          "return_label_fee_cad": 5.95,
           "non_returnable": [
             "opened consumables (air fryer liners, disposable tablecloths)",
             "food storage containers that have been used"
@@ -114,20 +121,20 @@
         },
         "refund_processing_business_days": 5,
         "shipping": {
-          "free_threshold_usd": 35,
-          "standard_fee_usd": 5.99,
+          "free_threshold_cad": 35,
+          "standard_fee_cad": 5.99,
           "standard_business_days": [
             3,
             5
           ],
-          "expedited_fee_usd": 12.99,
+          "expedited_fee_cad": 12.99,
           "expedited_business_days": [
             2,
             2
           ],
-          "overnight_fee_usd": 24.99,
+          "overnight_fee_cad": 24.99,
           "handling_business_days": 1,
-          "alaska_hawaii_surcharge_usd": 9.95,
+          "remote_area_surcharge_cad": 9.95,
           "po_boxes": true
         },
         "large_items": null,
@@ -174,34 +181,34 @@
       "key_values": {
         "seller_id": 2,
         "seller_name": "Kettle & Crema Co.",
-        "policy_version": "2.0",
-        "effective_date": "2026-10-15",
+        "policy_version": "2.1",
+        "effective_date": "2026-11-17",
         "return_window_days": 30,
         "restocking_fee_percent": 15,
-        "return_label_fee_usd": 7.95,
+        "return_label_fee_cad": 7.95,
         "exchanges_allowed": true,
         "free_cancellation_window_hours": 2,
         "cancellable_statuses": [
           "Pending",
           "Processing"
         ],
-        "cancellation_fee_after_window_usd": null,
+        "cancellation_fee_after_window_cad": null,
         "order_modification_window_hours": 0.5,
         "refund_processing_business_days": 7,
         "cancellation_refund_business_days": 1,
-        "free_shipping_threshold_usd": 49,
-        "standard_shipping_fee_usd": 6.95,
+        "free_shipping_threshold_cad": 49,
+        "standard_shipping_fee_cad": 6.95,
         "standard_delivery_business_days": [
           2,
           4
         ],
-        "expedited_shipping_fee_usd": 14.95,
+        "expedited_shipping_fee_cad": 14.95,
         "expedited_delivery_business_days": [
           1,
           2
         ],
         "dispatch_business_days": 1,
-        "alaska_hawaii_surcharge_usd": 14.95,
+        "remote_area_surcharge_cad": 14.95,
         "ships_to_po_boxes": false,
         "damage_report_days": 2,
         "lost_package_claim_days": 5,
@@ -217,22 +224,22 @@
           }
         ],
         "personalization_offered": false,
-        "oversized_delivery_fee_usd": null,
+        "oversized_delivery_fee_cad": null,
         "first_response_hours": 12,
         "data_retention_years": 5,
-        "governing_law": "Oregon"
+        "governing_law": "Province of British Columbia"
       },
       "details": {
-        "policy_version": "2.0",
-        "effective_date": "2026-10-15",
-        "governing_law": "Oregon",
+        "policy_version": "2.1",
+        "effective_date": "2026-11-17",
+        "governing_law": "Province of British Columbia",
         "cancellation": {
           "free_window_hours": 2,
           "allowed_statuses": [
             "Pending",
             "Processing"
           ],
-          "fee_after_window_usd": null,
+          "fee_after_window_cad": null,
           "rule": "Orders can be cancelled free of charge within 2 hours of being placed, as long as they have not shipped. After 2 hours the order is packed for shipment and cannot be cancelled; it can be returned after delivery.",
           "refund_business_days": 1
         },
@@ -242,7 +249,7 @@
           "condition": "unopened for a full refund; opened or used appliances accepted with a restocking fee",
           "restocking_fee_percent": 15,
           "return_shipping": "customer pays return shipping ($7.95 prepaid label deducted from the refund) unless the item is defective",
-          "return_label_fee_usd": 7.95,
+          "return_label_fee_cad": 7.95,
           "non_returnable": [
             "opened vacuum sealer bags and rolls"
           ]
@@ -254,20 +261,20 @@
         },
         "refund_processing_business_days": 7,
         "shipping": {
-          "free_threshold_usd": 49,
-          "standard_fee_usd": 6.95,
+          "free_threshold_cad": 49,
+          "standard_fee_cad": 6.95,
           "standard_business_days": [
             2,
             4
           ],
-          "expedited_fee_usd": 14.95,
+          "expedited_fee_cad": 14.95,
           "expedited_business_days": [
             1,
             2
           ],
-          "overnight_fee_usd": null,
+          "overnight_fee_cad": null,
           "handling_business_days": 1,
-          "alaska_hawaii_surcharge_usd": 14.95,
+          "remote_area_surcharge_cad": 14.95,
           "po_boxes": false
         },
         "large_items": null,
@@ -309,34 +316,34 @@
       "key_values": {
         "seller_id": 3,
         "seller_name": "Cork & Pour Barware",
-        "policy_version": "1.4",
-        "effective_date": "2026-11-01",
+        "policy_version": "1.5",
+        "effective_date": "2026-11-17",
         "return_window_days": 30,
         "restocking_fee_percent": 10,
-        "return_label_fee_usd": null,
+        "return_label_fee_cad": null,
         "exchanges_allowed": false,
         "free_cancellation_window_hours": 24,
         "cancellable_statuses": [
           "Pending",
           "Processing"
         ],
-        "cancellation_fee_after_window_usd": null,
+        "cancellation_fee_after_window_cad": null,
         "order_modification_window_hours": 12,
         "refund_processing_business_days": 6,
         "cancellation_refund_business_days": 1,
-        "free_shipping_threshold_usd": 40,
-        "standard_shipping_fee_usd": 4.99,
+        "free_shipping_threshold_cad": 40,
+        "standard_shipping_fee_cad": 4.99,
         "standard_delivery_business_days": [
           3,
           6
         ],
-        "expedited_shipping_fee_usd": 11.99,
+        "expedited_shipping_fee_cad": 11.99,
         "expedited_delivery_business_days": [
           2,
           3
         ],
         "dispatch_business_days": 2,
-        "alaska_hawaii_surcharge_usd": 7.99,
+        "remote_area_surcharge_cad": 7.99,
         "ships_to_po_boxes": true,
         "damage_report_days": 5,
         "lost_package_claim_days": 7,
@@ -356,22 +363,22 @@
           }
         ],
         "personalization_offered": true,
-        "oversized_delivery_fee_usd": null,
+        "oversized_delivery_fee_cad": null,
         "first_response_hours": 24,
         "data_retention_years": 3,
-        "governing_law": "California"
+        "governing_law": "State of California"
       },
       "details": {
-        "policy_version": "1.4",
-        "effective_date": "2026-11-01",
-        "governing_law": "California",
+        "policy_version": "1.5",
+        "effective_date": "2026-11-17",
+        "governing_law": "State of California",
         "cancellation": {
           "free_window_hours": 24,
           "allowed_statuses": [
             "Pending",
             "Processing"
           ],
-          "fee_after_window_usd": null,
+          "fee_after_window_cad": null,
           "rule": "Orders can be cancelled free of charge within 24 hours of being placed, as long as they have not shipped. Engraved orders can only be cancelled within 2 hours, because engraving starts right away.",
           "refund_business_days": 1,
           "engraved_window_hours": 2
@@ -383,7 +390,7 @@
           "restocking_fee_percent": 10,
           "restocking_fee_applies_to": "bulk orders of 25 or more units of the same item",
           "return_shipping": "customer pays return shipping unless the item is defective or we made an error",
-          "return_label_fee_usd": null,
+          "return_label_fee_cad": null,
           "non_returnable": [
             "opened wine purifiers and sulfite filters",
             "opened pour spouts (they touch liquor)",
@@ -398,20 +405,20 @@
         },
         "refund_processing_business_days": 6,
         "shipping": {
-          "free_threshold_usd": 40,
-          "standard_fee_usd": 4.99,
+          "free_threshold_cad": 40,
+          "standard_fee_cad": 4.99,
           "standard_business_days": [
             3,
             6
           ],
-          "expedited_fee_usd": 11.99,
+          "expedited_fee_cad": 11.99,
           "expedited_business_days": [
             2,
             3
           ],
-          "overnight_fee_usd": null,
+          "overnight_fee_cad": null,
           "handling_business_days": 2,
-          "alaska_hawaii_surcharge_usd": 7.99,
+          "remote_area_surcharge_cad": 7.99,
           "po_boxes": true
         },
         "large_items": null,
@@ -438,7 +445,7 @@
         "personalization": {
           "offered": true,
           "what": "laser engraving on stainless-steel stoppers and ice buckets",
-          "fee_usd": 9.95,
+          "fee_cad": 9.95,
           "extra_business_days": 3,
           "final_sale": true
         },
@@ -453,7 +460,7 @@
           "welcome_discount_percent": 0,
           "codes_per_order": 1,
           "bulk_discount": "15% off 25 or more units of the same item",
-          "gift_wrap_usd": 4.95
+          "gift_wrap_cad": 4.95
         }
       }
     },
@@ -461,34 +468,34 @@
       "key_values": {
         "seller_id": 4,
         "seller_name": "Trailmate Drinkware",
-        "policy_version": "4.1",
-        "effective_date": "2026-09-01",
+        "policy_version": "4.2",
+        "effective_date": "2026-11-17",
         "return_window_days": 90,
         "restocking_fee_percent": 0,
-        "return_label_fee_usd": 6.5,
+        "return_label_fee_cad": 6.5,
         "exchanges_allowed": true,
         "free_cancellation_window_hours": null,
         "cancellable_statuses": [
           "Pending",
           "Processing"
         ],
-        "cancellation_fee_after_window_usd": null,
+        "cancellation_fee_after_window_cad": null,
         "order_modification_window_hours": null,
         "refund_processing_business_days": 3,
         "cancellation_refund_business_days": 1,
-        "free_shipping_threshold_usd": 50,
-        "standard_shipping_fee_usd": 5.5,
+        "free_shipping_threshold_cad": 50,
+        "standard_shipping_fee_cad": 5.5,
         "standard_delivery_business_days": [
           3,
           5
         ],
-        "expedited_shipping_fee_usd": 13.5,
+        "expedited_shipping_fee_cad": 13.5,
         "expedited_delivery_business_days": [
           2,
           2
         ],
         "dispatch_business_days": 1,
-        "alaska_hawaii_surcharge_usd": 8.0,
+        "remote_area_surcharge_cad": 8.0,
         "ships_to_po_boxes": true,
         "damage_report_days": 7,
         "lost_package_claim_days": 10,
@@ -508,22 +515,22 @@
           }
         ],
         "personalization_offered": false,
-        "oversized_delivery_fee_usd": null,
+        "oversized_delivery_fee_cad": null,
         "first_response_hours": 24,
         "data_retention_years": 2,
-        "governing_law": "Colorado"
+        "governing_law": "State of Colorado"
       },
       "details": {
-        "policy_version": "4.1",
-        "effective_date": "2026-09-01",
-        "governing_law": "Colorado",
+        "policy_version": "4.2",
+        "effective_date": "2026-11-17",
+        "governing_law": "State of Colorado",
         "cancellation": {
           "free_window_hours": null,
           "allowed_statuses": [
             "Pending",
             "Processing"
           ],
-          "fee_after_window_usd": null,
+          "fee_after_window_cad": null,
           "rule": "Orders can be cancelled free of charge at any time before they ship, while their status is Pending or Processing.",
           "refund_business_days": 1
         },
@@ -533,7 +540,7 @@
           "condition": "clean and undamaged; lightly used items are accepted (90-Day Trail Test)",
           "restocking_fee_percent": 0,
           "return_shipping": "$6.50 prepaid label deducted from the refund; free for exchanges and defective items",
-          "return_label_fee_usd": 6.5,
+          "return_label_fee_cad": 6.5,
           "non_returnable": [
             "items with dents or damage caused after delivery",
             "Chideman gift cards"
@@ -546,20 +553,20 @@
         },
         "refund_processing_business_days": 3,
         "shipping": {
-          "free_threshold_usd": 50,
-          "standard_fee_usd": 5.5,
+          "free_threshold_cad": 50,
+          "standard_fee_cad": 5.5,
           "standard_business_days": [
             3,
             5
           ],
-          "expedited_fee_usd": 13.5,
+          "expedited_fee_cad": 13.5,
           "expedited_business_days": [
             2,
             2
           ],
-          "overnight_fee_usd": null,
+          "overnight_fee_cad": null,
           "handling_business_days": 1,
-          "alaska_hawaii_surcharge_usd": 8.0,
+          "remote_area_surcharge_cad": 8.0,
           "po_boxes": true
         },
         "large_items": null,
@@ -602,34 +609,34 @@
       "key_values": {
         "seller_id": 5,
         "seller_name": "Breezeway Home Appliances",
-        "policy_version": "5.0",
-        "effective_date": "2026-10-01",
+        "policy_version": "5.1",
+        "effective_date": "2026-11-17",
         "return_window_days": 30,
         "restocking_fee_percent": 20,
-        "return_label_fee_usd": 9.95,
+        "return_label_fee_cad": 9.95,
         "exchanges_allowed": true,
         "free_cancellation_window_hours": 12,
         "cancellable_statuses": [
           "Pending",
           "Processing"
         ],
-        "cancellation_fee_after_window_usd": 35,
+        "cancellation_fee_after_window_cad": 35,
         "order_modification_window_hours": 6,
         "refund_processing_business_days": 10,
         "cancellation_refund_business_days": 3,
-        "free_shipping_threshold_usd": 75,
-        "standard_shipping_fee_usd": 9.99,
+        "free_shipping_threshold_cad": 75,
+        "standard_shipping_fee_cad": 9.99,
         "standard_delivery_business_days": [
           4,
           7
         ],
-        "expedited_shipping_fee_usd": 24.99,
+        "expedited_shipping_fee_cad": 24.99,
         "expedited_delivery_business_days": [
           2,
           3
         ],
         "dispatch_business_days": 2,
-        "alaska_hawaii_surcharge_usd": 19.99,
+        "remote_area_surcharge_cad": 19.99,
         "ships_to_po_boxes": false,
         "damage_report_days": 2,
         "lost_package_claim_days": 5,
@@ -653,22 +660,22 @@
           }
         ],
         "personalization_offered": false,
-        "oversized_delivery_fee_usd": 29.99,
+        "oversized_delivery_fee_cad": 29.99,
         "first_response_hours": 12,
         "data_retention_years": 5,
-        "governing_law": "North Carolina"
+        "governing_law": "Province of Ontario"
       },
       "details": {
-        "policy_version": "5.0",
-        "effective_date": "2026-10-01",
-        "governing_law": "North Carolina",
+        "policy_version": "5.1",
+        "effective_date": "2026-11-17",
+        "governing_law": "Province of Ontario",
         "cancellation": {
           "free_window_hours": 12,
           "allowed_statuses": [
             "Pending",
             "Processing"
           ],
-          "fee_after_window_usd": 35,
+          "fee_after_window_cad": 35,
           "rule": "Orders can be cancelled free of charge within 12 hours of being placed, as long as they have not shipped. Orders with an oversized item (such as a portable air conditioner) cancelled after the 12-hour window but before shipping incur a $35 freight cancellation fee.",
           "refund_business_days": 3
         },
@@ -678,7 +685,7 @@
           "condition": "unopened for a full refund; opened appliances accepted with a restocking fee",
           "restocking_fee_percent": 20,
           "return_shipping": "$9.95 for parcel returns and $59 for oversized pickup, deducted from the refund; free if defective",
-          "return_label_fee_usd": 9.95,
+          "return_label_fee_cad": 9.95,
           "non_returnable": [
             "opened air and air purifier filters",
             "opened vacuum bags and dirt disposal bags",
@@ -692,26 +699,26 @@
         },
         "refund_processing_business_days": 10,
         "shipping": {
-          "free_threshold_usd": 75,
-          "standard_fee_usd": 9.99,
+          "free_threshold_cad": 75,
+          "standard_fee_cad": 9.99,
           "standard_business_days": [
             4,
             7
           ],
-          "expedited_fee_usd": 24.99,
+          "expedited_fee_cad": 24.99,
           "expedited_business_days": [
             2,
             3
           ],
-          "overnight_fee_usd": null,
+          "overnight_fee_cad": null,
           "handling_business_days": 2,
-          "alaska_hawaii_surcharge_usd": 19.99,
+          "remote_area_surcharge_cad": 19.99,
           "po_boxes": false
         },
         "large_items": {
           "threshold_lb": 50,
           "examples": "portable air conditioners",
-          "fee_usd": 29.99,
+          "fee_cad": 29.99,
           "service": "curbside delivery",
           "business_days": [
             5,
@@ -719,11 +726,14 @@
           ],
           "appointment_window_hours": 4,
           "signature_required": true,
-          "in_home_placement_fee_usd": 49.0,
-          "oversized_return_pickup_usd": 59.0,
+          "in_home_placement_fee_cad": 49.0,
+          "oversized_return_pickup_cad": 59.0,
           "excluded_regions": [
             "Alaska",
             "Hawaii",
+            "Yukon",
+            "Northwest Territories",
+            "Nunavut",
             "PO boxes"
           ]
         },
@@ -771,34 +781,34 @@
       "key_values": {
         "seller_id": 6,
         "seller_name": "Nestwell Bed & Bath",
-        "policy_version": "2.3",
-        "effective_date": "2026-11-01",
+        "policy_version": "2.4",
+        "effective_date": "2026-11-17",
         "return_window_days": 45,
         "restocking_fee_percent": 0,
-        "return_label_fee_usd": 4.95,
+        "return_label_fee_cad": 4.95,
         "exchanges_allowed": true,
         "free_cancellation_window_hours": 6,
         "cancellable_statuses": [
           "Pending",
           "Processing"
         ],
-        "cancellation_fee_after_window_usd": null,
+        "cancellation_fee_after_window_cad": null,
         "order_modification_window_hours": 6,
         "refund_processing_business_days": 4,
         "cancellation_refund_business_days": 2,
-        "free_shipping_threshold_usd": 60,
-        "standard_shipping_fee_usd": 6.5,
+        "free_shipping_threshold_cad": 60,
+        "standard_shipping_fee_cad": 6.5,
         "standard_delivery_business_days": [
           4,
           6
         ],
-        "expedited_shipping_fee_usd": 15.0,
+        "expedited_shipping_fee_cad": 15.0,
         "expedited_delivery_business_days": [
           2,
           2
         ],
         "dispatch_business_days": 2,
-        "alaska_hawaii_surcharge_usd": 12.0,
+        "remote_area_surcharge_cad": 12.0,
         "ships_to_po_boxes": true,
         "damage_report_days": 10,
         "lost_package_claim_days": 7,
@@ -822,22 +832,22 @@
           }
         ],
         "personalization_offered": true,
-        "oversized_delivery_fee_usd": null,
+        "oversized_delivery_fee_cad": null,
         "first_response_hours": 24,
         "data_retention_years": 3,
-        "governing_law": "North Carolina"
+        "governing_law": "Province of Nova Scotia"
       },
       "details": {
-        "policy_version": "2.3",
-        "effective_date": "2026-11-01",
-        "governing_law": "North Carolina",
+        "policy_version": "2.4",
+        "effective_date": "2026-11-17",
+        "governing_law": "Province of Nova Scotia",
         "cancellation": {
           "free_window_hours": 6,
           "allowed_statuses": [
             "Pending",
             "Processing"
           ],
-          "fee_after_window_usd": null,
+          "fee_after_window_cad": null,
           "rule": "Orders can be cancelled free of charge within 6 hours of being placed, as long as they have not shipped. Monogrammed orders can only be cancelled within 1 hour.",
           "refund_business_days": 2,
           "monogram_window_hours": 1
@@ -848,7 +858,7 @@
           "condition": "unused, unwashed and in original packaging",
           "restocking_fee_percent": 0,
           "return_shipping": "free for exchanges; $4.95 deducted from refunds",
-          "return_label_fee_usd": 4.95,
+          "return_label_fee_cad": 4.95,
           "non_returnable": [
             "opened pillows, pillow inserts and mattress protectors (except the 30-night Pillow Comfort Exchange)",
             "used shower liners",
@@ -862,20 +872,20 @@
         },
         "refund_processing_business_days": 4,
         "shipping": {
-          "free_threshold_usd": 60,
-          "standard_fee_usd": 6.5,
+          "free_threshold_cad": 60,
+          "standard_fee_cad": 6.5,
           "standard_business_days": [
             4,
             6
           ],
-          "expedited_fee_usd": 15.0,
+          "expedited_fee_cad": 15.0,
           "expedited_business_days": [
             2,
             2
           ],
-          "overnight_fee_usd": null,
+          "overnight_fee_cad": null,
           "handling_business_days": 2,
-          "alaska_hawaii_surcharge_usd": 12.0,
+          "remote_area_surcharge_cad": 12.0,
           "po_boxes": true
         },
         "large_items": null,
@@ -908,7 +918,7 @@
         "personalization": {
           "offered": true,
           "what": "monogramming on pillowcases and sheet sets",
-          "fee_usd": 12.0,
+          "fee_cad": 12.0,
           "extra_business_days": 4,
           "final_sale": true
         },

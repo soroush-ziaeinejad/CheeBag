@@ -2,7 +2,7 @@
 BEGIN;
 
 -- empty all tables first so re-running doesn't duplicate rows
-TRUNCATE reviews, shipments, payments, order_items, orders, customers, products, sellers;
+TRUNCATE reviews, shipments, payments, order_items, orders, customers, products, sellers CASCADE;
 
 -- parents before children, because of the foreign keys
 COPY sellers     FROM '/data/sellers.csv'        WITH (FORMAT csv, HEADER match);

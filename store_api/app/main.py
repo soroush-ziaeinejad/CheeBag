@@ -9,11 +9,13 @@ from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlalchemy import or_, select, text
 from sqlalchemy.orm import Session, selectinload
 
+from .actions import router as actions_router
 from .db import get_db
 from .models import Customer, Order, OrderItem, Product
 from .schemas import OrderDetailOut, OrderSummaryOut, ProductDetailOut, ProductOut
 
 app = FastAPI(title="Chideman AI Store API")
+app.include_router(actions_router)  # propose / confirm / discard order changes
 
 OrderStatus = Literal["pending", "processing", "shipped", "delivered", "cancelled"]
 

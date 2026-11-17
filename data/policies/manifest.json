@@ -4,10 +4,10 @@
     {
       "seller_id": 1,
       "seller_name": "Copperline Kitchen Supply",
-      "legal_name": "Copperline Kitchen Supply LLC",
+      "legal_name": "Copperline Kitchen Supply Ltd.",
       "pdf_path": "data/policies/Copperline_Kitchen_Supply_Policies.pdf",
-      "policy_version": "3.2",
-      "effective_date": "2026-11-01",
+      "policy_version": "3.3",
+      "effective_date": "2026-11-17",
       "product_categories": [
         "Bakeware",
         "Dining & Entertaining",
@@ -17,7 +17,7 @@
       ],
       "product_count": 23,
       "page_count": 12,
-      "document_checksum": "sha256:5752827f9103e63a810b0bc64a387a1ce8728e5e87f9ac52d0e80024e7516d5d",
+      "document_checksum": "sha256:6cb42dad51c245fa77ee9ec93ab8cff3f3722332ffcc3f82b3f2afe2966239ef",
       "is_current": true
     },
     {
@@ -25,15 +25,15 @@
       "seller_name": "Kettle & Crema Co.",
       "legal_name": "Kettle and Crema Company Inc.",
       "pdf_path": "data/policies/Kettle_Crema_Co_Policies.pdf",
-      "policy_version": "2.0",
-      "effective_date": "2026-10-15",
+      "policy_version": "2.1",
+      "effective_date": "2026-11-17",
       "product_categories": [
         "Coffee, Tea & Espresso",
         "Small Appliances"
       ],
       "product_count": 35,
-      "page_count": 11,
-      "document_checksum": "sha256:dce5c927690cd842f1f34ebf2717b378925642cb8e183a49393f7f62f7b6cae8",
+      "page_count": 12,
+      "document_checksum": "sha256:9c4ffb08e3c15f490b8e16b578d30bbe81073d6487a3d448c98e47a68ecaae75",
       "is_current": true
     },
     {
@@ -41,8 +41,8 @@
       "seller_name": "Cork & Pour Barware",
       "legal_name": "Cork and Pour Barware LLC",
       "pdf_path": "data/policies/Cork_Pour_Barware_Policies.pdf",
-      "policy_version": "1.4",
-      "effective_date": "2026-11-01",
+      "policy_version": "1.5",
+      "effective_date": "2026-11-17",
       "product_categories": [
         "Dining & Entertaining",
         "Favors",
@@ -50,8 +50,8 @@
         "Wine Accessories"
       ],
       "product_count": 28,
-      "page_count": 11,
-      "document_checksum": "sha256:c750294fc9c3f0eaf91f5145e30bd38a087c9105d5294fc96cc875eef5ca3bf1",
+      "page_count": 12,
+      "document_checksum": "sha256:b20eb2c2149ae26358571745b8ad70f79af9d189d654fc3012a8d39dd863b9f6",
       "is_current": true
     },
     {
@@ -59,15 +59,15 @@
       "seller_name": "Trailmate Drinkware",
       "legal_name": "Trailmate Outfitters Inc.",
       "pdf_path": "data/policies/Trailmate_Drinkware_Policies.pdf",
-      "policy_version": "4.1",
-      "effective_date": "2026-09-01",
+      "policy_version": "4.2",
+      "effective_date": "2026-11-17",
       "product_categories": [
         "Dining & Entertaining",
         "Storage & Organization"
       ],
       "product_count": 22,
       "page_count": 11,
-      "document_checksum": "sha256:2d3567951e76a354e6d240c730aaec15bab115a52cba6da009718960568cbc83",
+      "document_checksum": "sha256:6fb106eb731e4db58717d450d68bc6d0cc28ec20ca929550cbeb5c7c5a211c0c",
       "is_current": true
     },
     {
@@ -75,8 +75,8 @@
       "seller_name": "Breezeway Home Appliances",
       "legal_name": "Breezeway Home Appliances Corp.",
       "pdf_path": "data/policies/Breezeway_Home_Appliances_Policies.pdf",
-      "policy_version": "5.0",
-      "effective_date": "2026-10-01",
+      "policy_version": "5.1",
+      "effective_date": "2026-11-17",
       "product_categories": [
         "Air Conditioners",
         "Bathroom Accessories",
@@ -86,17 +86,17 @@
         "Vacuums"
       ],
       "product_count": 13,
-      "page_count": 12,
-      "document_checksum": "sha256:b22858667784dcf1192d3ec62630b3ee6f05a39ae639c5e32092e3e07a3c2db9",
+      "page_count": 13,
+      "document_checksum": "sha256:3ed2f70e47d797a25b66567db21f0ab12ff65582bf17061191ae7e2108b85308",
       "is_current": true
     },
     {
       "seller_id": 6,
       "seller_name": "Nestwell Bed & Bath",
-      "legal_name": "Nestwell Home Goods LLC",
+      "legal_name": "Nestwell Home Goods Ltd.",
       "pdf_path": "data/policies/Nestwell_Bed_Bath_Policies.pdf",
-      "policy_version": "2.3",
-      "effective_date": "2026-11-01",
+      "policy_version": "2.4",
+      "effective_date": "2026-11-17",
       "product_categories": [
         "Bath Rugs",
         "Bathroom Accessories",
@@ -113,7 +113,7 @@
       ],
       "product_count": 15,
       "page_count": 12,
-      "document_checksum": "sha256:575de70fd577b92471d9e245edc3d451cd17d2e77096569f0e1a09014c858d7f",
+      "document_checksum": "sha256:3dbdb25e209be00d2cd039157ddf6a2a9f51ebf1a385849ef9279634acb556a4",
       "is_current": true
     }
   ]

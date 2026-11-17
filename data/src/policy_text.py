@@ -11,7 +11,7 @@ SETUP = {
         "We do not offer installation services, and none of our products require one."],
     2: ["Kettle & Crema appliances are plug-and-play and need no assembly or installation.",
         "Before first use, fill a kettle to its maximum line, bring it to a boil and discard the water. Repeat once to remove any manufacturing residue.",
-        "All appliances are rated for standard US 120 V outlets. Using them with voltage converters or outside the United States voids the Kettle & Crema Appliance Protection warranty.",
+        "All appliances are rated for the standard 120 V outlets used in Canada and the United States. Using them with voltage converters or in other countries voids the Kettle & Crema Appliance Protection warranty.",
         "Smart mugs may need the brand's companion app; the app is provided and supported by the brand, not by Kettle & Crema."],
     3: ["Cork & Pour products need no assembly.",
         "Inflate inflatable ice serving coolers by hand or with a low-pressure pump; never use an air compressor.",
@@ -104,7 +104,7 @@ RETURN_TABLE = {
 
 WARRANTY_EXCLUSIONS = {
     1: ["Breakage of glass or tableware during use", "Batteries"],
-    2: ["Limescale damage when the appliance was not descaled as described in Section 11", "Use with voltage converters or outside the United States"],
+    2: ["Limescale damage when the appliance was not descaled as described in Section 11", "Use with voltage converters or outside Canada and the United States"],
     3: ["Chips or scratches on finishes", "The wording of engraving, which is reproduced exactly as submitted"],
     4: ["Dents, scratches and worn paint or powder coat", "Dishwasher damage to items not marked dishwasher-safe", "Lost lids or straws"],
     5: ["Damage caused by clogged or missing filters", "Filters and bags after they have been installed", "Damage during a move arranged by the customer"],
@@ -122,8 +122,8 @@ EXTRA_FAQ = {
          "Every 4 weeks in hard-water areas and every 8 weeks in soft-water areas. Damage caused by limescale when a kettle has not been descaled is not covered by warranty."),
         ("I opened my kettle and don't like it. Can I still return it?",
          "Yes, within 30 days of delivery. Opened or used appliances are refunded minus a 15% restocking fee and the $7.95 return label. If the kettle is defective, there is no fee and return shipping is free."),
-        ("Can I use my appliance outside the United States?",
-         "Our appliances are rated for US 120 V outlets only. Using them abroad or with a voltage converter voids the Kettle & Crema Appliance Protection warranty.")],
+        ("Can I use my appliance outside Canada or the United States?",
+         "Our appliances are rated for the 120 V outlets used in Canada and the United States only. Using them elsewhere or with a voltage converter voids the Kettle & Crema Appliance Protection warranty.")],
     3: [("Do you sell wine or other alcohol?",
          "No. Cork & Pour sells wine and bar accessories only, so no age verification is needed."),
         ("Can I get a stopper or ice bucket engraved?",
