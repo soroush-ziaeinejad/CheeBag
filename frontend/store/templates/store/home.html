@@ -32,6 +32,20 @@
 .can li.no { color:var(--muted); }
 .can li.no::before { content:"–"; color:var(--muted); }
 
+/* what CHEE can do */
+.promise { font-size:13px; color:var(--muted); }
+.abilities { display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:12px; }
+.ability { position:relative; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 16px 16px; display:flex; flex-direction:column; gap:6px; }
+.ability .ico { width:30px; height:30px; padding:6px; border-radius:10px; background:var(--sage); color:var(--ink); fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.ability h3 { margin:6px 0 0; font-size:15.5px; }
+.ability p { margin:0; font-size:13px; line-height:1.5; color:#4a4339; }
+.ability .ex { margin-top:auto; padding-top:8px; font-size:12.5px; color:var(--accent); font-style:italic; }
+.ability .tag { position:absolute; top:14px; right:14px; font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:3px 8px; border-radius:999px; background:#e5f4e5; color:#2e7d32; }
+.ability.soon { background:transparent; border-style:dashed; }
+.ability.soon .ico { background:#f0e7d5; color:#8a6d3b; }
+.ability.soon .tag { background:#f0e7d5; color:#8a6d3b; }
+.ability.soon p { color:var(--muted); }
+
 /* sections */
 .section-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin:38px 0 14px; }
 .section-head h2 { font-size:26px; letter-spacing:-.5px; margin:0; }
@@ -60,6 +74,7 @@
 .pick .stars b { color:#b7791f; font-weight:400; }
 
 @media (max-width: 1100px) {
+  .abilities { grid-template-columns:repeat(3, minmax(0, 1fr)); }
   .hero { grid-template-columns:minmax(0, 1fr); }
   .hero-name { border-left:0; border-top:1px solid #d4d7c5; }
 }
@@ -67,6 +82,14 @@
   .hero-ask { padding:26px 20px 22px; }
   .hero-name { padding:22px 20px; }
   .who-line .personas { grid-template-columns:minmax(0, 1fr); }
+  .abilities { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; }
+  .ability { padding:12px; gap:4px; }
+  .ability .tag { position:static; align-self:flex-start; order:-1; font-size:9.5px; }
+  .ability .ico { width:26px; height:26px; padding:5px; }
+  .ability h3 { font-size:14px; margin-top:2px; }
+  .ability p { font-size:12px; }
+  .ability .ex { display:none; }
+  .promise { flex-basis:100%; }
   .name-top .m { width:64px; height:64px; }
   .fa { font-size:28px; }
   .section-head h2 { font-size:22px; }
@@ -108,13 +131,42 @@
     </div>
     <h2>Why Chideman?</h2>
     <p>It's Persian for <b>arrangement</b>: the way the pieces of a home are placed together. </p>
-    <p><b>CHEE</b>, our assistant, is named after the first syllable and from <b>"چی؟"</b>, Persian for “what?” So feel free to ask her questions!</p>
-    <ul class="can">
-      <li>Finds products by need, budget and rating</li>
-      <li>Answers questions about orders and deliveries</li>
-      <li class="no">Changing or cancelling orders: coming later</li>
-    </ul>
+    <p><b>CHEE</b>, our assistant, is named after the first syllable and from “<b><bdi lang="fa" dir="rtl">چی؟</bdi></b>”, Persian for “what?” So feel free to ask her questions!</p>
   </aside>
+</section>
+
+<section class="meet" aria-labelledby="meet-title">
+  <div class="section-head"><h2 id="meet-title">What CHEE can do</h2><span class="promise">Live store data · only your own orders · changes need your click</span></div>
+  <div class="abilities">
+    <article class="ability now">
+      <span class="tag">Now</span><svg class="ico" viewBox="0 0 24 24"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/><path d="m20 20-4-4"/></svg>
+      <h3>Find products</h3>
+      <p>Searches the catalogue by what you need, your budget, category and stock.</p>
+      <span class="ex">“A kettle under $40”</span>
+    </article>
+    <article class="ability now">
+      <span class="tag">Now</span><svg class="ico" viewBox="0 0 24 24"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
+      <h3>Track your orders</h3>
+      <p>Status, carrier, tracking number and delivery dates, for your own orders only.</p>
+      <span class="ex">“Where is my latest order?”</span>
+    </article>
+    <article class="ability now">
+      <span class="tag">Now</span><svg class="ico" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2 2 4-4"/></svg>
+      <h3>Cancel, safely</h3>
+      <p>Checks each seller's cancellation rules and shows you a card. Nothing changes until you press Confirm.</p>
+      <span class="ex">“Cancel my pending order”</span>
+    </article>
+    <article class="ability soon">
+      <span class="tag">Coming soon</span><svg class="ico" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/></svg>
+      <h3>Policy answers, with sources</h3>
+      <p>Returns, shipping and warranty questions answered from each seller's policy, citing the section.</p>
+    </article>
+    <article class="ability soon">
+      <span class="tag">Coming soon</span><svg class="ico" viewBox="0 0 24 24"><path d="M4 5h2l2 10h10l2-7H7"/><circle cx="10" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>
+      <h3>Order from the chat</h3>
+      <p>Pick products from cards right in the chat and place a demo order after you confirm.</p>
+    </article>
+  </div>
 </section>
 
 <div class="section-head"><h2>Shop by category</h2><a href="{% url 'product_list' %}">All products →</a></div>

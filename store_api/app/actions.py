@@ -25,6 +25,7 @@ from .models import Order, OrderEvent, OrderItem, PendingAction, Product
 router = APIRouter()
 
 TOKEN_LIFETIME = timedelta(minutes=10)
+PAYMENT_NAMES = {"credit_card": "credit card", "paypal": "PayPal", "gift_card": "Chideman gift card"}
 
 
 class ActionIn(BaseModel):
@@ -65,8 +66,9 @@ def card_for(order, decision):
     refund = order.total_amount - decision.fee if paid else None
     consequences = ["The order will be cancelled and won't ship."]
     if paid:
-        consequences.append(f"${money(refund)} CAD goes back to your {order.payment.payment_method.replace('_', ' ')} "
-                            f"within {decision.refund_days} business days.")
+        method = PAYMENT_NAMES.get(order.payment.payment_method, order.payment.payment_method)
+        consequences.append(f"${money(refund)} CAD goes back to your {method} "
+                            f"within {decision.refund_days} business day{'s' if decision.refund_days != 1 else ''}.")
     else:
         consequences.append("You haven't been charged yet, so there's nothing to refund.")
     consequences += decision.fee_notes
