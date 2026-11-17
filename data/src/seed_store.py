@@ -1,6 +1,6 @@
 """Generate synthetic customers, orders, order_items, payments and shipments with Faker.
 
-Run:  python seed_store.py   (after prepare_products.py)
+Run:  python seed_store.py   (after prepare_products.py and assign_sellers.py)
 Output: customers.csv, orders.csv, order_items.csv, payments.csv, shipments.csv
 """
 import os
@@ -118,6 +118,53 @@ def make_order(order_id, customer, products):
     return order, items, payment, shipment
 
 
+# Three extra orders per customer that can always be cancelled, so every demo customer can try it.
+# Their sellers' rules don't depend on how old the order is (data/policies/policy_facts.json):
+#   Copperline (seller 1): free while Pending   Trailmate (4): free until it ships
+#   Breezeway (5): allowed until it ships, with a $35 fee after its free 12-hour window
+CANCELLABLE_KINDS = [(1, "pending"), (4, "processing"), (5, "processing")]
+FIRST_EXTRA_ORDER_ID = 1501
+
+
+def make_cancellable_orders(customers, products, used_refs):
+    rng = random.Random(SEED + 3)  # its own generator, so the 500 orders above stay exactly the same
+    seller_of = dict(pd.read_csv(os.path.join(HERE, "product_sellers.csv")).values)  # written by assign_sellers.py
+    by_seller = {}
+    for p in products:
+        by_seller.setdefault(seller_of[p["id"]], []).append(p)
+
+    extra, order_id = [], FIRST_EXTRA_ORDER_ID
+    for customer in customers:
+        for seller_id, status in CANCELLABLE_KINDS:
+            _, min_days, max_days = STATUSES[status]
+            order_date = NOW - timedelta(days=rng.uniform(min_days, max_days))
+            items = [{"order_id": order_id, "product_id": p["id"], "quantity": rng.randint(1, 2), "unit_price": p["price"]}
+                     for p in rng.sample(by_seller[seller_id], k=rng.randint(1, 2))]
+            total = round(sum(i["quantity"] * i["unit_price"] for i in items), 2)
+            paid_at = order_date + timedelta(minutes=rng.randint(1, 30))
+            ref = None
+            while ref is None or ref in used_refs:
+                ref = "SIM-" + "".join(rng.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=4)) + "-" + "".join(rng.choices("0123456789", k=8))
+            used_refs.add(ref)
+            payment = {"order_id": order_id, "amount": total, "payment_method": rng.choice(PAYMENT_METHODS),
+                       "status": "pending" if status == "pending" else "paid", "transaction_reference": ref,
+                       "paid_at": None if status == "pending" else paid_at}
+            shipment = None
+            if status == "processing":  # label created, not shipped yet
+                carrier = rng.choice(CARRIERS)
+                if customer["country"] == "Canada":
+                    carrier = CANADA_CARRIERS.get(carrier, carrier)
+                shipment = {"order_id": order_id, "carrier": carrier, "tracking_number": None, "status": "pending",
+                            "shipped_at": None, "estimated_delivery": (order_date + timedelta(days=rng.randint(3, 6))).date(),
+                            "delivered_at": None}
+            order = {"order_id": order_id, "customer_id": customer["customer_id"], "order_date": order_date,
+                     "status": status, "total_amount": total, "shipping_address": customer["address"],
+                     "updated_at": order_date if status == "pending" else paid_at}
+            extra.append((order, items, payment, shipment))
+            order_id += 1
+    return extra
+
+
 def main():
     random.seed(SEED)
     Faker.seed(SEED)
@@ -127,6 +174,14 @@ def main():
     orders, items, payments, shipments = [], [], [], []
     for order_id in range(1001, 1001 + N_ORDERS):
         order, order_items, payment, shipment = make_order(order_id, random.choice(customers), products)
+        orders.append(order)
+        items.extend(order_items)
+        payments.append(payment)
+        if shipment:
+            shipments.append(shipment)
+
+    used_refs = {p["transaction_reference"] for p in payments}
+    for order, order_items, payment, shipment in make_cancellable_orders(customers, products, used_refs):
         orders.append(order)
         items.extend(order_items)
         payments.append(payment)

@@ -499,3 +499,303 @@ order_id,customer_id,order_date,status,total_amount,shipping_address,updated_at
 1498,96,2026-05-08 22:15:36,delivered,290.7,"8397 Crystal Meadows, North Sharonchester, YT R8P5Y6, Canada",2026-05-13 18:54:33
 1499,89,2026-11-04 04:09:40,processing,262.95,"541 Chelsea Lodge, Jameshaven, NL V5K 2C3, Canada",2026-11-04 04:26:40
 1500,99,2026-01-28 00:50:47,delivered,140.95,"25518 Andrea Springs, West Alexis, SK X6T7C5, Canada",2026-02-03 10:11:04
+1501,1,2026-11-05 05:28:29,pending,65.96,"866 Brian Coves Apt. 621, New Mary, MB X7L2H1, Canada",2026-11-05 05:28:29
+1502,1,2026-11-03 15:26:14,processing,30.98,"866 Brian Coves Apt. 621, New Mary, MB X7L2H1, Canada",2026-11-03 15:37:14
+1503,1,2026-11-03 12:21:04,processing,115.98,"866 Brian Coves Apt. 621, New Mary, MB X7L2H1, Canada",2026-11-03 12:29:04
+1504,2,2026-11-05 04:46:46,pending,29.98,"558 Jackson Vista Apt. 509, Michealburgh, QC Y8E 6M7, Canada",2026-11-05 04:46:46
+1505,2,2026-11-03 12:17:53,processing,59.98,"558 Jackson Vista Apt. 509, Michealburgh, QC Y8E 6M7, Canada",2026-11-03 12:45:53
+1506,2,2026-11-02 23:12:19,processing,74.98,"558 Jackson Vista Apt. 509, Michealburgh, QC Y8E 6M7, Canada",2026-11-02 23:23:19
+1507,3,2026-11-04 20:21:40,pending,29.99,"6413 Lewis Parks, Wilkersonmouth, FL 35219, USA",2026-11-04 20:21:40
+1508,3,2026-11-03 13:46:45,processing,39.97,"6413 Lewis Parks, Wilkersonmouth, FL 35219, USA",2026-11-03 14:13:45
+1509,3,2026-11-02 19:25:17,processing,16.99,"6413 Lewis Parks, Wilkersonmouth, FL 35219, USA",2026-11-02 19:28:17
+1510,4,2026-11-05 06:59:18,pending,28.99,"9020 Rebecca Views Apt. 205, Lake Amandaview, YT N1R2C4, Canada",2026-11-05 06:59:18
+1511,4,2026-11-04 00:40:04,processing,49.98,"9020 Rebecca Views Apt. 205, Lake Amandaview, YT N1R2C4, Canada",2026-11-04 00:57:04
+1512,4,2026-11-03 02:38:58,processing,68.97,"9020 Rebecca Views Apt. 205, Lake Amandaview, YT N1R2C4, Canada",2026-11-03 02:58:58
+1513,5,2026-11-05 10:59:04,pending,35.97,"230 Susan Forges, Jacobborough, NS K9B1T2, Canada",2026-11-05 10:59:04
+1514,5,2026-11-03 18:17:59,processing,69.98,"230 Susan Forges, Jacobborough, NS K9B1T2, Canada",2026-11-03 18:40:59
+1515,5,2026-11-02 14:40:13,processing,285.99,"230 Susan Forges, Jacobborough, NS K9B1T2, Canada",2026-11-02 14:54:13
+1516,6,2026-11-04 20:20:27,pending,59.98,"6230 Holly Crossing, Harrischester, BC H6R 6E5, Canada",2026-11-04 20:20:27
+1517,6,2026-11-03 23:02:10,processing,67.98,"6230 Holly Crossing, Harrischester, BC H6R 6E5, Canada",2026-11-03 23:28:10
+1518,6,2026-11-02 19:55:53,processing,40.98,"6230 Holly Crossing, Harrischester, BC H6R 6E5, Canada",2026-11-02 20:17:53
+1519,7,2026-11-04 23:02:36,pending,29.99,"53037 Justin Skyway Suite 477, Rhondaside, NU S4X3C1, Canada",2026-11-04 23:02:36
+1520,7,2026-11-03 23:24:54,processing,50.97,"53037 Justin Skyway Suite 477, Rhondaside, NU S4X3C1, Canada",2026-11-03 23:32:54
+1521,7,2026-11-04 01:26:40,processing,23.99,"53037 Justin Skyway Suite 477, Rhondaside, NU S4X3C1, Canada",2026-11-04 01:55:40
+1522,8,2026-11-04 17:33:02,pending,43.98,"1577 Jimenez Crescent Suite 555, Port Paulmouth, NT J3K6T5, Canada",2026-11-04 17:33:02
+1523,8,2026-11-02 19:26:58,processing,14.99,"1577 Jimenez Crescent Suite 555, Port Paulmouth, NT J3K6T5, Canada",2026-11-02 19:28:58
+1524,8,2026-11-02 20:59:31,processing,66.99,"1577 Jimenez Crescent Suite 555, Port Paulmouth, NT J3K6T5, Canada",2026-11-02 21:16:31
+1525,9,2026-11-04 17:56:16,pending,19.98,"983 Bullock Loaf, West Marissa, BC G5E9S5, Canada",2026-11-04 17:56:16
+1526,9,2026-11-02 17:14:04,processing,99.97,"983 Bullock Loaf, West Marissa, BC G5E9S5, Canada",2026-11-02 17:16:04
+1527,9,2026-11-03 20:30:13,processing,83.98,"983 Bullock Loaf, West Marissa, BC G5E9S5, Canada",2026-11-03 20:52:13
+1528,10,2026-11-04 16:51:20,pending,86.97,"77141 Shane Corners, Mendozaburgh, NT C1L 2N9, Canada",2026-11-04 16:51:20
+1529,10,2026-11-04 10:56:06,processing,41.98,"77141 Shane Corners, Mendozaburgh, NT C1L 2N9, Canada",2026-11-04 11:04:06
+1530,10,2026-11-03 12:59:33,processing,437.98,"77141 Shane Corners, Mendozaburgh, NT C1L 2N9, Canada",2026-11-03 13:24:33
+1531,11,2026-11-05 02:01:51,pending,19.99,"487 Whitehead Vista, North Cynthiaview, AZ 00965, USA",2026-11-05 02:01:51
+1532,11,2026-11-04 09:23:06,processing,41.98,"487 Whitehead Vista, North Cynthiaview, AZ 00965, USA",2026-11-04 09:49:06
+1533,11,2026-11-02 21:46:30,processing,405.98,"487 Whitehead Vista, North Cynthiaview, AZ 00965, USA",2026-11-02 22:00:30
+1534,12,2026-11-04 19:33:09,pending,51.97,"5053 Elizabeth Knoll, Dicksonberg, IA 21800, USA",2026-11-04 19:33:09
+1535,12,2026-11-04 11:55:00,processing,45.98,"5053 Elizabeth Knoll, Dicksonberg, IA 21800, USA",2026-11-04 12:02:00
+1536,12,2026-11-02 21:27:26,processing,75.98,"5053 Elizabeth Knoll, Dicksonberg, IA 21800, USA",2026-11-02 21:55:26
+1537,13,2026-11-04 12:36:34,pending,81.97,"39330 Williams Creek, West Anthonyhaven, QC L3L 3R6, Canada",2026-11-04 12:36:34
+1538,13,2026-11-04 02:36:48,processing,33.98,"39330 Williams Creek, West Anthonyhaven, QC L3L 3R6, Canada",2026-11-04 02:43:48
+1539,13,2026-11-04 05:00:01,processing,67.98,"39330 Williams Creek, West Anthonyhaven, QC L3L 3R6, Canada",2026-11-04 05:14:01
+1540,14,2026-11-04 17:41:47,pending,39.98,"92117 Steven Crossing Apt. 488, Halltown, NB P2E3R1, Canada",2026-11-04 17:41:47
+1541,14,2026-11-03 07:26:39,processing,24.99,"92117 Steven Crossing Apt. 488, Halltown, NB P2E3R1, Canada",2026-11-03 07:40:39
+1542,14,2026-11-03 00:16:25,processing,41.99,"92117 Steven Crossing Apt. 488, Halltown, NB P2E3R1, Canada",2026-11-03 00:33:25
+1543,15,2026-11-04 15:52:21,pending,59.98,"946 Kevin Fords, Floydmouth, NH 58406, USA",2026-11-04 15:52:21
+1544,15,2026-11-03 07:05:32,processing,74.97,"946 Kevin Fords, Floydmouth, NH 58406, USA",2026-11-03 07:12:32
+1545,15,2026-11-04 08:47:47,processing,369.97,"946 Kevin Fords, Floydmouth, NH 58406, USA",2026-11-04 08:52:47
+1546,16,2026-11-05 09:55:04,pending,67.96,"4680 Cummings Corners Apt. 900, South Josephside, NL P1T 2M7, Canada",2026-11-05 09:55:04
+1547,16,2026-11-04 01:07:38,processing,49.98,"4680 Cummings Corners Apt. 900, South Josephside, NL P1T 2M7, Canada",2026-11-04 01:16:38
+1548,16,2026-11-03 12:43:12,processing,218.99,"4680 Cummings Corners Apt. 900, South Josephside, NL P1T 2M7, Canada",2026-11-03 12:51:12
+1549,17,2026-11-05 10:19:12,pending,31.98,"1758 Paula Mills Suite 672, Lake Carol, NL V6S6E5, Canada",2026-11-05 10:19:12
+1550,17,2026-11-04 01:29:25,processing,16.99,"1758 Paula Mills Suite 672, Lake Carol, NL V6S6E5, Canada",2026-11-04 01:42:25
+1551,17,2026-11-02 22:23:06,processing,260.98,"1758 Paula Mills Suite 672, Lake Carol, NL V6S6E5, Canada",2026-11-02 22:32:06
+1552,18,2026-11-04 16:45:57,pending,15.99,"36690 Woods Knoll Suite 668, South Jeffrey, NE 64155, USA",2026-11-04 16:45:57
+1553,18,2026-11-02 18:06:44,processing,135.96,"36690 Woods Knoll Suite 668, South Jeffrey, NE 64155, USA",2026-11-02 18:15:44
+1554,18,2026-11-04 02:30:24,processing,47.98,"36690 Woods Knoll Suite 668, South Jeffrey, NE 64155, USA",2026-11-04 02:55:24
+1555,19,2026-11-05 04:09:18,pending,27.98,"5375 Juarez Light Suite 641, Smithside, AR 46371, USA",2026-11-05 04:09:18
+1556,19,2026-11-03 08:14:38,processing,74.97,"5375 Juarez Light Suite 641, Smithside, AR 46371, USA",2026-11-03 08:32:38
+1557,19,2026-11-04 02:47:31,processing,65.98,"5375 Juarez Light Suite 641, Smithside, AR 46371, USA",2026-11-04 02:50:31
+1558,20,2026-11-05 02:39:15,pending,21.99,"43595 Zachary Passage, Morashire, AB K5Y1N9, Canada",2026-11-05 02:39:15
+1559,20,2026-11-03 00:34:05,processing,57.98,"43595 Zachary Passage, Morashire, AB K5Y1N9, Canada",2026-11-03 00:47:05
+1560,20,2026-11-02 16:38:08,processing,41.99,"43595 Zachary Passage, Morashire, AB K5Y1N9, Canada",2026-11-02 16:40:08
+1561,21,2026-11-05 01:07:49,pending,97.96,"2978 Sarah Course Suite 489, New Lynn, NT P2T 8P2, Canada",2026-11-05 01:07:49
+1562,21,2026-11-03 16:37:37,processing,44.95,"2978 Sarah Course Suite 489, New Lynn, NT P2T 8P2, Canada",2026-11-03 16:51:37
+1563,21,2026-11-03 20:25:08,processing,437.98,"2978 Sarah Course Suite 489, New Lynn, NT P2T 8P2, Canada",2026-11-03 20:46:08
+1564,22,2026-11-04 17:11:21,pending,19.98,"9023 Paula Junction Apt. 870, Cookport, ON K9J 9S7, Canada",2026-11-04 17:11:21
+1565,22,2026-11-02 13:44:07,processing,42.99,"9023 Paula Junction Apt. 870, Cookport, ON K9J 9S7, Canada",2026-11-02 14:05:07
+1566,22,2026-11-04 02:07:39,processing,103.96,"9023 Paula Junction Apt. 870, Cookport, ON K9J 9S7, Canada",2026-11-04 02:08:39
+1567,23,2026-11-05 01:40:13,pending,74.97,"Unit 8557 Box 4443, DPO AE 95041, USA",2026-11-05 01:40:13
+1568,23,2026-11-04 10:00:06,processing,115.96,"Unit 8557 Box 4443, DPO AE 95041, USA",2026-11-04 10:18:06
+1569,23,2026-11-03 00:20:15,processing,66.98,"Unit 8557 Box 4443, DPO AE 95041, USA",2026-11-03 00:37:15
+1570,24,2026-11-04 23:27:05,pending,19.99,"0045 Justin Loaf, Lake Ashleyton, AB R3E1K7, Canada",2026-11-04 23:27:05
+1571,24,2026-11-03 06:39:07,processing,14.99,"0045 Justin Loaf, Lake Ashleyton, AB R3E1K7, Canada",2026-11-03 06:40:07
+1572,24,2026-11-03 08:22:29,processing,302.98,"0045 Justin Loaf, Lake Ashleyton, AB R3E1K7, Canada",2026-11-03 08:42:29
+1573,25,2026-11-05 09:27:41,pending,53.98,"993 Hayes Mills Suite 964, New Susanville, WV 27736, USA",2026-11-05 09:27:41
+1574,25,2026-11-02 17:40:30,processing,117.96,"993 Hayes Mills Suite 964, New Susanville, WV 27736, USA",2026-11-02 18:05:30
+1575,25,2026-11-02 13:56:17,processing,86.97,"993 Hayes Mills Suite 964, New Susanville, WV 27736, USA",2026-11-02 14:25:17
+1576,26,2026-11-05 05:01:06,pending,51.97,"4713 French Road, South Danny, IN 85387, USA",2026-11-05 05:01:06
+1577,26,2026-11-02 20:24:12,processing,110.97,"4713 French Road, South Danny, IN 85387, USA",2026-11-02 20:31:12
+1578,26,2026-11-04 05:59:47,processing,485.96,"4713 French Road, South Danny, IN 85387, USA",2026-11-04 06:26:47
+1579,27,2026-11-05 01:51:07,pending,52.98,"551 Rasmussen Garden Suite 967, Port Maureenton, NB R7M 8J3, Canada",2026-11-05 01:51:07
+1580,27,2026-11-03 10:12:29,processing,33.98,"551 Rasmussen Garden Suite 967, Port Maureenton, NB R7M 8J3, Canada",2026-11-03 10:13:29
+1581,27,2026-11-03 02:29:08,processing,105.96,"551 Rasmussen Garden Suite 967, Port Maureenton, NB R7M 8J3, Canada",2026-11-03 02:53:08
+1582,28,2026-11-05 08:31:17,pending,66.97,"8017 Robert Station, Anitamouth, NL N7K 9L6, Canada",2026-11-05 08:31:17
+1583,28,2026-11-04 07:26:33,processing,33.98,"8017 Robert Station, Anitamouth, NL N7K 9L6, Canada",2026-11-04 07:52:33
+1584,28,2026-11-02 22:27:27,processing,101.97,"8017 Robert Station, Anitamouth, NL N7K 9L6, Canada",2026-11-02 22:50:27
+1585,29,2026-11-04 13:01:24,pending,18.99,"600 Lowery Spur, New Anthony, NB T3X8G9, Canada",2026-11-04 13:01:24
+1586,29,2026-11-03 22:51:50,processing,71.97,"600 Lowery Spur, New Anthony, NB T3X8G9, Canada",2026-11-03 23:02:50
+1587,29,2026-11-03 12:19:13,processing,138.97,"600 Lowery Spur, New Anthony, NB T3X8G9, Canada",2026-11-03 12:20:13
+1588,30,2026-11-05 05:38:54,pending,41.98,"46584 Justin Hills, Grimesmouth, ND 63984, USA",2026-11-05 05:38:54
+1589,30,2026-11-03 02:33:01,processing,73.96,"46584 Justin Hills, Grimesmouth, ND 63984, USA",2026-11-03 02:51:01
+1590,30,2026-11-02 17:35:47,processing,202.99,"46584 Justin Hills, Grimesmouth, ND 63984, USA",2026-11-02 18:01:47
+1591,31,2026-11-05 11:21:33,pending,34.97,"075 Michael Views Apt. 041, West Brandi, QC S2J4A6, Canada",2026-11-05 11:21:33
+1592,31,2026-11-02 14:39:45,processing,49.98,"075 Michael Views Apt. 041, West Brandi, QC S2J4A6, Canada",2026-11-02 14:47:45
+1593,31,2026-11-04 01:06:39,processing,35.99,"075 Michael Views Apt. 041, West Brandi, QC S2J4A6, Canada",2026-11-04 01:21:39
+1594,32,2026-11-04 12:59:53,pending,61.98,"9604 Baker Crest Apt. 076, Jamesborough, NS E7G4P3, Canada",2026-11-04 12:59:53
+1595,32,2026-11-02 14:37:59,processing,24.99,"9604 Baker Crest Apt. 076, Jamesborough, NS E7G4P3, Canada",2026-11-02 14:40:59
+1596,32,2026-11-03 13:40:11,processing,43.97,"9604 Baker Crest Apt. 076, Jamesborough, NS E7G4P3, Canada",2026-11-03 14:09:11
+1597,33,2026-11-05 01:39:28,pending,19.99,"60046 Perez Village Apt. 437, North Joshuaville, AB J6J9T3, Canada",2026-11-05 01:39:28
+1598,33,2026-11-02 21:42:46,processing,93.96,"60046 Perez Village Apt. 437, North Joshuaville, AB J6J9T3, Canada",2026-11-02 21:52:46
+1599,33,2026-11-03 11:08:59,processing,16.99,"60046 Perez Village Apt. 437, North Joshuaville, AB J6J9T3, Canada",2026-11-03 11:14:59
+1600,34,2026-11-05 07:03:47,pending,19.99,"7619 Jennifer Branch Apt. 774, Karenfurt, NS M8B1X7, Canada",2026-11-05 07:03:47
+1601,34,2026-11-03 15:36:49,processing,62.97,"7619 Jennifer Branch Apt. 774, Karenfurt, NS M8B1X7, Canada",2026-11-03 16:01:49
+1602,34,2026-11-03 08:02:55,processing,285.99,"7619 Jennifer Branch Apt. 774, Karenfurt, NS M8B1X7, Canada",2026-11-03 08:22:55
+1603,35,2026-11-04 22:14:17,pending,36.98,"516 Joseph Crossing Suite 549, Carsonstad, CT 88953, USA",2026-11-04 22:14:17
+1604,35,2026-11-03 07:40:07,processing,82.97,"516 Joseph Crossing Suite 549, Carsonstad, CT 88953, USA",2026-11-03 07:54:07
+1605,35,2026-11-04 08:00:10,processing,26.98,"516 Joseph Crossing Suite 549, Carsonstad, CT 88953, USA",2026-11-04 08:03:10
+1606,36,2026-11-05 09:07:31,pending,19.99,"USNV Ferrell, FPO AE 13240, USA",2026-11-05 09:07:31
+1607,36,2026-11-03 19:51:05,processing,82.26,"USNV Ferrell, FPO AE 13240, USA",2026-11-03 20:08:05
+1608,36,2026-11-03 07:04:32,processing,639.96,"USNV Ferrell, FPO AE 13240, USA",2026-11-03 07:21:32
+1609,37,2026-11-04 19:13:53,pending,26.99,"91027 Long Tunnel Apt. 500, North Douglasstad, PE C9L 3J2, Canada",2026-11-04 19:13:53
+1610,37,2026-11-02 22:40:15,processing,107.96,"91027 Long Tunnel Apt. 500, North Douglasstad, PE C9L 3J2, Canada",2026-11-02 22:44:15
+1611,37,2026-11-03 00:13:17,processing,76.98,"91027 Long Tunnel Apt. 500, North Douglasstad, PE C9L 3J2, Canada",2026-11-03 00:16:17
+1612,38,2026-11-04 18:51:39,pending,34.97,"2009 Scott Crossing Apt. 807, New Johnville, AB Y1V 5H3, Canada",2026-11-04 18:51:39
+1613,38,2026-11-02 12:18:10,processing,25.98,"2009 Scott Crossing Apt. 807, New Johnville, AB Y1V 5H3, Canada",2026-11-02 12:42:10
+1614,38,2026-11-04 02:00:54,processing,977.96,"2009 Scott Crossing Apt. 807, New Johnville, AB Y1V 5H3, Canada",2026-11-04 02:05:54
+1615,39,2026-11-04 21:10:12,pending,51.97,"847 Bruce Neck, Simmonsville, NM 93876, USA",2026-11-04 21:10:12
+1616,39,2026-11-03 23:25:05,processing,22.99,"847 Bruce Neck, Simmonsville, NM 93876, USA",2026-11-03 23:40:05
+1617,39,2026-11-03 11:14:31,processing,42.98,"847 Bruce Neck, Simmonsville, NM 93876, USA",2026-11-03 11:43:31
+1618,40,2026-11-05 04:57:00,pending,19.99,"Unit 8478 Box 9611, DPO AP 85817, USA",2026-11-05 04:57:00
+1619,40,2026-11-02 13:57:43,processing,81.96,"Unit 8478 Box 9611, DPO AP 85817, USA",2026-11-02 14:16:43
+1620,40,2026-11-02 21:08:28,processing,236.98,"Unit 8478 Box 9611, DPO AP 85817, USA",2026-11-02 21:31:28
+1621,41,2026-11-04 17:37:13,pending,61.97,"2711 Christopher Court Suite 280, Elizabethchester, MI 87708, USA",2026-11-04 17:37:13
+1622,41,2026-11-03 23:34:47,processing,44.95,"2711 Christopher Court Suite 280, Elizabethchester, MI 87708, USA",2026-11-03 23:47:47
+1623,41,2026-11-03 23:32:14,processing,32.99,"2711 Christopher Court Suite 280, Elizabethchester, MI 87708, USA",2026-11-03 23:57:14
+1624,42,2026-11-04 16:53:47,pending,53.97,"6154 Cantrell Forks, Hillfurt, SK L2M3E8, Canada",2026-11-04 16:53:47
+1625,42,2026-11-04 07:44:31,processing,60.26,"6154 Cantrell Forks, Hillfurt, SK L2M3E8, Canada",2026-11-04 08:06:31
+1626,42,2026-11-03 16:58:48,processing,454.97,"6154 Cantrell Forks, Hillfurt, SK L2M3E8, Canada",2026-11-03 17:20:48
+1627,43,2026-11-04 23:37:45,pending,77.96,"22901 Ramos Manors, Lawsonchester, KY 28756, USA",2026-11-04 23:37:45
+1628,43,2026-11-02 12:09:23,processing,74.93,"22901 Ramos Manors, Lawsonchester, KY 28756, USA",2026-11-02 12:23:23
+1629,43,2026-11-02 21:34:05,processing,48.99,"22901 Ramos Manors, Lawsonchester, KY 28756, USA",2026-11-02 22:03:05
+1630,44,2026-11-04 14:34:52,pending,14.99,"5107 Thompson Light Apt. 885, South Michelleton, NE 02957, USA",2026-11-04 14:34:52
+1631,44,2026-11-04 06:32:09,processing,59.98,"5107 Thompson Light Apt. 885, South Michelleton, NE 02957, USA",2026-11-04 07:02:09
+1632,44,2026-11-02 12:02:56,processing,33.98,"5107 Thompson Light Apt. 885, South Michelleton, NE 02957, USA",2026-11-02 12:08:56
+1633,45,2026-11-04 18:06:32,pending,21.99,"69681 Harrell Summit, Jeffreyburgh, CA 67411, USA",2026-11-04 18:06:32
+1634,45,2026-11-03 09:17:33,processing,107.96,"69681 Harrell Summit, Jeffreyburgh, CA 67411, USA",2026-11-03 09:23:33
+1635,45,2026-11-03 04:27:06,processing,35.98,"69681 Harrell Summit, Jeffreyburgh, CA 67411, USA",2026-11-03 04:36:06
+1636,46,2026-11-05 04:47:20,pending,49.97,"58536 Adrienne Port Apt. 554, East Breannatown, PE N7V2A4, Canada",2026-11-05 04:47:20
+1637,46,2026-11-02 22:55:24,processing,53.98,"58536 Adrienne Port Apt. 554, East Breannatown, PE N7V2A4, Canada",2026-11-02 23:20:24
+1638,46,2026-11-03 09:14:38,processing,133.96,"58536 Adrienne Port Apt. 554, East Breannatown, PE N7V2A4, Canada",2026-11-03 09:16:38
+1639,47,2026-11-04 22:12:25,pending,27.98,"9145 Emma Camp, Hillton, NL M5C 6S6, Canada",2026-11-04 22:12:25
+1640,47,2026-11-03 13:40:01,processing,67.98,"9145 Emma Camp, Hillton, NL M5C 6S6, Canada",2026-11-03 13:44:01
+1641,47,2026-11-02 15:11:13,processing,67.98,"9145 Emma Camp, Hillton, NL M5C 6S6, Canada",2026-11-02 15:26:13
+1642,48,2026-11-05 07:24:00,pending,26.99,"440 Allen Ways Apt. 267, Coreychester, AB E3M 5V2, Canada",2026-11-05 07:24:00
+1643,48,2026-11-02 23:28:40,processing,34.99,"440 Allen Ways Apt. 267, Coreychester, AB E3M 5V2, Canada",2026-11-02 23:42:40
+1644,48,2026-11-02 22:11:38,processing,669.96,"440 Allen Ways Apt. 267, Coreychester, AB E3M 5V2, Canada",2026-11-02 22:18:38
+1645,49,2026-11-04 17:05:22,pending,27.98,"91486 Li Skyway Apt. 685, West Kyleborough, MA 64237, USA",2026-11-04 17:05:22
+1646,49,2026-11-04 06:30:08,processing,25.98,"91486 Li Skyway Apt. 685, West Kyleborough, MA 64237, USA",2026-11-04 06:49:08
+1647,49,2026-11-03 06:52:37,processing,66.99,"91486 Li Skyway Apt. 685, West Kyleborough, MA 64237, USA",2026-11-03 06:53:37
+1648,50,2026-11-05 01:05:49,pending,88.97,"927 Robert Springs, South Cheryl, WV 98613, USA",2026-11-05 01:05:49
+1649,50,2026-11-02 17:20:51,processing,115.88,"927 Robert Springs, South Cheryl, WV 98613, USA",2026-11-02 17:25:51
+1650,50,2026-11-04 09:43:30,processing,473.96,"927 Robert Springs, South Cheryl, WV 98613, USA",2026-11-04 10:08:30
+1651,51,2026-11-04 19:29:35,pending,9.99,"9475 Jose Springs Suite 000, Markville, NB Y5T 8E5, Canada",2026-11-04 19:29:35
+1652,51,2026-11-02 13:12:44,processing,24.99,"9475 Jose Springs Suite 000, Markville, NB Y5T 8E5, Canada",2026-11-02 13:13:44
+1653,51,2026-11-02 22:13:09,processing,33.99,"9475 Jose Springs Suite 000, Markville, NB Y5T 8E5, Canada",2026-11-02 22:37:09
+1654,52,2026-11-05 04:52:17,pending,28.99,"61530 Galvan Villages Suite 220, Samanthafort, UT 18692, USA",2026-11-05 04:52:17
+1655,52,2026-11-04 03:56:26,processing,29.98,"61530 Galvan Villages Suite 220, Samanthafort, UT 18692, USA",2026-11-04 04:03:26
+1656,52,2026-11-03 20:14:04,processing,202.99,"61530 Galvan Villages Suite 220, Samanthafort, UT 18692, USA",2026-11-03 20:33:04
+1657,53,2026-11-05 08:03:15,pending,25.98,"69711 Carlson Brook, Lake Douglas, NE 00706, USA",2026-11-05 08:03:15
+1658,53,2026-11-03 06:12:20,processing,119.97,"69711 Carlson Brook, Lake Douglas, NE 00706, USA",2026-11-03 06:18:20
+1659,53,2026-11-03 21:02:45,processing,47.98,"69711 Carlson Brook, Lake Douglas, NE 00706, USA",2026-11-03 21:11:45
+1660,54,2026-11-04 22:57:30,pending,91.96,"5340 Sarah Corners Apt. 807, Williamsland, NU L3G 5L5, Canada",2026-11-04 22:57:30
+1661,54,2026-11-03 03:01:46,processing,13.99,"5340 Sarah Corners Apt. 807, Williamsland, NU L3G 5L5, Canada",2026-11-03 03:30:46
+1662,54,2026-11-02 19:40:51,processing,35.98,"5340 Sarah Corners Apt. 807, Williamsland, NU L3G 5L5, Canada",2026-11-02 19:51:51
+1663,55,2026-11-05 03:28:01,pending,31.98,"0001 Baird Unions Apt. 113, Lyonsfort, PE P9G8V3, Canada",2026-11-05 03:28:01
+1664,55,2026-11-03 19:33:21,processing,16.14,"0001 Baird Unions Apt. 113, Lyonsfort, PE P9G8V3, Canada",2026-11-03 19:46:21
+1665,55,2026-11-02 19:19:43,processing,133.98,"0001 Baird Unions Apt. 113, Lyonsfort, PE P9G8V3, Canada",2026-11-02 19:28:43
+1666,56,2026-11-05 07:56:04,pending,37.98,"8555 Barron Avenue Apt. 770, Toddstad, NL A3S3P4, Canada",2026-11-05 07:56:04
+1667,56,2026-11-03 17:30:36,processing,81.98,"8555 Barron Avenue Apt. 770, Toddstad, NL A3S3P4, Canada",2026-11-03 17:32:36
+1668,56,2026-11-03 05:56:44,processing,252.97,"8555 Barron Avenue Apt. 770, Toddstad, NL A3S3P4, Canada",2026-11-03 06:21:44
+1669,57,2026-11-04 12:36:13,pending,110.97,"28730 Tara Valleys, Lake Andrewmouth, NT R3H8J9, Canada",2026-11-04 12:36:13
+1670,57,2026-11-03 17:27:54,processing,29.99,"28730 Tara Valleys, Lake Andrewmouth, NT R3H8J9, Canada",2026-11-03 17:48:54
+1671,57,2026-11-02 20:05:37,processing,48.99,"28730 Tara Valleys, Lake Andrewmouth, NT R3H8J9, Canada",2026-11-02 20:23:37
+1672,58,2026-11-05 03:11:52,pending,79.96,"4739 Benson Overpass, North Derek, CA 59751, USA",2026-11-05 03:11:52
+1673,58,2026-11-03 19:43:07,processing,45.98,"4739 Benson Overpass, North Derek, CA 59751, USA",2026-11-03 20:04:07
+1674,58,2026-11-02 23:58:21,processing,19.98,"4739 Benson Overpass, North Derek, CA 59751, USA",2026-11-03 00:08:21
+1675,59,2026-11-04 18:57:52,pending,19.98,"23705 Mcdonald Plaza, New Nicole, CA 41040, USA",2026-11-04 18:57:52
+1676,59,2026-11-04 05:32:07,processing,28.99,"23705 Mcdonald Plaza, New Nicole, CA 41040, USA",2026-11-04 05:49:07
+1677,59,2026-11-03 04:27:06,processing,535.96,"23705 Mcdonald Plaza, New Nicole, CA 41040, USA",2026-11-03 04:33:06
+1678,60,2026-11-05 02:29:48,pending,19.98,"51194 Shelby Pine, Amandaville, NS J4S6B6, Canada",2026-11-05 02:29:48
+1679,60,2026-11-03 07:56:18,processing,93.97,"51194 Shelby Pine, Amandaville, NS J4S6B6, Canada",2026-11-03 08:26:18
+1680,60,2026-11-03 14:51:54,processing,72.98,"51194 Shelby Pine, Amandaville, NS J4S6B6, Canada",2026-11-03 15:19:54
+1681,61,2026-11-05 11:17:33,pending,59.96,"001 Stacy Trail Suite 396, South Pamelaside, LA 84637, USA",2026-11-05 11:17:33
+1682,61,2026-11-03 07:36:29,processing,41.98,"001 Stacy Trail Suite 396, South Pamelaside, LA 84637, USA",2026-11-03 07:40:29
+1683,61,2026-11-02 18:59:10,processing,32.99,"001 Stacy Trail Suite 396, South Pamelaside, LA 84637, USA",2026-11-02 19:01:10
+1684,62,2026-11-04 19:12:44,pending,19.99,"98189 Lopez Curve, Port Hannah, AB B2S 5T7, Canada",2026-11-04 19:12:44
+1685,62,2026-11-03 06:31:45,processing,81.98,"98189 Lopez Curve, Port Hannah, AB B2S 5T7, Canada",2026-11-03 06:33:45
+1686,62,2026-11-03 11:17:28,processing,9.99,"98189 Lopez Curve, Port Hannah, AB B2S 5T7, Canada",2026-11-03 11:29:28
+1687,63,2026-11-04 19:31:22,pending,29.99,"739 Shawn Meadow, Aliciaview, QC Y2G 1E1, Canada",2026-11-04 19:31:22
+1688,63,2026-11-02 18:28:31,processing,112.89,"739 Shawn Meadow, Aliciaview, QC Y2G 1E1, Canada",2026-11-02 18:51:31
+1689,63,2026-11-03 12:33:48,processing,202.99,"739 Shawn Meadow, Aliciaview, QC Y2G 1E1, Canada",2026-11-03 13:03:48
+1690,64,2026-11-05 02:58:20,pending,104.97,"765 Rojas Land Apt. 893, Hornberg, AB T7Y 9K3, Canada",2026-11-05 02:58:20
+1691,64,2026-11-04 00:14:07,processing,81.98,"765 Rojas Land Apt. 893, Hornberg, AB T7Y 9K3, Canada",2026-11-04 00:42:07
+1692,64,2026-11-04 11:48:11,processing,471.97,"765 Rojas Land Apt. 893, Hornberg, AB T7Y 9K3, Canada",2026-11-04 12:09:11
+1693,65,2026-11-04 12:22:05,pending,49.98,"936 Reese Lodge Suite 387, Carloschester, NU M9S 8Y5, Canada",2026-11-04 12:22:05
+1694,65,2026-11-03 03:27:20,processing,69.96,"936 Reese Lodge Suite 387, Carloschester, NU M9S 8Y5, Canada",2026-11-03 03:52:20
+1695,65,2026-11-02 12:41:24,processing,65.98,"936 Reese Lodge Suite 387, Carloschester, NU M9S 8Y5, Canada",2026-11-02 12:58:24
+1696,66,2026-11-04 13:50:13,pending,19.99,"097 Alexandria Stravenue, Hernandezbury, AZ 75548, USA",2026-11-04 13:50:13
+1697,66,2026-11-02 14:48:37,processing,81.98,"097 Alexandria Stravenue, Hernandezbury, AZ 75548, USA",2026-11-02 15:17:37
+1698,66,2026-11-03 16:46:49,processing,134.97,"097 Alexandria Stravenue, Hernandezbury, AZ 75548, USA",2026-11-03 17:06:49
+1699,67,2026-11-05 02:10:20,pending,26.99,"578 Edwards Extensions, Barrmouth, ND 46938, USA",2026-11-05 02:10:20
+1700,67,2026-11-02 17:16:51,processing,49.98,"578 Edwards Extensions, Barrmouth, ND 46938, USA",2026-11-02 17:26:51
+1701,67,2026-11-04 01:07:24,processing,114.97,"578 Edwards Extensions, Barrmouth, ND 46938, USA",2026-11-04 01:21:24
+1702,68,2026-11-04 22:12:31,pending,18.99,"123 Terry Lights, West Linda, NT S5P 1E5, Canada",2026-11-04 22:12:31
+1703,68,2026-11-02 13:25:33,processing,85.98,"123 Terry Lights, West Linda, NT S5P 1E5, Canada",2026-11-02 13:43:33
+1704,68,2026-11-04 03:03:03,processing,205.96,"123 Terry Lights, West Linda, NT S5P 1E5, Canada",2026-11-04 03:26:03
+1705,69,2026-11-05 07:41:21,pending,57.96,"4743 Amy Plaza, East Timothy, PE P9E8R2, Canada",2026-11-05 07:41:21
+1706,69,2026-11-02 16:57:21,processing,40.99,"4743 Amy Plaza, East Timothy, PE P9E8R2, Canada",2026-11-02 16:59:21
+1707,69,2026-11-02 13:07:33,processing,33.98,"4743 Amy Plaza, East Timothy, PE P9E8R2, Canada",2026-11-02 13:27:33
+1708,70,2026-11-04 13:49:25,pending,14.99,"46272 Wagner Walks, Robinshire, NT N4M 2P9, Canada",2026-11-04 13:49:25
+1709,70,2026-11-03 18:19:07,processing,139.96,"46272 Wagner Walks, Robinshire, NT N4M 2P9, Canada",2026-11-03 18:30:07
+1710,70,2026-11-03 07:49:29,processing,99.96,"46272 Wagner Walks, Robinshire, NT N4M 2P9, Canada",2026-11-03 08:17:29
+1711,71,2026-11-05 10:34:59,pending,48.99,"9904 Schwartz Circle Apt. 742, Parksport, UT 15890, USA",2026-11-05 10:34:59
+1712,71,2026-11-03 17:02:32,processing,67.98,"9904 Schwartz Circle Apt. 742, Parksport, UT 15890, USA",2026-11-03 17:09:32
+1713,71,2026-11-03 16:38:28,processing,19.98,"9904 Schwartz Circle Apt. 742, Parksport, UT 15890, USA",2026-11-03 16:45:28
+1714,72,2026-11-04 19:30:43,pending,45.97,"7381 Christopher Shores Suite 344, North Hectorland, YT C7N 5S6, Canada",2026-11-04 19:30:43
+1715,72,2026-11-03 16:00:47,processing,72.97,"7381 Christopher Shores Suite 344, North Hectorland, YT C7N 5S6, Canada",2026-11-03 16:22:47
+1716,72,2026-11-02 16:45:31,processing,32.99,"7381 Christopher Shores Suite 344, North Hectorland, YT C7N 5S6, Canada",2026-11-02 16:57:31
+1717,73,2026-11-05 04:10:14,pending,39.98,"824 Ellison Forest Suite 989, Jessicamouth, AB T1Y3R6, Canada",2026-11-05 04:10:14
+1718,73,2026-11-04 09:11:17,processing,123.88,"824 Ellison Forest Suite 989, Jessicamouth, AB T1Y3R6, Canada",2026-11-04 09:20:17
+1719,73,2026-11-02 14:39:18,processing,119.97,"824 Ellison Forest Suite 989, Jessicamouth, AB T1Y3R6, Canada",2026-11-02 15:02:18
+1720,74,2026-11-05 06:46:04,pending,37.98,"230 Tiffany Mountain Suite 863, South Michael, KY 25205, USA",2026-11-05 06:46:04
+1721,74,2026-11-02 15:47:53,processing,90.97,"230 Tiffany Mountain Suite 863, South Michael, KY 25205, USA",2026-11-02 15:54:53
+1722,74,2026-11-04 05:13:28,processing,114.97,"230 Tiffany Mountain Suite 863, South Michael, KY 25205, USA",2026-11-04 05:27:28
+1723,75,2026-11-05 07:52:19,pending,19.98,"06738 Karen Trail, East Williamport, IN 96382, USA",2026-11-05 07:52:19
+1724,75,2026-11-04 07:30:37,processing,45.98,"06738 Karen Trail, East Williamport, IN 96382, USA",2026-11-04 07:40:37
+1725,75,2026-11-02 20:19:12,processing,33.98,"06738 Karen Trail, East Williamport, IN 96382, USA",2026-11-02 20:21:12
+1726,76,2026-11-04 17:03:34,pending,47.98,"685 Russell Hills Suite 287, Port Jeremiah, PR 93244, USA",2026-11-04 17:03:34
+1727,76,2026-11-03 21:20:51,processing,57.13,"685 Russell Hills Suite 287, Port Jeremiah, PR 93244, USA",2026-11-03 21:46:51
+1728,76,2026-11-02 18:47:16,processing,571.98,"685 Russell Hills Suite 287, Port Jeremiah, PR 93244, USA",2026-11-02 19:04:16
+1729,77,2026-11-04 13:22:45,pending,9.99,"47763 Holt Camp Apt. 182, Diazhaven, AB K8R 1C9, Canada",2026-11-04 13:22:45
+1730,77,2026-11-03 19:07:50,processing,84.97,"47763 Holt Camp Apt. 182, Diazhaven, AB K8R 1C9, Canada",2026-11-03 19:14:50
+1731,77,2026-11-02 19:48:18,processing,640.97,"47763 Holt Camp Apt. 182, Diazhaven, AB K8R 1C9, Canada",2026-11-02 20:12:18
+1732,78,2026-11-04 14:34:11,pending,22.98,"4587 Garcia Stravenue Suite 535, Robertshire, VI 29503, USA",2026-11-04 14:34:11
+1733,78,2026-11-04 10:06:18,processing,24.99,"4587 Garcia Stravenue Suite 535, Robertshire, VI 29503, USA",2026-11-04 10:12:18
+1734,78,2026-11-02 22:04:23,processing,503.96,"4587 Garcia Stravenue Suite 535, Robertshire, VI 29503, USA",2026-11-02 22:25:23
+1735,79,2026-11-05 00:57:13,pending,39.96,"63560 Laura Crest, Lake Mary, MB J6K1J4, Canada",2026-11-05 00:57:13
+1736,79,2026-11-04 06:48:17,processing,45.27,"63560 Laura Crest, Lake Mary, MB J6K1J4, Canada",2026-11-04 07:02:17
+1737,79,2026-11-03 10:28:18,processing,133.96,"63560 Laura Crest, Lake Mary, MB J6K1J4, Canada",2026-11-03 10:49:18
+1738,80,2026-11-04 13:57:54,pending,53.98,"59778 Samantha Ridges, Raymondshire, ON N8S9S4, Canada",2026-11-04 13:57:54
+1739,80,2026-11-02 12:18:55,processing,55.98,"59778 Samantha Ridges, Raymondshire, ON N8S9S4, Canada",2026-11-02 12:33:55
+1740,80,2026-11-03 08:45:09,processing,102.98,"59778 Samantha Ridges, Raymondshire, ON N8S9S4, Canada",2026-11-03 09:10:09
+1741,81,2026-11-05 05:22:51,pending,37.98,"2322 Ashley Falls, East Robertchester, ON V2J6T9, Canada",2026-11-05 05:22:51
+1742,81,2026-11-03 18:40:04,processing,22.99,"2322 Ashley Falls, East Robertchester, ON V2J6T9, Canada",2026-11-03 18:51:04
+1743,81,2026-11-03 07:36:40,processing,97.98,"2322 Ashley Falls, East Robertchester, ON V2J6T9, Canada",2026-11-03 08:05:40
+1744,82,2026-11-04 21:07:28,pending,38.97,"42939 Rhodes Plains Suite 621, Brianchester, IN 10464, USA",2026-11-04 21:07:28
+1745,82,2026-11-04 05:43:39,processing,98.97,"42939 Rhodes Plains Suite 621, Brianchester, IN 10464, USA",2026-11-04 06:07:39
+1746,82,2026-11-03 09:15:49,processing,95.97,"42939 Rhodes Plains Suite 621, Brianchester, IN 10464, USA",2026-11-03 09:25:49
+1747,83,2026-11-05 04:47:10,pending,39.97,"11426 Jodi Island Suite 110, Seanview, CT 17868, USA",2026-11-05 04:47:10
+1748,83,2026-11-03 13:27:50,processing,67.98,"11426 Jodi Island Suite 110, Seanview, CT 17868, USA",2026-11-03 13:47:50
+1749,83,2026-11-02 22:54:06,processing,639.96,"11426 Jodi Island Suite 110, Seanview, CT 17868, USA",2026-11-02 23:07:06
+1750,84,2026-11-04 17:19:10,pending,18.99,"04656 Jamie Lake Apt. 886, North Meganmouth, BC A4P3X3, Canada",2026-11-04 17:19:10
+1751,84,2026-11-02 14:44:49,processing,33.98,"04656 Jamie Lake Apt. 886, North Meganmouth, BC A4P3X3, Canada",2026-11-02 14:50:49
+1752,84,2026-11-04 06:05:39,processing,473.96,"04656 Jamie Lake Apt. 886, North Meganmouth, BC A4P3X3, Canada",2026-11-04 06:10:39
+1753,85,2026-11-05 10:23:00,pending,19.98,"9657 Jordan View Apt. 459, South Leon, MO 42331, USA",2026-11-05 10:23:00
+1754,85,2026-11-03 11:21:21,processing,57.98,"9657 Jordan View Apt. 459, South Leon, MO 42331, USA",2026-11-03 11:40:21
+1755,85,2026-11-04 04:08:49,processing,41.99,"9657 Jordan View Apt. 459, South Leon, MO 42331, USA",2026-11-04 04:16:49
+1756,86,2026-11-05 03:55:28,pending,29.98,"USCGC Hahn, FPO AE 57970, USA",2026-11-05 03:55:28
+1757,86,2026-11-03 10:16:36,processing,49.98,"USCGC Hahn, FPO AE 57970, USA",2026-11-03 10:18:36
+1758,86,2026-11-03 19:04:28,processing,16.99,"USCGC Hahn, FPO AE 57970, USA",2026-11-03 19:25:28
+1759,87,2026-11-05 08:04:06,pending,85.98,"155 Nathaniel Fall, Meadowsshire, SK C9R 4E5, Canada",2026-11-05 08:04:06
+1760,87,2026-11-03 12:21:17,processing,67.98,"155 Nathaniel Fall, Meadowsshire, SK C9R 4E5, Canada",2026-11-03 12:25:17
+1761,87,2026-11-03 18:36:23,processing,222.97,"155 Nathaniel Fall, Meadowsshire, SK C9R 4E5, Canada",2026-11-03 18:53:23
+1762,88,2026-11-05 02:42:29,pending,100.97,"982 Cuevas Orchard Apt. 461, Port Sheliaberg, MI 41381, USA",2026-11-05 02:42:29
+1763,88,2026-11-02 15:29:22,processing,61.96,"982 Cuevas Orchard Apt. 461, Port Sheliaberg, MI 41381, USA",2026-11-02 15:46:22
+1764,88,2026-11-03 23:30:56,processing,19.98,"982 Cuevas Orchard Apt. 461, Port Sheliaberg, MI 41381, USA",2026-11-03 23:56:56
+1765,89,2026-11-05 11:14:58,pending,13.99,"541 Chelsea Lodge, Jameshaven, NL V5K 2C3, Canada",2026-11-05 11:14:58
+1766,89,2026-11-02 18:40:55,processing,25.98,"541 Chelsea Lodge, Jameshaven, NL V5K 2C3, Canada",2026-11-02 18:41:55
+1767,89,2026-11-04 05:19:49,processing,67.98,"541 Chelsea Lodge, Jameshaven, NL V5K 2C3, Canada",2026-11-04 05:41:49
+1768,90,2026-11-05 08:20:02,pending,19.99,"69372 Kyle Keys, Steinfurt, PE B8L1X9, Canada",2026-11-05 08:20:02
+1769,90,2026-11-03 08:34:02,processing,115.97,"69372 Kyle Keys, Steinfurt, PE B8L1X9, Canada",2026-11-03 08:52:02
+1770,90,2026-11-02 18:17:27,processing,66.98,"69372 Kyle Keys, Steinfurt, PE B8L1X9, Canada",2026-11-02 18:31:27
+1771,91,2026-11-05 06:16:36,pending,73.96,"0244 Smith Mission, New Haileyburgh, NU E8G9Y7, Canada",2026-11-05 06:16:36
+1772,91,2026-11-04 04:00:43,processing,29.99,"0244 Smith Mission, New Haileyburgh, NU E8G9Y7, Canada",2026-11-04 04:06:43
+1773,91,2026-11-03 21:36:36,processing,23.99,"0244 Smith Mission, New Haileyburgh, NU E8G9Y7, Canada",2026-11-03 21:44:36
+1774,92,2026-11-04 23:45:19,pending,49.98,"8876 Perry Ville, Burnsland, OK 04545, USA",2026-11-04 23:45:19
+1775,92,2026-11-03 12:14:19,processing,113.88,"8876 Perry Ville, Burnsland, OK 04545, USA",2026-11-03 12:42:19
+1776,92,2026-11-03 19:32:46,processing,437.98,"8876 Perry Ville, Burnsland, OK 04545, USA",2026-11-03 19:41:46
+1777,93,2026-11-05 02:07:14,pending,47.97,"078 Veronica Cove Apt. 407, Michaelland, NV 15887, USA",2026-11-05 02:07:14
+1778,93,2026-11-04 04:26:40,processing,57.98,"078 Veronica Cove Apt. 407, Michaelland, NV 15887, USA",2026-11-04 04:27:40
+1779,93,2026-11-04 08:00:49,processing,303.98,"078 Veronica Cove Apt. 407, Michaelland, NV 15887, USA",2026-11-04 08:13:49
+1780,94,2026-11-05 03:52:01,pending,75.96,"1982 Anderson Stravenue Suite 544, Lake Kevinport, QC R1C1A2, Canada",2026-11-05 03:52:01
+1781,94,2026-11-02 18:26:55,processing,74.12,"1982 Anderson Stravenue Suite 544, Lake Kevinport, QC R1C1A2, Canada",2026-11-02 18:47:55
+1782,94,2026-11-02 23:38:05,processing,423.97,"1982 Anderson Stravenue Suite 544, Lake Kevinport, QC R1C1A2, Canada",2026-11-03 00:05:05
+1783,95,2026-11-04 12:59:38,pending,15.99,"37478 Michael Glens, Benjaminmouth, PE P3C3N3, Canada",2026-11-04 12:59:38
+1784,95,2026-11-03 01:44:31,processing,11.99,"37478 Michael Glens, Benjaminmouth, PE P3C3N3, Canada",2026-11-03 01:56:31
+1785,95,2026-11-02 16:36:04,processing,415.97,"37478 Michael Glens, Benjaminmouth, PE P3C3N3, Canada",2026-11-02 16:44:04
+1786,96,2026-11-04 12:40:08,pending,29.99,"8397 Crystal Meadows, North Sharonchester, YT R8P5Y6, Canada",2026-11-04 12:40:08
+1787,96,2026-11-02 15:54:03,processing,85.96,"8397 Crystal Meadows, North Sharonchester, YT R8P5Y6, Canada",2026-11-02 16:23:03
+1788,96,2026-11-03 20:27:36,processing,17.99,"8397 Crystal Meadows, North Sharonchester, YT R8P5Y6, Canada",2026-11-03 20:57:36
+1789,97,2026-11-05 06:17:15,pending,21.99,"5493 Bates Crossing Suite 794, Mejiatown, NT H8K5L5, Canada",2026-11-05 06:17:15
+1790,97,2026-11-03 16:07:58,processing,49.98,"5493 Bates Crossing Suite 794, Mejiatown, NT H8K5L5, Canada",2026-11-03 16:29:58
+1791,97,2026-11-03 06:51:10,processing,19.98,"5493 Bates Crossing Suite 794, Mejiatown, NT H8K5L5, Canada",2026-11-03 07:11:10
+1792,98,2026-11-04 20:31:45,pending,25.98,"6074 Daniel Isle Suite 135, New Lauraville, PE P7G6X1, Canada",2026-11-04 20:31:45
+1793,98,2026-11-02 15:46:00,processing,81.98,"6074 Daniel Isle Suite 135, New Lauraville, PE P7G6X1, Canada",2026-11-02 15:51:00
+1794,98,2026-11-03 23:29:21,processing,67.98,"6074 Daniel Isle Suite 135, New Lauraville, PE P7G6X1, Canada",2026-11-03 23:34:21
+1795,99,2026-11-04 13:40:35,pending,73.96,"25518 Andrea Springs, West Alexis, SK X6T7C5, Canada",2026-11-04 13:40:35
+1796,99,2026-11-03 04:40:24,processing,81.98,"25518 Andrea Springs, West Alexis, SK X6T7C5, Canada",2026-11-03 04:41:24
+1797,99,2026-11-03 18:29:19,processing,238.97,"25518 Andrea Springs, West Alexis, SK X6T7C5, Canada",2026-11-03 18:34:19
+1798,100,2026-11-04 18:45:44,pending,69.97,"88924 Kyle Pass Apt. 285, Willisland, ME 92077, USA",2026-11-04 18:45:44
+1799,100,2026-11-04 03:51:54,processing,67.98,"88924 Kyle Pass Apt. 285, Willisland, ME 92077, USA",2026-11-04 04:16:54
+1800,100,2026-11-03 12:31:14,processing,274.97,"88924 Kyle Pass Apt. 285, Willisland, ME 92077, USA",2026-11-03 12:58:14

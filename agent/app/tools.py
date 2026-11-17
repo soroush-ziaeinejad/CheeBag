@@ -59,6 +59,20 @@ TOOLS = [
             "properties": {"product_id": {"type": "integer", "description": "The product id, e.g. 1005" }},
             "required": ["product_id"]
         }
+    },
+    {
+    "name": "propose_cancel_order",
+    "description": "Offer to cancel one of the current customer's orders. This does NOT cancel anything: the store "
+                   "checks the order against each seller's cancellation policy and, if it can be cancelled, the "
+                   "customer sees a confirmation card with Confirm and Keep order buttons. Only their click cancels "
+                   "the order. Use it only when the customer clearly asks to cancel a specific order; if they don't "
+                   "give the number, find it with list_orders and ask which one. If the result says allowed is "
+                   "false, explain the reason in your own words. Never say an order is cancelled.",
+    "input_schema": {
+        "type": "object",
+        "properties": {"order_id": {"type": "integer", "description": "The order number, e.g. 1005"}},
+        "required": ["order_id"],
+    },
     }
 ]
 
@@ -73,6 +87,19 @@ class ToolError(Exception):
 def _get(path, params=None, not_found="Not Found!"):
     try:
         response = httpx.get(f"{STORE_API_URL}{path}", params=params, timeout=10)
+    except httpx.HTTPError:
+        raise ToolError("service_error", "The store system is not reachable right now.")
+    if response.status_code == 404:
+        raise ToolError("not_found", not_found)
+    if response.status_code == 422:
+        raise ToolError("invalid_input", "The store rejected these arguments.")
+    if response.status_code != 200:
+        raise ToolError("service_error", "The store system returned an error.")
+    return response.json()
+
+def _post(path, data=None, not_found="Not Found!"):
+    try:
+        response = httpx.post(f"{STORE_API_URL}{path}", json=data, timeout=10)
     except httpx.HTTPError:
         raise ToolError("service_error", "The store system is not reachable right now.")
     if response.status_code == 404:
@@ -124,6 +151,27 @@ def get_order(customer_id, order_id):
                                    "estimated_delivery", "delivered_at")},
     }
 
+def propose_cancel_order(customer_id, order_id):
+    order_id = _whole_number(order_id, "order_id")
+    proposal = _post(f"/customers/{customer_id}/orders/{order_id}/cancel-proposal",
+                     not_found=f"No order {order_id} was found for this customer.")
+    if not proposal["allowed"]:
+        return {"allowed": False, "reason": proposal["reason"]}
+    card = proposal["card"]
+    return {
+        # what Claude sees: enough to explain the card, but no token
+        "allowed": True,
+        "order_id": card["order_id"],
+        "total": card["total"],
+        "fee": card["fee"],
+        "refund": card["refund"],
+        "consequences": card["consequences"],
+        "next_step": "A confirmation card is now shown to the customer. Nothing is cancelled until they click Confirm.",
+        # what the browser gets; agent.py removes this before the result goes back to Claude
+        "_ui": {"type": "confirmation_card", "version": 1,
+                "data": {**card, "token": proposal["token"], "expires_at": proposal["expires_at"]}},
+    }
+
 def search_products(customer_id, query=None, category=None, max_price=None, in_stock=None):
     params = {
         "limit": SEARCH_LIMIT,
@@ -165,7 +213,7 @@ def get_product(customer_id, product_id):
     }
 
 
-HANDLERS = {"list_orders": list_orders, "get_order": get_order, "search_products": search_products, "get_product": get_product}
+HANDLERS = {"list_orders": list_orders, "get_order": get_order, "search_products": search_products, "get_product": get_product, "propose_cancel_order": propose_cancel_order}
 def _whole_number(value, name):
     # the schema asks for an integer, but the model's output is untrusted: enforce it here
     if not isinstance(value, int) or isinstance(value, bool):

@@ -26,14 +26,20 @@ class ToolCall(BaseModel):
     is_error: bool
     ms: int
 
+class UIComponent(BaseModel):
+    type: Literal["confirmation_card"]   # only card types the website knows how to draw
+    version: int = 1                     # lets the card's shape change later without breaking old pages
+    data: dict
+
 class ChatResponse(BaseModel):
     reply: str
     model: str
     input_tokens: int
     tool_calls: list[ToolCall]
     output_tokens: int
+    ui: list[UIComponent] = []           # NEW: cards for the browser (empty for normal answers)
 
-
+                       # the card content built by the Store API (order, total, token, ...)
 @app.get("/health")
 def health():
     return {"status": "ok", "model": MODEL, "api_key_set": API_KEY_SET}

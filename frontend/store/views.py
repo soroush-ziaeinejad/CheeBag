@@ -3,6 +3,7 @@ import urllib.error
 import urllib.request
 
 from django.conf import settings
+from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import Count, F, Q, Sum
 from django.http import Http404, JsonResponse
@@ -193,3 +194,47 @@ def assistant_chat(request):
         return JsonResponse({"error": message}, status=status)
     except (urllib.error.URLError, TimeoutError, ValueError):
         return JsonResponse({"error": "The assistant is unavailable right now."}, status=502)
+
+
+@require_POST
+def assistant_action(request, action):
+    """Browser -> Django -> Store API, when the customer clicks Confirm or Keep order on a card.
+
+    This is the only way an order gets cancelled: the model can propose, but never call this.
+    The customer comes from the session and the token from the card; the Store API checks both.
+    """
+    customer = current_customer(request)
+    if customer is None:
+        return JsonResponse({"error": "Choose a demo customer first."}, status=403)
+    try:
+        token = json.loads(request.body)["token"]
+    except (ValueError, KeyError, TypeError):
+        token = None
+    if not isinstance(token, str):
+        return JsonResponse({"error": "Bad request."}, status=400)
+
+    store_request = urllib.request.Request(
+        f"{settings.STORE_API_URL}/actions/{action}",
+        data=json.dumps({"customer_id": customer.pk, "token": token}).encode(),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(store_request, timeout=15) as response:
+            result = json.loads(response.read())
+    except urllib.error.HTTPError as e:
+        try:
+            detail = json.loads(e.read()).get("detail")
+        except ValueError:
+            detail = None
+        if e.code in (404, 409) and isinstance(detail, dict):   # invalid, expired, stale, already discarded...
+            return JsonResponse({"error": detail.get("message"), "code": detail.get("code")}, status=e.code)
+        if e.code == 422:                                       # malformed token
+            return JsonResponse({"error": "This confirmation isn't valid.", "code": "invalid_token"}, status=404)
+        return JsonResponse({"error": "The store couldn't process this right now. Try again."}, status=502)
+    except (urllib.error.URLError, TimeoutError, ValueError):
+        return JsonResponse({"error": "The store couldn't process this right now. Try again."}, status=502)
+
+    if action == "confirm":
+        cache.delete("cancellable_customers")  # the "Order you can cancel" demo customer may change
+    return JsonResponse(result)

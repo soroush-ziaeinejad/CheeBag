@@ -10,4 +10,7 @@ urlpatterns = [
     path("orders/<int:pk>/", views.order_detail, name="order_detail"),
     path("switch-customer/", views.switch_customer, name="switch_customer"),
     path("assistant/chat/", views.assistant_chat, name="assistant_chat"),
+    # the customer's click on a confirmation card (the only way an order gets cancelled)
+    path("assistant/actions/confirm/", views.assistant_action, {"action": "confirm"}, name="assistant_confirm"),
+    path("assistant/actions/discard/", views.assistant_action, {"action": "discard"}, name="assistant_discard"),
 ]

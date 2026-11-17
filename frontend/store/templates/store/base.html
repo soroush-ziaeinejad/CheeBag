@@ -111,6 +111,31 @@ body.as-open .assistant { transform:none; }
 .as-context b { color:var(--ink); }
 .as-log { flex:1; overflow-y:auto; overflow-x:hidden; padding:18px 16px; display:flex; flex-direction:column; gap:14px; }
 .as-empty { color:var(--muted); font-size:13px; }
+/* confirmation card (cancel order) */
+.msg.has-card { max-width:100%; width:100%; }
+.cc { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px; font-size:13.5px; }
+.cc-title { display:block; font-size:15px; margin-bottom:6px; }
+.cc-items { list-style:none; margin:0; padding:0 0 8px; }
+.cc-items li { display:flex; justify-content:space-between; gap:12px; padding:3px 0; }
+.cc-items .amt { white-space:nowrap; color:var(--muted); }
+.cc-items .more { color:var(--muted); }
+.cc-sums { display:grid; grid-template-columns:1fr auto; gap:3px 12px; margin:0; padding:8px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.cc-sums dt { color:var(--muted); }
+.cc-sums dd { margin:0; font-weight:650; text-align:right; }
+.cc-cons { margin:10px 0 12px; padding-left:18px; color:var(--muted); font-size:12.5px; line-height:1.5; }
+.cc-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.cc-actions button { flex:1; justify-content:center; min-width:140px; }
+.cc-yes { background:#b42318; }
+.cc-yes:hover { background:#912018; }
+.cc-no { background:var(--card); color:var(--ink); border:1px solid var(--line); }
+.cc.working { opacity:.75; }
+.cc-foot { margin-top:8px; font-size:11.5px; color:var(--muted); }
+.cc[data-state="confirmed"] { border-color:#9fd0a2; background:#f3faf3; }
+.cc[data-state="confirmed"] .cc-foot { color:#2e7d32; font-weight:650; font-size:13px; }
+.cc[data-state="kept"], .cc[data-state="expired"], .cc[data-state="failed"] { opacity:.85; }
+.cc[data-state="failed"] .cc-foot { color:#b42318; font-size:13px; }
+.msg.event { align-self:center; max-width:95%; text-align:center; font-size:12px; color:var(--muted); background:var(--warm); border-radius:999px; padding:4px 12px; }
+.msg.event.ok { color:#2e7d32; }
 .as-label { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
 .as-suggest { display:flex; flex-direction:column; gap:8px; margin-top:8px; text-align:left; }
 .as-suggest button { justify-content:flex-start; background:#fff; color:var(--ink); border:1px solid var(--line); font-weight:500; font-size:13.5px; padding:10px 12px; }
@@ -247,7 +272,8 @@ body.as-open .assistant { transform:none; }
 </button>
 <div class="as-backdrop" data-close-assistant></div>
 <aside class="assistant" id="assistant" role="dialog" aria-label="CHEE, AI shopping assistant"
-       data-customer="{{ current_customer.pk|default:'' }}" data-name="{{ current_customer.first_name|default:'' }}" data-url="{% url 'assistant_chat' %}">
+       data-customer="{{ current_customer.pk|default:'' }}" data-name="{{ current_customer.first_name|default:'' }}" data-url="{% url 'assistant_chat' %}"
+       data-confirm-url="{% url 'assistant_confirm' %}" data-discard-url="{% url 'assistant_discard' %}">
   <div class="as-head">
     <span class="as-avatar">{% include "store/_mascot.html" %}</span>
     <div><b>CHEE</b><small><i></i>AI shopping assistant</small></div>
@@ -276,7 +302,7 @@ body.as-open .assistant { transform:none; }
       <textarea rows="1" placeholder="Ask about products or your orders…" aria-label="Message" {% if not current_customer %}disabled{% endif %}></textarea>
       <button type="submit" aria-label="Send" {% if not current_customer %}disabled{% endif %}><svg class="i" viewBox="0 0 24 24"><path d="M4 12 20 4l-6 16-3-7z"/></svg></button>
     </form>
-    <div class="as-note">AI can make mistakes. Order changes aren’t available yet.</div>
+    <div class="as-note">AI can make mistakes. Cancelling always needs your click on Confirm.</div>
   </div>
 </aside>
 
@@ -315,7 +341,7 @@ body.as-open .assistant { transform:none; }
     el.innerHTML = '<div class="b"></div>';
     const bubble = el.firstChild;
     if (role === "user") bubble.textContent = text; else bubble.innerHTML = format(text);
-    if (meta && window.CHIDEMAN_DEBUG) { // optional diagnostics for local development
+    if (meta && (meta.tools || []).length) {  // activity line: which tools CHEE used for this answer
       const m = document.createElement("div");
       m.className = "meta";
       (meta.tools || []).forEach((t) => {
@@ -325,12 +351,107 @@ body.as-open .assistant { transform:none; }
         chip.title = JSON.stringify(t.input) + (t.ms != null ? " · " + t.ms + " ms" : "");
         m.appendChild(chip);
       });
-      if (meta.tokens) m.appendChild(document.createTextNode(meta.tokens + " tokens"));
+      if (meta.tokens && window.CHIDEMAN_DEBUG) m.appendChild(document.createTextNode(meta.tokens + " tokens"));
       el.appendChild(m);
     }
     log.appendChild(el);
     log.scrollTop = log.scrollHeight;
     return el;
+  }
+
+  // ---------- cards sent next to a reply (built from data with textContent, never from model HTML) ----------
+  const CARDS = { confirmation_card: renderConfirmationCard };
+  const node = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+
+  function renderCards(entry, msgEl) {
+    (entry.meta?.ui || []).forEach((card) => {
+      const draw = CARDS[card.type];
+      if (!draw || card.version !== 1) return;   // unknown card: show nothing rather than guess
+      msgEl.classList.add("has-card");
+      msgEl.insertBefore(draw(card), msgEl.querySelector(".meta"));
+    });
+  }
+
+  // a line in the chat for something the customer did (sent to CHEE as context on the next message)
+  function addEvent(text, ok) {
+    const e = node("div", "msg event" + (ok ? " ok" : ""), (ok ? "✓ " : "• ") + text);
+    log.appendChild(e); log.scrollTop = log.scrollHeight;
+  }
+  function recordEvent(text, ok) {
+    history.push({ role: "assistant", content: text, event: true, ok });
+    save(); addEvent(text, ok);
+  }
+
+  function renderConfirmationCard(card) {
+    const d = card.data;
+    const box = node("div", "cc");
+    box.append(node("b", "cc-title", `Cancel order #${d.order_id}?`));
+    const items = node("ul", "cc-items");
+    d.items.slice(0, 4).forEach((i) => {
+      const li = node("li"); li.append(node("span", null, `${i.quantity} × ${i.name}`), node("span", "amt", `$${i.line_total}`)); items.append(li);
+    });
+    if (d.items.length > 4) items.append(node("li", "more", `+ ${d.items.length - 4} more`));
+    const sums = node("dl", "cc-sums");
+    const row = (k, v) => sums.append(node("dt", null, k), node("dd", null, v));
+    row("Order total", `$${d.total} ${d.currency || "CAD"}`);
+    if (d.fee !== "0.00") row("Cancellation fee", `$${d.fee}`);
+    row("Refund", d.refund ? `$${d.refund}` : "Not charged yet");
+    const cons = node("ul", "cc-cons");
+    d.consequences.forEach((c) => cons.append(node("li", null, c)));
+    const actions = node("div", "cc-actions");
+    const yes = node("button", "cc-yes", "Confirm cancellation"); yes.type = "button";
+    const no = node("button", "cc-no", "Keep order"); no.type = "button";
+    actions.append(yes, no);
+    const foot = node("div", "cc-foot");
+    box.append(items, sums, cons, actions, foot);
+
+    let timer;
+    const show = () => {   // a finished card keeps its outcome, also after a page reload
+      box.dataset.state = card.state || "open";
+      if (!card.state) return;
+      clearInterval(timer); actions.remove(); foot.textContent = card.note;
+    };
+    const finish = (state, note) => { card.state = state; card.note = note; save(); show(); };
+    const tick = () => {   // the countdown is a courtesy; the Store API enforces the expiry
+      const left = Math.round((new Date(d.expires_at) - Date.now()) / 1000);
+      if (left <= 0) return finish("expired", "This confirmation expired. Ask CHEE again if you still want to cancel.");
+      foot.textContent = `Only you can confirm this · expires in ${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`;
+    };
+
+    async function act(kind) {
+      if (card.state || box.classList.contains("working")) return;   // one click only
+      box.classList.add("working"); yes.disabled = no.disabled = true;
+      const label = kind === "confirm" ? yes : no, before = label.textContent;
+      label.textContent = kind === "confirm" ? "Cancelling…" : "Keeping…";
+      let res, out = {};
+      try {
+        res = await fetch(panel.dataset[kind + "Url"], {
+          method: "POST", headers: { "Content-Type": "application/json", "X-CSRFToken": csrf() },
+          body: JSON.stringify({ token: d.token }),
+        });
+        out = await res.json().catch(() => ({}));
+      } catch (e) { res = null; }
+      box.classList.remove("working");
+      if (!res || res.status >= 500 || res.status === 403 || res.status === 400) {   // nothing changed: allow a retry
+        yes.disabled = no.disabled = false; label.textContent = before;
+        foot.textContent = (out.error || "Couldn't reach the store.") + " Nothing was changed; try again.";
+        return;
+      }
+      if (res.ok && kind === "confirm") {
+        finish("confirmed", `${out.message} ${out.refund ? `$${out.refund} CAD will be refunded.` : "Nothing was charged."}`);
+        recordEvent(`Order #${d.order_id} is cancelled. The customer clicked Confirm.`, true);
+      } else if (res.ok) {
+        finish("kept", `You kept order #${d.order_id}. Nothing changed.`);
+        recordEvent(`The customer clicked Keep order, so order #${d.order_id} was not cancelled.`, false);
+      } else {                                                                 // 404 / 409: expired, changed, invalid...
+        finish("failed", out.error || "This confirmation didn't go through.");
+        recordEvent(`The cancellation of order #${d.order_id} did not go through: ${out.error || "unknown reason"}`, false);
+      }
+    }
+    yes.addEventListener("click", () => act("confirm"));
+    no.addEventListener("click", () => act("discard"));
+    if (card.state) show(); else { show(); tick(); timer = setInterval(tick, 1000); }
+    return box;
   }
 
   function renderEmpty() {
@@ -351,7 +472,22 @@ body.as-open .assistant { transform:none; }
     const name = panel.dataset.name;
     addMessage("bot", `Hi ${name}! I'm **CHEE**. I can find products for you and answer questions about your orders.`);
     if (!history.length) return renderEmpty();
-    history.forEach((m) => addMessage(m.role === "user" ? "user" : "bot", m.content, m.meta));
+    history.forEach((m) => {
+      if (m.event) return addEvent(m.content, m.ok);
+      const el = addMessage(m.role === "user" ? "user" : "bot", m.content, m.meta);
+      renderCards(m, el);
+    });
+  }
+
+  // the conversation as Claude expects it: back-to-back messages from the same side (a reply, then the
+  // customer's click on its card) are joined into one
+  function forModel() {
+    const out = [];
+    history.forEach(({ role, content }) => {
+      const last = out[out.length - 1];
+      if (last && last.role === role) last.content += "\n\n" + content; else out.push({ role, content });
+    });
+    return out;
   }
 
   async function send(text) {
@@ -369,15 +505,16 @@ body.as-open .assistant { transform:none; }
       const res = await fetch(panel.dataset.url, {
         method: "POST",
         headers: { "Content-Type": "application/json", "X-CSRFToken": csrf() },
-        body: JSON.stringify({ messages: history.map(({ role, content }) => ({ role, content })) }),
+        body: JSON.stringify({ messages: forModel() }),
       });
       const data = await res.json().catch(() => ({}));
       typing.remove();
       if (!res.ok || !data.reply) throw new Error(data.error || "The assistant is unavailable right now.");
-      const meta = { tools: data.tool_calls || [], tokens: (data.input_tokens || 0) + (data.output_tokens || 0) };
-      history.push({ role: "assistant", content: data.reply, meta });
+      const meta = { tools: data.tool_calls || [], tokens: (data.input_tokens || 0) + (data.output_tokens || 0), ui: data.ui || [] };
+      const entry = { role: "assistant", content: data.reply, meta };
+      history.push(entry);
       save();
-      addMessage("bot", data.reply, meta);
+      renderCards(entry, addMessage("bot", data.reply, meta));
     } catch (err) {
       typing.remove();
       history.pop();  // forget the unanswered message so the conversation stays valid
