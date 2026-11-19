@@ -1,0 +1,60 @@
+/* One button system for the whole store, so a button's colour tells you what it does.
+     Primary   (filled teal)   the main action in a place: Show it in my room, Update preview, Apply, Send
+     Secondary (outlined)      other actions next to it: Use as my selection, Keep order, Previous / Next
+     Text      (.link-btn)     small actions inside text: Change, Use another photo
+     Danger    (filled red)    only actions that remove or undo something: Yes, cancel the order
+     Disabled  (grey)          can't be used yet; never a faded colour that looks clickable
+   Red is kept for errors and destructive actions, so it never means "go".
+   The general rules use :where() (no specificity), so components with their own look (tabs, chips, pins,
+   product rows) keep it; only buttons without their own background get the primary style. */
+:root {
+  --primary:#176f6f; --primary-hover:#125b5b; --primary-press:#0d4747; --primary-soft:#ddf0ee; --primary-line:#a9d6d1;
+  --danger:#b42318; --danger-hover:#912018; --danger-soft:#fdecea; --danger-line:#f3b8b2;
+  --warning-ink:#7a4f00; --warning-soft:#fdf2d8; --warning-line:#ecc777;
+  --disabled-bg:#ebe5db; --disabled-ink:#968a92;
+  --secondary-line:#cdbfac;
+}
+
+/* primary: the default for a plain <button> or .btn */
+:where(button, .btn) { background:var(--primary); color:#fff; border:1px solid transparent; }
+:where(button, .btn):hover { background:var(--primary-hover); }
+:where(button, .btn):active { background:var(--primary-press); }
+.btn { color:#fff; }          /* links styled as buttons (a.btn) would otherwise inherit the text colour */
+
+/* secondary */
+.btn.ghost, .btn.secondary, .btn.studio-btn, .cc-no, .st-pact button.ghost {
+  background:var(--card); color:var(--ink); border:1px solid var(--secondary-line); }
+.btn.ghost:hover, .btn.secondary:hover, .btn.studio-btn:hover, .cc-no:hover, .st-pact button.ghost:hover {
+  background:#fff; border-color:var(--ink); }
+.btn.studio-btn svg.i { color:var(--primary); }
+
+/* text buttons */
+.link-btn { color:var(--primary); }
+.link-btn:hover { color:var(--primary-hover); background:none; }
+
+/* danger */
+.btn.danger, .cc-yes { background:var(--danger); color:#fff; }
+.btn.danger:hover, .cc-yes:hover { background:var(--danger-hover); }
+
+/* the chat's Send button is a primary action too */
+.as-compose button { background:var(--primary); }
+.as-compose button:hover { background:var(--primary-hover); }
+
+/* disabled: grey, flat, clearly not clickable (beats every colour above) */
+button:disabled, .btn:disabled, button:disabled:hover, .btn:disabled:hover {
+  background:var(--disabled-bg) !important; color:var(--disabled-ink) !important; border-color:transparent !important;
+  box-shadow:none !important; opacity:1; cursor:not-allowed; }
+.link-btn:disabled { background:none !important; }
+
+/* keyboard focus: one clear ring everywhere */
+button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline:3px solid var(--primary); outline-offset:3px; }
+
+/* a button that is working: a small spinner before its label (add the class "is-loading") */
+.is-loading::before { content:""; width:15px; height:15px; flex:none; border-radius:50%; border:2px solid currentColor;
+                      border-right-color:transparent; animation:btn-spin .8s linear infinite; }
+@keyframes btn-spin { to { transform:rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .is-loading::before { animation-duration:2.4s; } }
+
+/* hover borders on outlined choices: neutral ink instead of red */
+.chips button:hover, .as-suggest button:hover, .st-chips button:hover { border-color:var(--ink); }

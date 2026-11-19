@@ -34,7 +34,47 @@
   const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
   let busy = false;
 
-  const status = (text, isError) => { const s = $("[data-st-status]"); s.textContent = text || ""; s.classList.toggle("err", !!isError); };
+  const status = (text) => { $("[data-st-status]").textContent = text || ""; };    // progress notes ("Uploading…")
+
+  // ---------- the banner at the top of the studio: errors, limits and notices ----------
+  // kinds: "error" (red: something failed), "limit" (amber: a daily or monthly limit), "warn" (amber: check what you
+  // entered), "info" (neutral). It stays until it is dismissed or the next action starts.
+  function banner(kind, message, title = "") {
+    const b = $("[data-st-banner]");
+    b.className = "st-banner " + kind;
+    $("[data-st-banner-title]").textContent = title;
+    $("[data-st-banner-msg]").textContent = message;
+    b.hidden = false;
+  }
+  const clearBanner = () => { $("[data-st-banner]").hidden = true; };
+  function showError(e) {
+    if (e.status === 429) return banner("limit", e.message, "Limit reached");
+    if (e.status === 503) return banner("warn", e.message, "Not available yet");
+    banner("error", e.message, e.status === 0 ? "Connection problem" : "Something went wrong");
+  }
+
+  // ---------- the loading screen over the photo while a preview is made ----------
+  let loadingTimer;
+  function loading(on, title) {
+    clearInterval(loadingTimer);
+    $("[data-st-loading]").hidden = !on;
+    $(".st-photo").classList.toggle("is-busy", on);
+    $(".st-frame").setAttribute("aria-busy", String(on));
+    $("[data-st-reset]").disabled = on;
+    if (!on) return;
+    $("[data-st-loading-title]").textContent = title;
+    const start = Date.now(), clock = $("[data-st-loading-time]");
+    clock.textContent = "0";
+    loadingTimer = setInterval(() => { clock.textContent = String(Math.round((Date.now() - start) / 1000)); }, 1000);
+    $(".st-photo").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  // wait until the new picture has loaded, so the loading screen doesn't lift on the old one
+  const pictureLoaded = () => new Promise((resolve) => {
+    const img = $("[data-st-img]");
+    if (img.complete) return resolve();
+    img.addEventListener("load", resolve, { once: true });
+    img.addEventListener("error", resolve, { once: true });
+  });
 
   async function api(url, options = {}) {
     const headers = { "X-CSRFToken": csrf(), ...(options.json ? { "Content-Type": "application/json" } : {}) };
@@ -42,10 +82,10 @@
     try {
       res = await fetch(url, { method: options.method || "POST", headers, body: options.json ? JSON.stringify(options.json) : options.body });
     } catch (e) {
-      throw new Error("Couldn't reach the store. Please try again.");
+      throw Object.assign(new Error("Couldn't reach the store. Check your connection and try again."), { status: 0 });
     }
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+    if (!res.ok) throw Object.assign(new Error(data.error || "Something went wrong. Please try again."), { status: res.status });
     return data;
   }
 
@@ -61,16 +101,18 @@
   // ---------- 1. the photo ----------
   async function upload(file) {
     if (busy) return;
-    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return status("Please choose a JPG, PNG or WebP photo.", true);
-    if (file.size > MAX_BYTES) return status("That photo is too big. Please use one under 8 MB.", true);
-    busy = true; status("Uploading your photo…");
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return banner("warn", "Please choose a JPG, PNG or WebP photo.");
+    if (file.size > MAX_BYTES) return banner("warn", "That photo is too big. Please use one under 8 MB.");
+    busy = true; clearBanner(); status("Uploading your photo…");
+    $("[data-st-start]").classList.add("is-busy");
     const form = new FormData(); form.append("photo", file);
     try {
       const data = await api(studio.dataset.uploadUrl, { body: form });
       state = { ...newRoom(), room: data.room_id };
       save(); draw(); status("");
       await analyze();
-    } catch (e) { status(e.message, true); }
+    } catch (e) { status(""); showError(e); }
+    $("[data-st-start]").classList.remove("is-busy");
     busy = false;
   }
 
@@ -156,7 +198,10 @@
       if (!data.products.length) list.replaceChildren(node("p", "st-small", shopsMode()
         ? "None of our 14 shops came up for that. Try other words." : "No products match that search."));
       drawSelected();
-    } catch (e) { list.replaceChildren(node("p", "st-small err", e.message)); }
+    } catch (e) {
+      list.replaceChildren(node("p", "st-small err", e.message));
+      if (e.status === 429) showError(e);      // e.g. today's shop searches are used up
+    }
   }
 
   // ids are text: "123" for CheeBag products, "s…" for shop listings
@@ -168,8 +213,8 @@
 
   function add(p) {
     if (has(p.id)) return;
-    if (state.items.length >= MAX_ITEMS) return status(`You can place up to ${MAX_ITEMS} products in one preview.`, true);
-    state.items.push(slim(p)); status(""); save(); drawSelected();
+    if (state.items.length >= MAX_ITEMS) return banner("warn", `You can place up to ${MAX_ITEMS} products in one preview. Remove one to add another.`);
+    state.items.push(slim(p)); save(); drawSelected();
   }
   function remove(id) {
     state.items = state.items.filter((i) => String(i.id) !== String(id)); save(); drawSelected();
@@ -197,18 +242,19 @@
 
   async function preview() {
     if (busy || !state.items.length || !state.room) return;
-    busy = true;
-    const go = $("[data-st-render]"); go.disabled = true; go.textContent = "Making your preview…";
-    status("This can take up to a minute.");
+    busy = true; clearBanner();
+    const items = [...state.items];
+    const go = $("[data-st-render]"); go.disabled = true; go.textContent = "Making your preview…"; go.classList.add("is-loading");
+    loading(true, items.length > 1 ? `Placing your ${items.length} products in the room…` : `Placing ${short(items[0].name)} in the room…`);
     try {
-      const items = [...state.items];
       const data = await api(roomUrl("render"), { json: { product_ids: items.map((i) => String(i.id)) } });
       state.renders.push({ id: data.render_id, label: items.length > 1 ? `${items.length} products` : items[0].name,
                            demo: data.demo, items, edits: {} });
       state.showing = data.render_id; state.left = data.renders_left;
-      save(); drawPhoto(); status("");
-      $("[data-st-img]").scrollIntoView({ behavior: "smooth", block: "nearest" });
-    } catch (e) { status(e.message, true); }
+      save(); drawPhoto();
+      await pictureLoaded();
+    } catch (e) { showError(e); }
+    loading(false); go.classList.remove("is-loading");
     busy = false; drawSelected();
   }
 
@@ -285,33 +331,35 @@
       const e = render.edits[item.id] || {};
       return { product_id: String(item.id), ...(e.moved ? { x: e.x, y: e.y } : {}), ...(e.colour ? { colour: e.colour } : {}) };
     }).filter((e) => e.x != null || e.colour);
-    if (!edits.length && !note) return status("Move a pin, pick a colour or describe a change first.", true);
-    busy = true;
-    const btn = $("[data-st-update]"); btn.disabled = true; btn.textContent = "Updating your preview…";
-    status("This can take up to a minute.");
+    if (!edits.length && !note) return banner("warn", "Move a pin, pick a colour or describe a change first.", "Nothing to update yet");
+    busy = true; clearBanner();
+    const btn = $("[data-st-update]"); btn.disabled = true; btn.textContent = "Updating your preview…"; btn.classList.add("is-loading");
+    loading(true, "Updating your preview…");
     try {
       const data = await api(roomUrl("render"), { json: { product_ids: render.items.map((i) => String(i.id)), edits, note, based_on: render.id } });
       // the new preview keeps the colours and the pins where they are; nothing is "moved" again until dragged
       const kept = Object.fromEntries(Object.entries(render.edits).map(([id, e]) => [id, { ...e, moved: false }]));
       state.renders.push({ ...render, id: data.render_id, demo: data.demo, edits: kept, updated: true });
       state.showing = data.render_id; state.left = data.renders_left;
-      $("[data-st-note]").value = ""; save(); drawPhoto(); status("");
-      $("[data-st-img]").scrollIntoView({ behavior: "smooth", block: "nearest" });
-    } catch (e) { status(e.message, true); }
+      $("[data-st-note]").value = ""; save(); drawPhoto();
+      await pictureLoaded();
+    } catch (e) { showError(e); }
+    loading(false); btn.classList.remove("is-loading");
     btn.disabled = false; btn.textContent = "Update preview"; busy = false; drawSelected();
   }
 
   // ---------- 3. let CHEE pick a set for a budget ----------
   async function planRoom(budget, wishes) {
     if (busy || !state.room) return;
-    if (!(budget >= 10 && budget <= 10000)) return status("Enter a budget between $10 and $10,000.", true);
-    busy = true;
+    if (!(budget >= 10 && budget <= 10000)) return banner("warn", "Enter a budget between $10 and $10,000.");
+    busy = true; clearBanner();
     const box = $("[data-st-plan-result]"), btn = $("[data-st-plan] button");
-    btn.disabled = true; box.replaceChildren(node("p", "st-small", "CHEE is putting a set together…")); status("");
+    btn.disabled = true; btn.classList.add("is-loading");
+    box.replaceChildren(node("p", "st-small", "CHEE is putting a set together…"));
     try {
       state.plan = await api(roomUrl("plan"), { json: { budget, wishes, source: state.source } }); save();
-    } catch (e) { state.plan = null; status(e.message, true); }
-    btn.disabled = false; busy = false; drawPlan(); drawSelected();
+    } catch (e) { state.plan = null; showError(e); }
+    btn.disabled = false; btn.classList.remove("is-loading"); busy = false; drawPlan(); drawSelected();
   }
 
   function drawPlan() {
@@ -368,7 +416,7 @@
   async function ask(text) {
     text = (text || "").trim();
     if (!text || busy || !state.room) return;
-    busy = true;
+    busy = true; clearBanner();
     const input = $("[data-st-form] textarea"); input.value = "";
     state.chat.push({ role: "user", content: text }); drawMessage(state.chat[state.chat.length - 1]);
     const typing = node("div", "st-msg st-bot"); typing.append(node("div", "st-b", "CHEE is thinking…")); $("[data-st-log]").append(typing);
@@ -382,7 +430,7 @@
       state.chat.push(m); save(); drawMessage(m);
     } catch (e) {
       typing.remove(); state.chat.pop(); $("[data-st-log]").lastChild?.remove();
-      input.value = text; status(e.message, true);
+      input.value = text; showError(e);
     }
     busy = false;
   }
@@ -408,7 +456,7 @@
   $("[data-st-img]").addEventListener("error", () => {
     if (!state.room) return;
     state = newRoom(); save(); draw();
-    status("Your room photo expired, so please upload it again.");
+    banner("info", "Room photos are deleted after 6 hours. Please upload it again.", "Your photo expired");
   });
 
   // ---------- events ----------
@@ -422,9 +470,10 @@
     try {
       const blob = await (await fetch(studio.dataset.sampleUrl)).blob();
       upload(new File([blob], "sample-room.jpg", { type: "image/jpeg" }));
-    } catch (e) { status("Couldn't load the sample room.", true); }
+    } catch (e) { banner("error", "Couldn't load the sample room. Please try again.", "Something went wrong"); }
   });
-  $("[data-st-reset]").addEventListener("click", () => { state = newRoom(); save(); draw(); });
+  $("[data-st-reset]").addEventListener("click", () => { state = newRoom(); save(); clearBanner(); draw(); });
+  $("[data-st-banner-close]").addEventListener("click", clearBanner);
   $("[data-st-search]").addEventListener("input", (e) => {
     if (shopsMode()) return;          // shop searches cost money, so they wait for Enter
     clearTimeout(searchTimer); searchTimer = setTimeout(() => search(e.target.value.trim()), 250);
@@ -459,7 +508,7 @@
     if (!e.target.closest("[data-new-chat]") || busy) return;
     state = undefined; state = fresh(); save();
     $("[data-st-search]").value = ""; $("[data-st-note]").value = ""; $("[data-st-form] textarea").value = "";
-    status(""); draw();
+    status(""); clearBanner(); draw();
   });
 
   draw();

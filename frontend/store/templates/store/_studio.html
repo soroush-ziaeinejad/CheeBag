@@ -3,7 +3,13 @@
 <section class="studio" id="studio" role="tabpanel" aria-label="Room studio"
          data-upload-url="{% url 'studio_upload' %}" data-products-url="{% url 'studio_products' %}"
          data-shops-url="{% url 'studio_shops' %}"
-         data-sample-url="{% static 'store/img/hero_room.jpg' %}">
+         data-sample-url="{% static 'store/img/sample_room.jpg' %}">
+
+  <div class="st-banner" data-st-banner role="alert" hidden>
+    <svg class="i st-banner-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg>
+    <div class="st-banner-text"><b data-st-banner-title></b><span data-st-banner-msg></span></div>
+    <button type="button" class="st-banner-x" data-st-banner-close aria-label="Dismiss">×</button>
+  </div>
 
   <div class="st-start" data-st-start>
     <span class="st-kicker">Room studio</span>
@@ -16,7 +22,11 @@
       <b>Upload a room photo</b>
       <small>JPG, PNG or WebP, up to 8 MB · deleted after 6 hours</small>
     </label>
-    <button class="link-btn" type="button" data-st-sample>Or try our sample living room</button>
+    <button class="st-sample" type="button" data-st-sample>
+      <img src="{% static 'store/img/sample_room_thumb.jpg' %}" alt="" width="96" height="64">
+      <span><b>Try our sample room</b><small>A bright, empty room, ready to furnish</small></span>
+    </button>
+    <p class="st-credit">Sample photo by <a href="https://unsplash.com/photos/empty-room-with-white-walls-hardwood-floor-and-high-windows-bG8rvtDeExE" target="_blank" rel="noopener noreferrer">Salvo Media</a> on Unsplash</p>
   </div>
 
   <div class="st-room" data-st-room hidden>
@@ -24,6 +34,12 @@
       <div class="st-frame">
         <img alt="Your room" data-st-img>
         <div class="st-pins" data-st-pins></div>
+        <div class="st-loading" data-st-loading role="status" aria-live="polite" hidden>
+          <span class="st-spinner" aria-hidden="true"></span>
+          <b data-st-loading-title>Making your preview…</b>
+          <small><span data-st-loading-time>0</span>s · usually 15–40 seconds</small>
+          <span class="st-bar" aria-hidden="true"></span>
+        </div>
       </div>
       <div class="st-switch" data-st-switch></div>
       <figcaption data-st-caption></figcaption>
