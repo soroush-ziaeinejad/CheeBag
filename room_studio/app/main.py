@@ -33,9 +33,9 @@ provider = get_provider()
 CLAUDE_READY = bool(os.environ.get("ANTHROPIC_API_KEY"))
 
 # daily limits, so a public demo can't run up the image and Claude bills
+# (previews have no per-visitor limit, only the daily total for everyone in TOTALS)
 LIMITS = {
     "upload": int(os.environ.get("STUDIO_UPLOADS_PER_DAY", "10")),     # per visitor
-    "render": int(os.environ.get("STUDIO_RENDERS_PER_DAY", "5")),      # per visitor
     "ask": int(os.environ.get("STUDIO_QUESTIONS_PER_DAY", "30")),      # per visitor
     "shop_search": int(os.environ.get("STUDIO_SHOP_SEARCHES_PER_DAY", "8")),   # per visitor (only paid, not cached)
 }
@@ -45,16 +45,17 @@ usage = Counter()   # in memory: resets when the service restarts, which is fine
 
 
 def use(kind, visitor):
-    """Count one use of `kind` today, or refuse with 429 when the daily limit is reached."""
+    """Count one use of `kind` today, or refuse with 429 when the daily limit is reached.
+    Returns how many uses this visitor has left today, or None when there's no per-visitor limit."""
     today = date.today().isoformat()
-    if usage[(today, kind, visitor)] >= LIMITS[kind]:
+    if kind in LIMITS and usage[(today, kind, visitor)] >= LIMITS[kind]:
         raise HTTPException(429, f"You've reached today's limit for this demo ({LIMITS[kind]}). Please come back tomorrow.")
     if kind in TOTALS and usage[(today, kind, "*")] >= TOTALS[kind]:
         raise HTTPException(429, "The demo has made all of today's previews. Please come back tomorrow.")
     usage[(today, kind, visitor)] += 1
     if kind in TOTALS:
         usage[(today, kind, "*")] += 1
-    return LIMITS[kind] - usage[(today, kind, visitor)]
+    return LIMITS[kind] - usage[(today, kind, visitor)] if kind in LIMITS else None
 
 
 def give_back(kind, visitor):
