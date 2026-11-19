@@ -96,7 +96,7 @@ def main():
             and (c["fee_after_window_cad"] is None or c["free_window_hours"] is not None)
         check(f"seller {sid}: rules are internally consistent", ok)
     check("only sellers with oversized products have freight rules",
-          {sid for sid, f in POLICIES.items() if f["large_items"]} == {5})
+          {sid for sid, f in POLICIES.items() if f["large_items"]} == {5, 6})
 
     print(f"\n{sum(results)}/{len(results)} checks passed")
     sys.exit(0 if all(results) else 1)

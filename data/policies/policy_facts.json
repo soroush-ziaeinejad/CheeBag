@@ -609,8 +609,8 @@
       "key_values": {
         "seller_id": 5,
         "seller_name": "Breezeway Home Appliances",
-        "policy_version": "5.1",
-        "effective_date": "2026-11-17",
+        "policy_version": "5.2",
+        "effective_date": "2026-11-19",
         "return_window_days": 30,
         "restocking_fee_percent": 20,
         "return_label_fee_cad": 9.95,
@@ -655,6 +655,10 @@
             "months": 12
           },
           {
+            "covers": "TVs",
+            "months": 12
+          },
+          {
             "covers": "Filters, bags and replacement parts",
             "months": 1
           }
@@ -666,8 +670,8 @@
         "governing_law": "Province of Ontario"
       },
       "details": {
-        "policy_version": "5.1",
-        "effective_date": "2026-11-17",
+        "policy_version": "5.2",
+        "effective_date": "2026-11-19",
         "governing_law": "Province of Ontario",
         "cancellation": {
           "free_window_hours": 12,
@@ -676,7 +680,7 @@
             "Processing"
           ],
           "fee_after_window_cad": 35,
-          "rule": "Orders can be cancelled free of charge within 12 hours of being placed, as long as they have not shipped. Orders with an oversized item (such as a portable air conditioner) cancelled after the 12-hour window but before shipping incur a $35 freight cancellation fee.",
+          "rule": "Orders can be cancelled free of charge within 12 hours of being placed, as long as they have not shipped. Orders with an oversized item (such as a portable air conditioner or a large TV) cancelled after the 12-hour window but before shipping incur a $35 freight cancellation fee.",
           "refund_business_days": 3
         },
         "order_modification_window_hours": 6,
@@ -717,7 +721,7 @@
         },
         "large_items": {
           "threshold_lb": 50,
-          "examples": "portable air conditioners",
+          "examples": "portable air conditioners and TVs of 65 inches or more",
           "fee_cad": 29.99,
           "service": "curbside delivery",
           "business_days": [
@@ -757,6 +761,11 @@
             "notes": "capacity below 70% of rated"
           },
           {
+            "covers": "TVs",
+            "months": 12,
+            "notes": "parts and labor; dead pixels are covered for the first 30 days"
+          },
+          {
             "covers": "Filters, bags and replacement parts",
             "months": 1,
             "notes": "defects on arrival only"
@@ -781,8 +790,8 @@
       "key_values": {
         "seller_id": 6,
         "seller_name": "Nestwell Bed & Bath",
-        "policy_version": "2.4",
-        "effective_date": "2026-11-17",
+        "policy_version": "3.0",
+        "effective_date": "2026-11-19",
         "return_window_days": 45,
         "restocking_fee_percent": 0,
         "return_label_fee_cad": 4.95,
@@ -815,6 +824,18 @@
         "price_adjustment_days": 7,
         "warranties": [
           {
+            "covers": "Furniture frames, joints and hardware (sofas, beds, tables, dressers, desks and shelves)",
+            "months": 24
+          },
+          {
+            "covers": "Upholstery fabric, area rugs and artificial plants",
+            "months": 12
+          },
+          {
+            "covers": "Lamps",
+            "months": 12
+          },
+          {
             "covers": "Sheets, pillows and pillow inserts",
             "months": 12
           },
@@ -823,7 +844,7 @@
             "months": 60
           },
           {
-            "covers": "Picture frames and photo albums",
+            "covers": "Picture frames, photo albums, mirrors and wall art",
             "months": 12
           },
           {
@@ -832,14 +853,14 @@
           }
         ],
         "personalization_offered": true,
-        "oversized_delivery_fee_cad": null,
+        "oversized_delivery_fee_cad": 49.0,
         "first_response_hours": 24,
         "data_retention_years": 3,
         "governing_law": "Province of Nova Scotia"
       },
       "details": {
-        "policy_version": "2.4",
-        "effective_date": "2026-11-17",
+        "policy_version": "3.0",
+        "effective_date": "2026-11-19",
         "governing_law": "Province of Nova Scotia",
         "cancellation": {
           "free_window_hours": 6,
@@ -857,12 +878,13 @@
           "window_days": 45,
           "condition": "unused, unwashed and in original packaging",
           "restocking_fee_percent": 0,
-          "return_shipping": "free for exchanges; $4.95 deducted from refunds",
+          "return_shipping": "free for exchanges; $4.95 deducted from refunds, or $79 for the freight pickup of oversized furniture",
           "return_label_fee_cad": 4.95,
           "non_returnable": [
             "opened pillows, pillow inserts and mattress protectors (except the 30-night Pillow Comfort Exchange)",
             "used shower liners",
-            "monogrammed items"
+            "monogrammed items",
+            "furniture that has been assembled, unless it is defective"
           ]
         },
         "exchanges": {
@@ -888,12 +910,48 @@
           "remote_area_surcharge_cad": 12.0,
           "po_boxes": true
         },
-        "large_items": null,
+        "large_items": {
+          "threshold_lb": 50,
+          "examples": "sofas, bed frames, dressers and dining sets",
+          "fee_cad": 49.0,
+          "service": "curbside delivery",
+          "business_days": [
+            7,
+            14
+          ],
+          "appointment_window_hours": 4,
+          "signature_required": true,
+          "in_home_placement_fee_cad": 79.0,
+          "oversized_return_pickup_cad": 79.0,
+          "excluded_regions": [
+            "Alaska",
+            "Hawaii",
+            "Yukon",
+            "Northwest Territories",
+            "Nunavut",
+            "PO boxes"
+          ]
+        },
         "damage_report_days": 10,
         "lost_package_claim_days": 7,
         "price_adjustment_days": 7,
         "pillow_comfort_exchange_nights": 30,
         "warranty": [
+          {
+            "covers": "Furniture frames, joints and hardware (sofas, beds, tables, dressers, desks and shelves)",
+            "months": 24,
+            "notes": "manufacturing defects in normal home use"
+          },
+          {
+            "covers": "Upholstery fabric, area rugs and artificial plants",
+            "months": 12,
+            "notes": "seams, fabric and backing"
+          },
+          {
+            "covers": "Lamps",
+            "months": 12,
+            "notes": "wiring, switches and built-in LEDs"
+          },
           {
             "covers": "Sheets, pillows and pillow inserts",
             "months": 12,
@@ -905,7 +963,7 @@
             "notes": "leaks through the waterproof layer"
           },
           {
-            "covers": "Picture frames and photo albums",
+            "covers": "Picture frames, photo albums, mirrors and wall art",
             "months": 12,
             "notes": "manufacturing defects"
           },

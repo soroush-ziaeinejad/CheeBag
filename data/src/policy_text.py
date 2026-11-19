@@ -21,9 +21,12 @@ SETUP = {
     5: ["Tower fans need their base attached before use (about 10 minutes, Phillips screwdriver required).",
         "Portable air conditioners include a window kit that most customers install themselves in about 30 minutes. If the unit was transported or stored on its side, let it stand upright for 24 hours before switching it on.",
         "Fully charge cordless vacuums before first use.",
+        "TVs come with a stand or legs that attach in about 10 minutes. Wall mounts are sold separately, and Breezeway does not mount TVs on walls.",
         "Breezeway does not perform electrical work or permanent installations. Customers can book a free 30-minute video setup call with our product specialists through customer service."],
-    6: ["Nestwell products need no assembly.",
-        "Picture frames include an easel back and hanging hardware for drywall. We do not offer wall-mounting or installation services.",
+    6: ["Bedding, bath products, decor and lamps need no assembly.",
+        "Most furniture ships flat-packed with the tools and instructions included: about 15 minutes for a sofa (attach the legs and back), and 30 to 90 minutes for bed frames, dressers, desks, tables and bookcases. Nestwell does not offer an assembly service.",
+        "Tall furniture such as bookcases and dressers comes with an anti-tip kit. Anchor it to the wall, especially in homes with children.",
+        "Picture frames include an easel back, and frames, mirrors and wall art include hanging hardware for drywall. We do not offer wall-mounting or installation services.",
         "Shower liners hang on standard shower rings; rings are not included unless the product page says so."],
 }
 
@@ -54,12 +57,16 @@ CARE = {
         "Fans: unplug before cleaning and dust the blades and grille monthly.",
         "Vacuums: empty the dust bin after each use; wash washable filters monthly and let them air-dry for 24 hours before reinstalling.",
         "Air purifier and HVAC filters: replace every 3 to 6 months, or sooner in homes with pets or smokers.",
+        "TVs: unplug before cleaning and wipe the screen with a dry microfiber cloth; never spray cleaner directly on the screen.",
         "Damage caused by clogged or missing filters is not covered by warranty."],
     6: ["Sheets and pillowcases: machine wash warm or cold, tumble dry low and avoid bleach.",
         "Pillows: use a pillow protector, fluff daily and spot clean; machine wash only if the care label allows it.",
         "Mattress protectors: machine wash warm, tumble dry low, and do not bleach or iron, which can damage the waterproof layer.",
         "Bath rugs: machine wash cold and air dry or tumble dry low.",
-        "Frames and albums: dust with a soft, dry cloth."],
+        "Frames and albums: dust with a soft, dry cloth.",
+        "Wood and laminate furniture: dust with a dry or slightly damp cloth, use coasters, and keep it out of direct sunlight to avoid fading.",
+        "Upholstery: vacuum weekly, blot spills right away and follow the cleaning code on the tag.",
+        "Area rugs: vacuum regularly, rotate every 6 months and spot clean; machine wash only if the label allows it."],
 }
 
 PARCEL_NOTE = {
@@ -67,7 +74,6 @@ PARCEL_NOTE = {
     2: "All Kettle & Crema products ship as standard parcels; even our largest multicookers weigh well under 50 lb, so there is no freight delivery and no oversized fee. Appliance boxes may be left at your door, so choose expedited shipping if you will not be home.",
     3: "All Cork & Pour products ship as standard parcels; none weighs more than 50 lb, so there is no freight delivery and no oversized fee. Ice buckets ship in their own protective boxes.",
     4: "All Trailmate products ship as standard parcels; none weighs more than 50 lb, so there is no freight delivery and no oversized fee.",
-    6: "Bedding, pillows and laundry baskets are bulky but light. They ship as standard parcels with no freight delivery and no oversized fee.",
 }
 
 RETURN_TABLE = {
@@ -93,12 +99,16 @@ RETURN_TABLE = {
     5: [("Fans, vacuums, towel warmers", "30 days", "Unopened", "None"),
         ("Fans, vacuums, towel warmers", "30 days", "Opened", "20%"),
         ("Portable air conditioners (oversized)", "30 days", "Opened", "20% plus $59 pickup"),
+        ("TVs", "30 days", "Opened", "20%"),
         ("Filters, vacuum bags, parts", "30 days", "Unopened only", "None"),
         ("Any defective item", "30 days", "Any", "None")],
     6: [("Sheets and pillowcases", "45 days", "Unused, unwashed, original packaging", "None"),
         ("Pillows, inserts, mattress protectors", "45 days", "Sealed only (or 30-night comfort exchange)", "None"),
         ("Bath rugs and bath accessories", "45 days", "Unused", "None"),
         ("Frames, albums, decor, laundry and closet items", "45 days", "Unused, original packaging", "None"),
+        ("Lamps, rugs, mirrors and wall art", "45 days", "Unused, original packaging", "None"),
+        ("Furniture", "45 days", "Unassembled, original packaging ($79 freight pickup if oversized)", "None"),
+        ("Assembled furniture", "Not returnable unless defective", "-", "-"),
         ("Monogrammed items", "Not returnable", "-", "-")],
 }
 
@@ -107,8 +117,10 @@ WARRANTY_EXCLUSIONS = {
     2: ["Limescale damage when the appliance was not descaled as described in Section 11", "Use with voltage converters or outside Canada and the United States"],
     3: ["Chips or scratches on finishes", "The wording of engraving, which is reproduced exactly as submitted"],
     4: ["Dents, scratches and worn paint or powder coat", "Dishwasher damage to items not marked dishwasher-safe", "Lost lids or straws"],
-    5: ["Damage caused by clogged or missing filters", "Filters and bags after they have been installed", "Damage during a move arranged by the customer"],
-    6: ["Pilling, shrinkage or fading from washing against the care label", "Normal flattening of pillows over time"],
+    5: ["Damage caused by clogged or missing filters", "Filters and bags after they have been installed", "Damage during a move arranged by the customer",
+        "Cracked TV screens and damage from impacts or pressure"],
+    6: ["Pilling, shrinkage or fading from washing against the care label", "Normal flattening of pillows over time",
+        "Damage from assembly that does not follow the instructions", "Fading from direct sunlight and normal softening of seat cushions"],
 }
 
 EXTRA_FAQ = {
@@ -143,13 +155,19 @@ EXTRA_FAQ = {
         ("How does Filter Auto-Refill work?",
          "Filter Auto-Refill delivers your filters every 3 or 6 months at 10% off. You can skip or cancel up to 3 days before a shipment."),
         ("Can I cancel an air conditioner order?",
-         "Yes, free of charge within 12 hours of ordering. After 12 hours and before it ships, cancelling an order with an oversized item costs $35 because the freight delivery has already been booked.")],
+         "Yes, free of charge within 12 hours of ordering. After 12 hours and before it ships, cancelling an order with an oversized item costs $35 because the freight delivery has already been booked."),
+        ("Do you mount TVs on the wall?",
+         "No. TVs come with a stand or legs; wall mounts are sold separately and Breezeway does not mount TVs. TVs of 65 inches or more weigh over 50 lb and arrive by freight like other oversized items.")],
     6: [("Can I return a pillow I have slept on?",
          "Opened pillows cannot be returned for hygiene reasons, but our 30-night Pillow Comfort Exchange lets you exchange one pillow for a different firmness within 30 nights of delivery."),
         ("Can I get pillowcases monogrammed?",
          "Yes. Monogramming on pillowcases and sheet sets costs $12.00 per item and adds 4 business days. Monogrammed items are final sale and can only be cancelled within 1 hour of ordering."),
         ("How long is the mattress protector's waterproof layer covered?",
-         "For 60 months (5 years). If liquid leaks through the waterproof layer during that time, we replace the protector.")],
+         "For 60 months (5 years). If liquid leaks through the waterproof layer during that time, we replace the protector."),
+        ("How is a sofa or bed frame delivered?",
+         "Furniture over 50 lb, such as sofas, bed frames, dressers and dining sets, is delivered curbside by a freight carrier for a flat $49.00 within 7-14 business days. The carrier calls to book a 4-hour delivery window, and a signature is required. For $79.00 more, it is carried to the room of your choice and the packaging is taken away."),
+        ("Can I return a bed frame I have already assembled?",
+         "Only if it is defective. Unassembled furniture in its original packaging can be returned within 45 days of delivery; oversized pieces are picked up by freight for $79.00, deducted from the refund.")],
 }
 
 # how each seller's charges appear on card statements (CHEEBAG*<descriptor>)

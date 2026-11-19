@@ -101,7 +101,7 @@ sequenceDiagram
 
 ## The data
 
-- **136 products and 13,176 reviews**, a home and kitchen subset of [Amazon Reviews 2023](https://amazon-reviews-2023.github.io/) (McAuley Lab, UC San Diego).
+- **218 products and 15,631 reviews**, a home and kitchen subset of [Amazon Reviews 2023](https://amazon-reviews-2023.github.io/) (McAuley Lab, UC San Diego): 136 kitchen and home products, plus 82 pieces of furniture, decor, lamps and TVs for Room studio (`data/src/add_furniture.py`).
 - **6 fictional sellers**, four in Canada and two in the US, each with its own 11–13 page policy handbook (PDF) for returns, shipping, warranty and cancellation.
 - **100 customers and 800 orders**, generated with Faker. 60% have Canadian addresses, and the orders include payments, shipments and late deliveries.
 - **Prices in Canadian dollars**, with shipping across Canada and the USA.
@@ -158,5 +158,7 @@ The database builds itself from the CSVs on first start. To reset the demo data:
 ## About
 
 Built by [Soroush Ziaeinejad](https://github.com/soroush-ziaeinejad), PhD in Computer Science.
+
+Room studio's sample room photo is by [Salvo Media](https://unsplash.com/photos/empty-room-with-white-walls-hardwood-floor-and-high-windows-bG8rvtDeExE) on Unsplash.
 
 This is a portfolio demo. Customers, orders, payments and sellers are fictional, and the seller policies are demonstration documents, not legal terms.
