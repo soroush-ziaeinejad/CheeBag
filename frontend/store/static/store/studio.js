@@ -468,9 +468,11 @@
   drop.addEventListener("drop", (e) => { e.preventDefault(); if (e.dataTransfer.files[0]) upload(e.dataTransfer.files[0]); });
   $("[data-st-sample]").addEventListener("click", async () => {
     try {
-      const blob = await (await fetch(studio.dataset.sampleUrl)).blob();
+      const res = await fetch(studio.dataset.sampleUrl);
+      const blob = await res.blob();
+      if (!res.ok || !blob.type.startsWith("image/")) throw new Error("no sample photo");   // e.g. a 404 page
       upload(new File([blob], "sample-room.jpg", { type: "image/jpeg" }));
-    } catch (e) { banner("error", "Couldn't load the sample room. Please try again.", "Something went wrong"); }
+    } catch (e) { banner("error", "The sample room photo is missing from the site. Please upload your own photo.", "Couldn't load the sample room"); }
   });
   $("[data-st-reset]").addEventListener("click", () => { state = newRoom(); save(); clearBanner(); draw(); });
   $("[data-st-banner-close]").addEventListener("click", clearBanner);
