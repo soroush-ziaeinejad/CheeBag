@@ -3,7 +3,7 @@ import os, sys, csv, json
 from unittest.mock import patch
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'frontend'))
-os.environ['DJANGO_SETTINGS_MODULE']='chideman.settings'
+os.environ['DJANGO_SETTINGS_MODULE']='cheebag.settings'
 from django.conf import settings
 settings.DATABASES={'default':{'ENGINE':'django.db.backends.sqlite3','NAME':':memory:'}}
 settings.ALLOWED_HOSTS=['testserver','localhost','127.0.0.1']
@@ -31,7 +31,7 @@ for c in [a,b]:
 c=Client()
 for url in ['/','/shop/','/shop/?q=kettle','/shop/?category=Storage+%26+Organization&sort=price_low','/products/1/','/orders/']:
  r=c.get(url);assert r.status_code==200,(url,r.status_code)
- assert b'Chideman AI' in r.content
+ assert b'CheeBag' in r.content
 print('PASS: landing, catalog, search/filter/sort, product, guest orders render')
 assert c.post('/assistant/chat/',data=json.dumps({'messages':[]}),content_type='application/json').status_code==403
 assert c.post('/switch-customer/',{'customer_id':'1'}).status_code==302

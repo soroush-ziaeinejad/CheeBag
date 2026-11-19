@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 from .agent import MODEL, run_agent
 
 
-app = FastAPI(title="Chideman AI · CHEE Service")
+app = FastAPI(title="CheeBag · CHEE Service")
 API_KEY_SET = bool(os.environ.get("ANTHROPIC_API_KEY"))
 
 
@@ -27,7 +27,7 @@ class ToolCall(BaseModel):
     ms: int
 
 class UIComponent(BaseModel):
-    type: Literal["confirmation_card"]   # only card types the website knows how to draw
+    type: Literal["confirmation_card", "product_cards"]   # only card types the website knows how to draw
     version: int = 1                     # lets the card's shape change later without breaking old pages
     data: dict
 

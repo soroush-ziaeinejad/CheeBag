@@ -1,11 +1,11 @@
 {
-  "note": "Fictional demonstration data for the Chideman AI portfolio project; not legally reviewed policies.",
+  "note": "Fictional demonstration data for the CheeBag portfolio project; not legally reviewed policies.",
   "platform": {
     "currency": "CAD",
     "payment_methods": [
       "credit card",
       "PayPal",
-      "Chideman gift card"
+      "CheeBag gift card"
     ],
     "carriers": [
       "Canada Post",
@@ -543,7 +543,7 @@
           "return_label_fee_cad": 6.5,
           "non_returnable": [
             "items with dents or damage caused after delivery",
-            "Chideman gift cards"
+            "CheeBag gift cards"
           ]
         },
         "exchanges": {

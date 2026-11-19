@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 
 from . import views
 
@@ -13,4 +13,5 @@ urlpatterns = [
     # the customer's click on a confirmation card (the only way an order gets cancelled)
     path("assistant/actions/confirm/", views.assistant_action, {"action": "confirm"}, name="assistant_confirm"),
     path("assistant/actions/discard/", views.assistant_action, {"action": "discard"}, name="assistant_discard"),
+    path("studio/", include("store.studio_urls")),   # Room studio (room photo + product preview)
 ]

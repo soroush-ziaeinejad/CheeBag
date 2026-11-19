@@ -73,6 +73,22 @@ TOOLS = [
         "properties": {"order_id": {"type": "integer", "description": "The order number, e.g. 1005"}},
         "required": ["order_id"],
     },
+    },
+    {
+    "name": "show_products",
+    "description": "Show the customer clickable product cards (photo, price, rating, stock) under your reply. Use it "
+                   "whenever you talk about specific products: products you recommend from search_products, one "
+                   "product's details, or the items in one of the customer's orders (then also pass order_id). "
+                   "Up to 6 products. Keep your text short: the cards already show the price, rating and stock.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "product_ids": {"type": "array", "items": {"type": "integer"}, "minItems": 1, "maxItems": 6,
+                            "description": "Product ids from search_products, get_product or an order"},
+            "order_id": {"type": "integer", "description": "Only when the products are the items of one of the customer's orders"},
+        },
+        "required": ["product_ids"],
+    },
     }
 ]
 
@@ -213,7 +229,29 @@ def get_product(customer_id, product_id):
     }
 
 
-HANDLERS = {"list_orders": list_orders, "get_order": get_order, "search_products": search_products, "get_product": get_product, "propose_cancel_order": propose_cancel_order}
+def show_products(customer_id, product_ids, order_id=None):
+    if not isinstance(product_ids, list) or not product_ids:
+        raise ToolError("invalid_input", "product_ids must be a list of product ids.")
+    ids = list(dict.fromkeys(_whole_number(i, "product_id") for i in product_ids))[:6]   # no repeats, at most 6
+    order, quantities = None, {}
+    if order_id is not None:
+        o = get_order(customer_id, order_id)            # also checks the order belongs to this customer
+        order = {"order_id": o["order_id"], "status": o["status"]}
+        quantities = {i["product_id"]: i["quantity"] for i in o["items"]}
+    cards = []
+    for product_id in ids:
+        p = _get(f"/products/{product_id}", not_found=f"No product {product_id} was found.")
+        cards.append({"id": p["id"], "name": p["name"], "price": p["price"], "image_url": p["image_url"],
+                      "rating": p["rating"], "rating_count": p["rating_count"], "in_stock": p["stock_quantity"] > 0,
+                      "quantity": quantities.get(p["id"])})
+    return {
+        "shown": [c["id"] for c in cards],
+        "next_step": "The customer now sees these as clickable cards. Don't repeat every price and rating.",
+        "_ui": {"type": "product_cards", "version": 1, "data": {"order": order, "products": cards}},
+    }
+
+
+HANDLERS = {"show_products": show_products, "list_orders": list_orders, "get_order": get_order, "search_products": search_products, "get_product": get_product, "propose_cancel_order": propose_cancel_order}
 def _whole_number(value, name):
     # the schema asks for an integer, but the model's output is untrusted: enforce it here
     if not isinstance(value, int) or isinstance(value, bool):

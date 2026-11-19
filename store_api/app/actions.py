@@ -25,7 +25,7 @@ from .models import Order, OrderEvent, OrderItem, PendingAction, Product
 router = APIRouter()
 
 TOKEN_LIFETIME = timedelta(minutes=10)
-PAYMENT_NAMES = {"credit_card": "credit card", "paypal": "PayPal", "gift_card": "Chideman gift card"}
+PAYMENT_NAMES = {"credit_card": "credit card", "paypal": "PayPal", "gift_card": "CheeBag gift card"}
 
 
 class ActionIn(BaseModel):

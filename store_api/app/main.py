@@ -1,4 +1,4 @@
-"""Chideman AI Store API: the only way other services read store data.
+"""CheeBag Store API: the only way other services read store data.
 
 Customer identity comes from the URL path, set by a trusted backend (the Django
 session or the agent server), never from text an LLM produced.
@@ -14,7 +14,7 @@ from .db import get_db
 from .models import Customer, Order, OrderItem, Product
 from .schemas import OrderDetailOut, OrderSummaryOut, ProductDetailOut, ProductOut
 
-app = FastAPI(title="Chideman AI Store API")
+app = FastAPI(title="CheeBag Store API")
 app.include_router(actions_router)  # propose / confirm / discard order changes
 
 OrderStatus = Literal["pending", "processing", "shipped", "delivered", "cancelled"]

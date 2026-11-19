@@ -3,21 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}Shop{% endblock %} · Chideman AI</title>
-<meta name="description" content="Chideman AI: a demo home store with CHEE, an AI shopping assistant that finds products and answers questions about your orders.">
-<meta name="theme-color" content="#284c43">
-<meta property="og:title" content="Chideman AI · Make yourself at home">
+<title>{% block title %}Shop{% endblock %} · CheeBag</title>
+<meta name="description" content="CheeBag: a demo home store with CHEE, an AI shopping assistant that finds products and answers questions about your orders.">
+<meta name="theme-color" content="#2b1d2a">
+<meta property="og:title" content="CheeBag · Just ask CHEE">
 <meta property="og:description" content="Thoughtful home finds, and CHEE, an AI assistant that knows the store and your orders.">
-<link rel="icon" type="image/svg+xml" href="{% static 'store/img/chideman-mark.svg' %}">
+<link rel="icon" type="image/svg+xml" href="{% static 'store/img/cheebag-mark.svg' %}">
 <style>
-:root { --bg:#f7f4ef; --card:#fff; --ink:#1f1c18; --ink-2:#2b2722; --muted:#6f675d; --line:#e6dfd4; --accent:#a4471f; --accent-2:#c25a2b; --accent-soft:#f6e7df; --warm:#efe7dc; }
+:root { --bg:#fbf6ec; --card:#fff; --ink:#2b1d2a; --ink-2:#2b1d2a; --muted:#6e5f69; --line:#e8ddcb; --accent:#9e2b3a; --accent-2:#b8404f; --accent-soft:#f6e1e0; --warm:#f5ecdd; }
 * { box-sizing:border-box; }
 body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 a { color:inherit; }
 svg.i { width:20px; height:20px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
 svg.spark { fill:currentColor; stroke:none; }
 .wrap { max-width:1360px; margin:0 auto; padding:0 20px; }
-.demo-banner { background:var(--ink); color:#cfc6b8; font-size:12.5px; text-align:center; padding:6px 12px; }
+.demo-banner { background:var(--ink); color:#e6dce2; font-size:12.5px; text-align:center; padding:6px 12px; }
 
 /* header */
 header { background:var(--card); border-bottom:1px solid var(--line); position:relative; z-index:10; }
@@ -31,7 +31,7 @@ nav a.active { color:var(--ink); border-bottom-color:var(--accent); }
 nav a:hover { color:var(--ink); }
 nav .drop { position:relative; }
 nav .drop svg.i { width:14px; height:14px; }
-nav .menu { display:none; position:absolute; top:100%; left:0; min-width:250px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:8px; box-shadow:0 12px 30px rgba(31,28,24,.1); }
+nav .menu { display:none; position:absolute; top:100%; left:0; min-width:250px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:8px; box-shadow:0 12px 30px rgba(43,29,42,.1); }
 nav .drop:hover .menu, nav .drop:focus-within .menu { display:block; }
 nav .menu a { display:flex; justify-content:space-between; padding:8px 10px; border-radius:8px; text-decoration:none; font-size:14px; }
 nav .menu a:hover { background:var(--bg); }
@@ -51,7 +51,7 @@ nav .menu a span { color:var(--muted); }
 .avatar { width:36px; height:36px; flex:none; border-radius:50%; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; }
 .avatar svg.i { width:18px; height:18px; }
 .avatar.sm { width:32px; height:32px; font-size:12px; }
-.account .panel { position:absolute; right:0; top:calc(100% + 8px); width:330px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 16px 40px rgba(31,28,24,.14); font-size:13px; color:var(--muted); z-index:40; }
+.account .panel { position:absolute; right:0; top:calc(100% + 8px); width:330px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 16px 40px rgba(43,29,42,.14); font-size:13px; color:var(--muted); z-index:40; }
 .panel-title { display:block; color:var(--ink); font-size:15px; margin-bottom:4px; }
 .panel p { margin:0 0 12px; line-height:1.5; }
 .personas { display:grid; gap:6px; }
@@ -72,7 +72,7 @@ select, input[type=search] { padding:8px 10px; border:1px solid var(--line); bor
 button, .btn { display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border:0; border-radius:8px; background:var(--accent); color:#fff; cursor:pointer; text-decoration:none; font-weight:600; }
 .btn.ghost { background:#fff; color:var(--ink); border:1px solid var(--line); }
 .btn.ai { background:var(--ink); color:#fff; }
-.btn.ai svg.spark { width:15px; height:15px; color:#f0a37c; }
+.btn.ai svg.spark { width:15px; height:15px; color:#e3a72f; }
 .btn:disabled, button:disabled { opacity:.55; cursor:not-allowed; }
 main { padding:24px 0 64px; }
 h1 { font-size:27px; letter-spacing:-.02em; margin:0 0 4px; line-height:1.25; }
@@ -90,22 +90,21 @@ h2 { font-size:17px; margin:0 0 12px; }
 footer { color:var(--muted); font-size:13px; padding:22px 0; border-top:1px solid var(--line); }
 
 /* ---------- CHEE chat drawer ---------- */
-/* the one place to open CHEE on every page; hidden on the home page while the hero's ask box is on screen */
-.as-launch { position:fixed; right:22px; bottom:22px; z-index:50; display:inline-flex; align-items:center; gap:8px; padding:12px 18px; border:0; border-radius:999px; background:var(--ink); color:#fff; font-weight:650; cursor:pointer; box-shadow:0 10px 30px rgba(31,28,24,.25); transition:opacity .2s, transform .2s; }
+/* opens CHEE on narrow screens; on wide screens the chat is docked on the right (cheebag.css) */
+.as-launch { position:fixed; right:22px; bottom:22px; z-index:50; display:inline-flex; align-items:center; gap:8px; padding:12px 18px; border:0; border-radius:999px; background:var(--ink); color:#fff; font-weight:650; cursor:pointer; box-shadow:0 10px 30px rgba(43,29,42,.25); transition:opacity .2s, transform .2s; }
 body.as-open .as-launch { display:none; }
-body.hero-ask-visible .as-launch { opacity:0; transform:translateY(12px); pointer-events:none; }
-.as-backdrop { position:fixed; inset:0; background:rgba(31,28,24,.28); opacity:0; pointer-events:none; transition:opacity .2s; z-index:59; }
+.as-backdrop { position:fixed; inset:0; background:rgba(43,29,42,.28); opacity:0; pointer-events:none; transition:opacity .2s; z-index:59; }
 body.as-open .as-backdrop { opacity:1; pointer-events:auto; }
-.assistant { position:fixed; top:0; right:0; height:100%; width:min(440px, 100%); z-index:60; background:#fff; display:flex; flex-direction:column; transform:translateX(100%); transition:transform .22s ease; box-shadow:-10px 0 40px rgba(31,28,24,.15); }
+.assistant { position:fixed; top:0; right:0; height:100%; width:min(440px, 100%); z-index:60; background:#fff; display:flex; flex-direction:column; transform:translateX(100%); transition:transform .22s ease; box-shadow:-10px 0 40px rgba(43,29,42,.15); }
 body.as-open .assistant { transform:none; }
 .as-head { background:var(--ink); color:#fff; padding:16px 16px 14px; display:flex; align-items:center; gap:12px; }
 .as-logo { width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); display:flex; align-items:center; justify-content:center; flex:none; }
 .as-logo svg.spark { width:22px; height:22px; color:#fff; }
 .as-head b { display:block; font-size:15.5px; }
-.as-head small { color:#cfc6b8; font-size:12px; display:flex; align-items:center; gap:6px; }
+.as-head small { color:#e6dce2; font-size:12px; display:flex; align-items:center; gap:6px; }
 .as-head small i { width:7px; height:7px; border-radius:50%; background:#4ade80; display:inline-block; }
 .as-head .x { margin-left:auto; display:flex; gap:4px; }
-.as-head .x button { background:transparent; color:#cfc6b8; padding:6px 8px; font-weight:500; font-size:13px; }
+.as-head .x button { background:transparent; color:#e6dce2; padding:6px 8px; font-weight:500; font-size:13px; }
 .as-head .x button:hover { color:#fff; background:rgba(255,255,255,.08); }
 .as-context { padding:9px 16px; font-size:12.5px; color:var(--muted); background:var(--warm); border-bottom:1px solid var(--line); }
 .as-context b { color:var(--ink); }
@@ -165,15 +164,15 @@ body.as-open .assistant { transform:none; }
 
 /* ---------- CHEE, the assistant mascot ---------- */
 .mascot { width:100%; height:100%; overflow:visible; display:block; }
-.mascot .m-head { fill:#fbf4ec; stroke:#3a332c; stroke-width:3; }
-.mascot .m-screen { fill:#2b2722; }
-.mascot .m-eye { fill:#f0a37c; transform-box:fill-box; transform-origin:center; animation:m-blink 4.6s infinite; }
+.mascot .m-head { fill:#fbf4ec; stroke:#2b1d2a; stroke-width:3; }
+.mascot .m-screen { fill:#2b1d2a; }
+.mascot .m-eye { fill:#e3a72f; transform-box:fill-box; transform-origin:center; animation:m-blink 4.6s infinite; }
 .mascot .m-eyes { transition:transform .12s ease-out; }
-.mascot .m-smile { fill:none; stroke:#f0a37c; stroke-width:3.2; stroke-linecap:round; }
-.mascot .m-cheek { fill:#f4a98a; opacity:.55; }
+.mascot .m-smile { fill:none; stroke:#e3a72f; stroke-width:3.2; stroke-linecap:round; }
+.mascot .m-cheek { fill:#e58a86; opacity:.55; }
 .mascot .m-ear { fill:var(--accent); }
-.mascot .m-line { stroke:#3a332c; stroke-width:3; stroke-linecap:round; }
-.mascot .m-bulb { fill:#f0a37c; animation:m-glow 1.8s ease-in-out infinite; }
+.mascot .m-line { stroke:#2b1d2a; stroke-width:3; stroke-linecap:round; }
+.mascot .m-bulb { fill:#e3a72f; animation:m-glow 1.8s ease-in-out infinite; }
 .mascot .m-shadow { fill:#000; opacity:.14; transform-box:fill-box; transform-origin:center; animation:m-shadow 3.2s ease-in-out infinite; }
 .mascot .m-float { animation:m-float 3.2s ease-in-out infinite; }
 @keyframes m-float { 0%, 100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
@@ -205,7 +204,8 @@ body.as-open .assistant { transform:none; }
   .as-launch .lbl { display:none; }
 }
 </style>
-<link rel="stylesheet" href="{% static 'store/chideman.css' %}">
+<link rel="stylesheet" href="{% static 'store/cheebag.css' %}">
+<link rel="stylesheet" href="{% static 'store/studio.css' %}">
 <style>
 {% block style %}{% endblock %}
 </style>
@@ -216,8 +216,8 @@ body.as-open .assistant { transform:none; }
 <header>
   <div class="wrap">
     <a class="brand" href="{% url 'home' %}">
-      <svg class="i" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9.5 21v-6h5v6"/></svg>
-      <span>chideman<span class="brand-ai"> AI</span><small>چیدمان · a little more you</small></span>
+      <img class="logo" src="{% static 'store/img/cheebag-logo.svg' %}" alt="" width="46" height="48">
+      <span>chee<b class="brand-bag">bag</b><small><bdi lang="fa" dir="rtl">چی؟</bdi> · just ask</small></span>
     </a>
     {% with page=request.resolver_match.url_name %}
     <nav>
@@ -264,7 +264,7 @@ body.as-open .assistant { transform:none; }
   </div>
 </header>
 <main id="main-content"><div class="wrap">{% block content %}{% endblock %}</div></main>
-<footer><div class="wrap">Chideman AI · portfolio demo by <a href=https://soroush-ziaeinejad.github.io/>Soroush Ziaeinejad</a> · Shipping across Canada and the USA</div></footer>
+<footer><div class="wrap">CheeBag · portfolio demo by <a href=https://soroush-ziaeinejad.github.io/>Soroush Ziaeinejad</a> · Shipping across Canada and the USA</div></footer>
 
 <!-- ---------- CHEE (on every page) ---------- -->
 <button class="as-launch" type="button" data-open-assistant aria-label="Ask CHEE">
@@ -274,13 +274,19 @@ body.as-open .assistant { transform:none; }
 <aside class="assistant" id="assistant" role="dialog" aria-label="CHEE, AI shopping assistant"
        data-customer="{{ current_customer.pk|default:'' }}" data-name="{{ current_customer.first_name|default:'' }}" data-url="{% url 'assistant_chat' %}"
        data-confirm-url="{% url 'assistant_confirm' %}" data-discard-url="{% url 'assistant_discard' %}">
+  <div class="as-resize" data-resize-panel role="separator" aria-orientation="vertical" tabindex="0"
+       aria-label="Resize the CHEE panel" title="Drag to resize · double-click to reset"></div>
   <div class="as-head">
     <span class="as-avatar">{% include "store/_mascot.html" %}</span>
     <div><b>CHEE</b><small><i></i>AI shopping assistant</small></div>
     <div class="x">
       <button type="button" data-new-chat title="Start a new conversation">New chat</button>
-      <button type="button" data-close-assistant aria-label="Close">✕</button>
+      <button type="button" class="x-close" data-close-assistant aria-label="Close">✕</button>
     </div>
+  </div>
+  <div class="as-tabs" role="tablist" aria-label="CHEE">
+    <button type="button" role="tab" aria-selected="true" data-as-tab="chat">Chat</button>
+    <button type="button" role="tab" aria-selected="false" data-as-tab="studio">Room studio <span class="new">New</span></button>
   </div>
   {% if current_customer %}
   <div class="as-context">
@@ -304,8 +310,10 @@ body.as-open .assistant { transform:none; }
     </form>
     <div class="as-note">AI can make mistakes. Cancelling always needs your click on Confirm.</div>
   </div>
+  {% include "store/_studio.html" %}
 </aside>
 
+<script src="{% static 'store/product_cards.js' %}"></script>
 <script>
 (() => {
   const panel = document.getElementById("assistant");
@@ -314,7 +322,7 @@ body.as-open .assistant { transform:none; }
   const input = form.querySelector("textarea");
   const sendBtn = form.querySelector("button");
   const customer = panel.dataset.customer;            // "" when no demo customer is chosen
-  const storeKey = "chideman-chat-" + customer;      // one conversation per customer, per browser tab
+  const storeKey = "cheebag-chat-" + customer;      // one conversation per customer, per browser tab
   const SUGGESTIONS = ["Where is my latest order?", "Find me a kettle under $40", "Which of my orders are still on the way?", "Can I cancel an order?"];
   let history = [];
   let busy = false;
@@ -351,7 +359,7 @@ body.as-open .assistant { transform:none; }
         chip.title = JSON.stringify(t.input) + (t.ms != null ? " · " + t.ms + " ms" : "");
         m.appendChild(chip);
       });
-      if (meta.tokens && window.CHIDEMAN_DEBUG) m.appendChild(document.createTextNode(meta.tokens + " tokens"));
+      if (meta.tokens && window.CHEEBAG_DEBUG) m.appendChild(document.createTextNode(meta.tokens + " tokens"));
       el.appendChild(m);
     }
     log.appendChild(el);
@@ -365,7 +373,7 @@ body.as-open .assistant { transform:none; }
 
   function renderCards(entry, msgEl) {
     (entry.meta?.ui || []).forEach((card) => {
-      const draw = CARDS[card.type];
+      const draw = CARDS[card.type] || window.cheebagCards?.[card.type];   // more card types: product_cards.js
       if (!draw || card.version !== 1) return;   // unknown card: show nothing rather than guess
       msgEl.classList.add("has-card");
       msgEl.insertBefore(draw(card), msgEl.querySelector(".meta"));
@@ -527,25 +535,46 @@ body.as-open .assistant { transform:none; }
     }
   }
 
+  // wide screens: the chat is a column that is always open. Narrow screens: a drawer that opens and closes.
+  const docked = window.matchMedia("(min-width: 1180px)");
+  const focusChat = () => (customer ? input : panel.querySelector(".persona"))?.focus({ preventScroll: true });
+  function syncDock() {
+    if (docked.matches) {
+      document.body.classList.remove("as-open");
+      panel.inert = false; panel.removeAttribute("aria-modal"); panel.setAttribute("role", "complementary");
+    } else {
+      panel.setAttribute("role", "dialog");
+      panel.inert = !document.body.classList.contains("as-open");
+    }
+  }
+  docked.addEventListener("change", syncDock);
+  syncDock();
+
   let previousFocus;
-  panel.inert = true;
-  const open = () => { previousFocus = document.activeElement; panel.inert = false; panel.setAttribute("aria-modal", "true"); document.body.classList.add("as-open"); setTimeout(() => (customer ? input : panel.querySelector(".persona"))?.focus({ preventScroll: true }), 230); };
-  const close = () => { document.body.classList.remove("as-open"); panel.inert = true; panel.removeAttribute("aria-modal"); previousFocus?.focus(); };
+  const open = () => {
+    if (docked.matches) return focusChat();
+    previousFocus = document.activeElement; panel.inert = false; panel.setAttribute("aria-modal", "true");
+    document.body.classList.add("as-open"); setTimeout(focusChat, 230);
+  };
+  const close = () => {
+    if (docked.matches) return;
+    document.body.classList.remove("as-open"); panel.inert = true; panel.removeAttribute("aria-modal"); previousFocus?.focus();
+  };
   panel.addEventListener("keydown", (e) => {
-    if (e.key !== "Tab") return;
+    if (e.key !== "Tab" || docked.matches) return;   // trap focus only while the drawer covers the page
     const nodes = [...panel.querySelectorAll("button, textarea, select, a[href]")].filter(n => !n.disabled);
     const first = nodes[0], last = nodes[nodes.length - 1];
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
-  window.chidemanAsk = (text) => { open(); if (text) send(text); };
+  window.cheebagAsk = (text) => { open(); if (text) send(text); };
 
   const account = document.querySelector(".account");
   const openSwitcher = () => { close(); account.open = true; account.querySelector("summary").focus(); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
   document.addEventListener("click", (e) => {
     const ask = e.target.closest("[data-ask]");
-    if (ask) { e.preventDefault(); window.chidemanAsk(ask.dataset.ask); return; }
+    if (ask) { e.preventDefault(); window.cheebagAsk(ask.dataset.ask); return; }
     if (e.target.closest("[data-open-assistant]")) open();
     if (e.target.closest("[data-close-assistant]")) close();
     if (e.target.closest("[data-switch-customer]")) openSwitcher();
@@ -554,12 +583,6 @@ body.as-open .assistant { transform:none; }
   });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") { close(); account.open = false; } });
 
-  // on the home page the hero already has an ask box, so the floating button waits until it scrolls away
-  const heroAsk = document.querySelector("[data-hero-ask]");
-  if (heroAsk && "IntersectionObserver" in window) {
-    document.body.classList.add("hero-ask-visible");
-    new IntersectionObserver(([entry]) => document.body.classList.toggle("hero-ask-visible", entry.isIntersecting)).observe(heroAsk);
-  }
   form.addEventListener("submit", (e) => { e.preventDefault(); send(input.value); });
   input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input.value); } });
   input.addEventListener("input", () => { input.style.height = ""; input.style.height = Math.min(input.scrollHeight, 120) + "px"; });
@@ -578,5 +601,7 @@ body.as-open .assistant { transform:none; }
   render();
 })();
 </script>
+<script src="{% static 'store/studio.js' %}"></script>
+<script src="{% static 'store/panel.js' %}"></script>
 </body>
 </html>

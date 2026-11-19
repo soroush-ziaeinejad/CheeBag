@@ -2,49 +2,39 @@
 {% load humanize %}
 {% block title %}Home{% endblock %}
 {% block style %}
-/* hero: ask CHEE on the left, what the name means on the right */
-.hero { display:grid; grid-template-columns:minmax(0, 1.55fr) minmax(0, 1fr); background:var(--sage); border:1px solid #d3ddcd; border-radius:24px; overflow:hidden; }
-.hero-ask { padding:40px 44px 36px; min-width:0; }
+/* the project box: what CheeBag is, what CHEE can do, how to try it */
+.about { display:grid; grid-template-columns:minmax(0, 1.5fr) minmax(0, 1fr); background:var(--card); border:1px solid var(--line); border-radius:24px; overflow:hidden; }
+.about-main { padding:34px 38px 30px; min-width:0; }
 .eyebrow { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
-.hero h1 { font-size:clamp(36px, 4.4vw, 58px); line-height:1.02; letter-spacing:-1.5px; margin:12px 0 12px; color:var(--ink); }
-.hero h1 em { font-style:italic; font-weight:400; color:var(--accent); }
-.lead { color:#455b4e; font-size:15px; line-height:1.6; max-width:500px; margin:0 0 22px; }
-.ask { display:flex; gap:6px; max-width:600px; padding:6px; background:var(--card); border:1px solid #c7d3c3; border-radius:16px; box-shadow:0 6px 20px #243e3610; }
-.ask input { flex:1; min-width:0; border:0; outline:none; background:transparent; padding:10px 12px; font-size:15px; color:var(--ink); }
-.ask button { padding:0 16px; border-radius:11px; }
-.chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
-.chips button { min-height:32px; padding:4px 12px; border-radius:999px; background:transparent; border:1px solid #b7c7b3; color:var(--ink); font-size:12.5px; font-weight:500; }
-.chips button:hover { background:var(--card); box-shadow:none; }
-.who-line { margin-top:22px; padding-top:18px; border-top:1px solid #c9d5c5; font-size:13px; color:#455b4e; }
-.who-line .personas { grid-template-columns:repeat(3, minmax(0, 1fr)); margin-top:8px; }
-.who-line .persona { background:var(--card); }
+.about h1 { font-size:clamp(34px, 3.6vw, 52px); line-height:1.04; letter-spacing:-1.4px; margin:10px 0 12px; color:var(--ink); }
+.about h1 em { font-style:italic; font-weight:400; color:var(--accent); }
+.lead { color:var(--ink-2); font-size:15px; line-height:1.65; max-width:620px; margin:0 0 18px; }
+.label { display:block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.dock-hint { display:none; text-transform:none; letter-spacing:0; font-weight:500; color:var(--turq-ink); }
+.chips { display:flex; flex-wrap:wrap; gap:6px; }
+.chips button { min-height:34px; padding:4px 13px; border-radius:999px; background:var(--bg); border:1px solid var(--line); color:var(--ink); font-size:13px; font-weight:500; }
+.chips button:hover { border-color:var(--accent); box-shadow:none; }
+.who-line { margin-top:20px; padding-top:16px; border-top:1px solid var(--line); font-size:13px; color:var(--ink-2); }
+.who-line .personas { grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); margin-top:8px; }
 
-.hero-name { background:#f0e7d5; border-left:1px solid #d4d7c5; padding:36px 34px; display:flex; flex-direction:column; justify-content:center; gap:14px; }
-.name-top { display:flex; align-items:center; gap:16px; }
-.name-top .m { width:84px; height:84px; flex:none; }
-.fa { font-size:34px; line-height:1.2; color:var(--ink); font-family:"Geeza Pro", "Noto Naskh Arabic", "Segoe UI", Tahoma, sans-serif; }
-.say { display:block; font-size:12.5px; color:var(--muted); letter-spacing:.04em; margin-top:2px; }
-.hero-name h2 { font-size:26px; margin:0; letter-spacing:-.5px; }
-.hero-name p { margin:0; font-size:14px; line-height:1.6; color:#4a4339; }
-.can { list-style:none; margin:2px 0 0; padding:0; display:grid; gap:6px; font-size:13px; color:var(--ink); }
-.can li { display:flex; gap:8px; align-items:baseline; }
-.can li::before { content:"✓"; color:#2e7d32; font-weight:700; }
-.can li.no { color:var(--muted); }
-.can li.no::before { content:"–"; color:var(--muted); }
-
-/* what CHEE can do */
-.promise { font-size:13px; color:var(--muted); }
-.abilities { display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:12px; }
-.ability { position:relative; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 16px 16px; display:flex; flex-direction:column; gap:6px; }
-.ability .ico { width:30px; height:30px; padding:6px; border-radius:10px; background:var(--sage); color:var(--ink); fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-.ability h3 { margin:6px 0 0; font-size:15.5px; }
-.ability p { margin:0; font-size:13px; line-height:1.5; color:#4a4339; }
-.ability .ex { margin-top:auto; padding-top:8px; font-size:12.5px; color:var(--accent); font-style:italic; }
-.ability .tag { position:absolute; top:14px; right:14px; font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:3px 8px; border-radius:999px; background:#e5f4e5; color:#2e7d32; }
-.ability.soon { background:transparent; border-style:dashed; }
-.ability.soon .ico { background:#f0e7d5; color:#8a6d3b; }
-.ability.soon .tag { background:#f0e7d5; color:#8a6d3b; }
-.ability.soon p { color:var(--muted); }
+.about-side { background:var(--warm); border-left:1px solid var(--line); padding:28px 30px; display:flex; flex-direction:column; gap:10px; }
+.about-side h2 { font-size:19px; margin:0; }
+.can { list-style:none; margin:0 0 6px; padding:0; display:grid; gap:7px; font-size:13.5px; line-height:1.4; color:var(--ink-2); }
+.can li { display:flex; gap:9px; align-items:baseline; }
+.can li::before { content:"✓"; color:var(--turq-ink); font-weight:800; }
+.can li.soon { color:var(--muted); }
+.can li.soon::before { content:"○"; color:var(--muted); font-weight:400; }
+.can .tag { font-size:10px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:var(--saffron-soft); color:#7a5a12; white-space:nowrap; }
+.stack { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:18px; }
+.stack .label { margin:0 4px 0 0; padding:0; background:none; }
+.stack span:not(.label) { font-size:12px; font-weight:600; padding:4px 10px; border-radius:999px; background:var(--turq-soft); color:var(--turq-ink); }
+.name { display:flex; gap:14px; align-items:flex-start; margin-top:4px; padding-top:14px; border-top:1px solid var(--line); }
+.name .m { width:58px; height:58px; flex:none; }
+.name p { margin:0; font-size:13px; line-height:1.55; color:var(--ink-2); }
+.fa { font-family:"Geeza Pro", "Noto Naskh Arabic", "Segoe UI", Tahoma, sans-serif; color:var(--accent); font-weight:700; }
+.gh { font-size:13px; font-weight:650; color:var(--accent); text-decoration:none; margin-top:2px; }
+.gh:hover { text-decoration:underline; }
+.all { text-align:center; margin:22px 0 0; }
 
 /* sections */
 .section-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin:38px 0 14px; }
@@ -56,14 +46,14 @@
 .cat-tile { flex:0 0 124px; display:flex; flex-direction:column; align-items:center; gap:8px; padding:16px 8px 12px; text-decoration:none; text-align:center; font-size:12px; font-weight:600; line-height:1.25; background:var(--card); }
 .cat-tile:hover { border-color:var(--ink); }
 .cat-tile img { width:64px; height:64px; object-fit:contain; mix-blend-mode:multiply; }
-.cats-next { position:absolute; right:-6px; top:50%; transform:translateY(-50%); width:38px; height:38px; min-height:0; border-radius:50%; padding:0; justify-content:center; background:var(--card); color:var(--ink); border:1px solid var(--line); box-shadow:0 2px 10px rgba(31,28,24,.1); }
+.cats-next { position:absolute; right:-6px; top:50%; transform:translateY(-50%); width:38px; height:38px; min-height:0; border-radius:50%; padding:0; justify-content:center; background:var(--card); color:var(--ink); border:1px solid var(--line); box-shadow:0 2px 10px rgba(43,29,42,.1); }
 .tabs { display:flex; gap:4px; flex-wrap:wrap; }
 .tabs a { padding:5px 13px; border-radius:999px; text-decoration:none; font-size:13px; font-weight:550; color:var(--muted); }
 .tabs a:hover { background:var(--card); color:var(--ink); }
 .tabs a.on { background:var(--ink); color:#fff; }
 .picks { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:16px; }
 .pick { display:flex; flex-direction:column; overflow:hidden; text-decoration:none; transition:border-color .15s; }
-.pick:hover { border-color:#9bab92; }
+.pick:hover { border-color:#c9a9ae; }
 .pick .img { position:relative; aspect-ratio:1.15; background:#fff; border-bottom:1px solid var(--line); }
 .pick .img img { position:absolute; inset:14px; width:calc(100% - 28px); height:calc(100% - 28px); object-fit:contain; }
 .pick .body { padding:12px 14px 14px; display:flex; flex-direction:column; gap:4px; flex:1; }
@@ -71,27 +61,20 @@
 .pick .row { display:flex; justify-content:space-between; align-items:baseline; margin-top:auto; padding-top:6px; }
 .pick .price { font-weight:750; font-size:17px; }
 .pick .stars { font-size:12px; color:var(--muted); }
-.pick .stars b { color:#b7791f; font-weight:400; }
+.pick .stars b { color:#c98a12; font-weight:400; }
 
+@media (min-width: 1180px) {
+  .dock-hint { display:inline; font-size:13px; }
+  .narrow-only, .about-main .chips { display:none !important; }
+}
 @media (max-width: 1100px) {
-  .abilities { grid-template-columns:repeat(3, minmax(0, 1fr)); }
-  .hero { grid-template-columns:minmax(0, 1fr); }
-  .hero-name { border-left:0; border-top:1px solid #d4d7c5; }
+  .about { grid-template-columns:minmax(0, 1fr); }
+  .about-side { border-left:0; border-top:1px solid var(--line); }
 }
 @media (max-width: 760px) {
-  .hero-ask { padding:26px 20px 22px; }
-  .hero-name { padding:22px 20px; }
+  .about-main { padding:24px 20px 22px; }
+  .about-side { padding:22px 20px; }
   .who-line .personas { grid-template-columns:minmax(0, 1fr); }
-  .abilities { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; }
-  .ability { padding:12px; gap:4px; }
-  .ability .tag { position:static; align-self:flex-start; order:-1; font-size:9.5px; }
-  .ability .ico { width:26px; height:26px; padding:5px; }
-  .ability h3 { font-size:14px; margin-top:2px; }
-  .ability p { font-size:12px; }
-  .ability .ex { display:none; }
-  .promise { flex-basis:100%; }
-  .name-top .m { width:64px; height:64px; }
-  .fa { font-size:28px; }
   .section-head h2 { font-size:22px; }
   .picks { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; }
   .pick .row { flex-wrap:wrap; gap:4px; }
@@ -99,74 +82,45 @@
 {% endblock %}
 
 {% block content %}
-<section class="hero">
-  <div class="hero-ask">
-    <span class="eyebrow">CHEE · AI shopping assistant</span>
-    <h1>Your home, <em>arranged.</em></h1>
-    <p class="lead">Ask CHEE to find products for your budget or to check on your orders. Its answers come from the live store.</p>
-    <form class="ask" data-hero-ask>
-      <input type="text" name="q" placeholder="Ask CHEE anything…" aria-label="Ask CHEE" autocomplete="off">
-      <button class="btn" type="submit" aria-label="Send to CHEE"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-    </form>
+<section class="about" aria-labelledby="about-title">
+  <div class="about-main">
+    <span class="eyebrow">Portfolio project · AI shopping assistant</span>
+    <h1 id="about-title">Your home, <em>in the bag.</em></h1>
+    <p class="lead">CheeBag is a demo home and kitchen store built around <b>CHEE</b>, an AI assistant powered by Claude. CHEE works with the live store: it finds products, tracks your orders and can cancel one, but only after you click <b>Confirm</b>. The products and reviews are real (from Amazon); the customers and orders are simulated.</p>
+    <span class="label"><span class="narrow-only">Try asking CHEE</span><span class="dock-hint">CHEE is ready in the chat on the right →</span></span>
     <div class="chips">
       <button type="button" data-ask="Where is my latest order?">Where is my latest order?</button>
       <button type="button" data-ask="Find me a kettle under $40">A kettle under $40</button>
+      <button type="button" data-ask="Which of my orders are still on the way?">What's still on the way?</button>
       <button type="button" data-ask="Can I cancel an order?">Can I cancel an order?</button>
     </div>
+    <div class="stack"><span class="label">Built with</span><span>Claude tool use</span><span>Django</span><span>FastAPI</span><span>PostgreSQL</span><span>Docker</span></div>
     <div class="who-line">
       {% if current_customer %}
         Asking as <b>{{ current_customer.first_name }} {{ current_customer.last_name }}</b>. CHEE sees only this customer's orders.
         <button class="link-btn" type="button" data-switch-customer>Change</button>
       {% else %}
-        <b>Try it as a demo customer.</b> There's no real login; each one is a simulated shopper.
-        {% include "store/_personas.html" with compact=True %}
+        <b>Try it as a demo customer.</b> There's no real login; each one is a simulated shopper. <span class="dock-hint">Pick one in the chat on the right →</span>
+        <div class="narrow-only">{% include "store/_personas.html" with compact=True %}</div>
       {% endif %}
     </div>
   </div>
 
-  <aside class="hero-name" aria-label="About the name">
-    <div class="name-top">
+  <aside class="about-side" aria-label="About CHEE">
+    <h2>What CHEE can do</h2>
+    <ul class="can">
+      <li><span><b>Find products</b> by need, budget, category and stock</span></li>
+      <li><span><b>Track orders</b>: status, carrier, tracking and delivery dates</span></li>
+      <li><span><b>Cancel safely</b>: checks each seller's rules, then waits for your click</span></li>
+      <li class="soon"><span><b>Policy answers with sources</b> <span class="tag">Soon</span></span></li>
+      <li class="soon"><span><b>Order from the chat</b> <span class="tag">Soon</span></span></li>
+    </ul>
+    <div class="name">
       <span class="m">{% include "store/_mascot.html" %}</span>
-      <div><span class="fa" lang="fa" dir="rtl">چیدمان</span><span class="say">chee-deh-MAHN</span></div>
+      <p><b>Why CheeBag?</b> CHEE comes from “<bdi class="fa" lang="fa" dir="rtl">چی؟</bdi>”, Persian for “what?”: the question you ask when you're not sure what to buy. It's also the name of our assistant, so feel free to ask her questions! <b>Bag</b> is your shopping bag.</p>
     </div>
-    <h2>Why Chideman?</h2>
-    <p>It's Persian for <b>arrangement</b>: the way the pieces of a home are placed together. </p>
-    <p><b>CHEE</b>, our assistant, is named after the first syllable and from “<b><bdi lang="fa" dir="rtl">چی؟</bdi></b>”, Persian for “what?” So feel free to ask her questions!</p>
+    <a class="gh" href="https://github.com/soroush-ziaeinejad/CheeBag">How it works, on GitHub →</a>
   </aside>
-</section>
-
-<section class="meet" aria-labelledby="meet-title">
-  <div class="section-head"><h2 id="meet-title">What CHEE can do</h2><span class="promise">Live store data · only your own orders · changes need your click</span></div>
-  <div class="abilities">
-    <article class="ability now">
-      <span class="tag">Now</span><svg class="ico" viewBox="0 0 24 24"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/><path d="m20 20-4-4"/></svg>
-      <h3>Find products</h3>
-      <p>Searches the catalogue by what you need, your budget, category and stock.</p>
-      <span class="ex">“A kettle under $40”</span>
-    </article>
-    <article class="ability now">
-      <span class="tag">Now</span><svg class="ico" viewBox="0 0 24 24"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
-      <h3>Track your orders</h3>
-      <p>Status, carrier, tracking number and delivery dates, for your own orders only.</p>
-      <span class="ex">“Where is my latest order?”</span>
-    </article>
-    <article class="ability now">
-      <span class="tag">Now</span><svg class="ico" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2 2 4-4"/></svg>
-      <h3>Cancel, safely</h3>
-      <p>Checks each seller's cancellation rules and shows you a card. Nothing changes until you press Confirm.</p>
-      <span class="ex">“Cancel my pending order”</span>
-    </article>
-    <article class="ability soon">
-      <span class="tag">Coming soon</span><svg class="ico" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/></svg>
-      <h3>Policy answers, with sources</h3>
-      <p>Returns, shipping and warranty questions answered from each seller's policy, citing the section.</p>
-    </article>
-    <article class="ability soon">
-      <span class="tag">Coming soon</span><svg class="ico" viewBox="0 0 24 24"><path d="M4 5h2l2 10h10l2-7H7"/><circle cx="10" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>
-      <h3>Order from the chat</h3>
-      <p>Pick products from cards right in the chat and place a demo order after you confirm.</p>
-    </article>
-  </div>
 </section>
 
 <div class="section-head"><h2>Shop by category</h2><a href="{% url 'product_list' %}">All products →</a></div>
@@ -197,14 +151,7 @@
       </a>
     {% empty %}<p class="muted">No products to show right now.</p>{% endfor %}
   </div>
+  <p class="all"><a class="btn ghost" href="{% url 'product_list' %}">See all products</a></p>
 </section>
 
-<script>
-  document.querySelector("[data-hero-ask]").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const q = e.target.q.value.trim();
-    window.chidemanAsk(q);
-    e.target.reset();
-  });
-</script>
 {% endblock %}

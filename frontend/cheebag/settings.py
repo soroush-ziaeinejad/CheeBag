@@ -33,8 +33,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-ROOT_URLCONF = "chideman.urls"
-WSGI_APPLICATION = "chideman.wsgi.application"
+ROOT_URLCONF = "cheebag.urls"
+WSGI_APPLICATION = "cheebag.wsgi.application"
 
 TEMPLATES = [{
     "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -49,15 +49,17 @@ DATABASES = {"default": {
     "ENGINE": "django.db.backends.postgresql",
     "HOST": os.environ.get("DB_HOST", "localhost"),
     "PORT": os.environ.get("DB_PORT", "5432"),
-    "NAME": os.environ.get("DB_NAME", "chideman"),
-    "USER": os.environ.get("DB_USER", "chideman"),
-    "PASSWORD": os.environ.get("DB_PASSWORD", "chideman"),
+    "NAME": os.environ.get("DB_NAME", "cheebag"),
+    "USER": os.environ.get("DB_USER", "cheebag"),
+    "PASSWORD": os.environ.get("DB_PASSWORD", "cheebag"),
 }}
 
 # the AI service (agent container); the browser never talks to it directly
 AGENT_URL = os.environ.get("AGENT_URL", "http://agent:8000")
 # the Store API (internal); Django asks it for things that depend on seller rules
 STORE_API_URL = os.environ.get("STORE_API_URL", "http://store-api:8000")
+# Room studio (internal): room photos, product previews and room questions
+STUDIO_URL = os.environ.get("STUDIO_URL", "http://room-studio:8000")
 
 # the demo persona lives in a signed cookie, so Django needs no tables of its own
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"

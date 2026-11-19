@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/readme/banner.svg" alt="Chideman AI: Your home, arranged. Meet CHEE, an AI shopping assistant." width="100%">
+  <img src="assets/readme/banner.svg" alt="CheeBag: Your home, in the bag. Meet CHEE, an AI shopping assistant." width="100%">
 </p>
 
 <p align="center">
@@ -13,13 +13,13 @@
 
 <p align="center">
   <b>A home and kitchen store with an AI assistant that can actually do things, safely.</b><br>
-  <b><a href="https://chidemanai.com">Try the live demo at chidemanai.com →</a></b><br>
+  <b><a href="https://DOMAIN_TBD">Try the live demo at DOMAIN_TBD →</a></b><br>
   <sub>Portfolio project · pick a demo customer and ask CHEE</sub>
 </p>
 
 ---
 
-**Chideman AI** is a full-stack demo store built around **CHEE**, a shopping assistant powered by Claude. CHEE doesn't just chat: it searches the live catalogue, looks up the signed-in customer's orders, and can cancel an order, but only after the customer presses a button that the model itself can never press.
+**CheeBag** is a full-stack demo store built around **CHEE**, a shopping assistant powered by Claude. CHEE doesn't just chat: it searches the live catalogue, looks up the signed-in customer's orders, and can cancel an order, but only after the customer presses a button that the model itself can never press.
 
 <p align="center">
   <img src="assets/readme/cancel-demo.gif" alt="Asking CHEE to cancel an order, reviewing the confirmation card, and confirming" width="88%">
@@ -27,18 +27,19 @@
 
 ## Meet CHEE
 
-*Chideman* (⁧چیدمان⁩, chee-deh-MAHN) is Persian for **arrangement**: the way the pieces of a home are placed together. CHEE takes its name from the first syllable, and from **⁧چی؟⁩**, Persian for "what?", so feel free to ask her questions.
+**CHEE** comes from **⁧چی؟⁩** (chee), Persian for "what?": the question you ask when you're not sure what to buy. **Bag** is your shopping bag. So the name is the whole idea: ask CHEE, and the right things end up in your bag.
 
 | | What CHEE can do |
 |---|---|
 | ✅ **Find products** | Searches the catalogue by need, budget, category and stock, and only mentions products the store really has. |
 | ✅ **Track orders** | Status, carrier, tracking number and delivery dates, for the signed-in customer's orders only. |
 | ✅ **Cancel, safely** | Checks every seller's cancellation rules, shows a confirmation card with the refund and any fee, and changes nothing until the customer clicks **Confirm**. |
+| ✅ **Room studio** | Upload a photo of your room: CHEE describes its style and colours, shows products in it (an AI preview made with Google's Gemini image model) that you can move and recolour, picks a set for your budget, and suggests what else would suit it, from CheeBag's catalogue or from 14 Canadian online shops (via Google Shopping). |
 | 🔜 **Policy answers with sources** | Returns, shipping and warranty questions answered from each seller's policy PDF, citing the section and page (RAG). |
 | 🔜 **Order from the chat** | Pick products from cards in the chat and place a demo order after confirming. |
 
 <p align="center">
-  <img src="assets/readme/landing.png" alt="The Chideman landing page" width="88%">
+  <img src="assets/readme/landing.png" alt="The CheeBag landing page" width="88%">
 </p>
 
 ## How it works
@@ -52,9 +53,11 @@ flowchart LR
     S --> DB[(PostgreSQL)]
     S -. "seller cancellation rules" .-> J[["policy_facts.json"]]
     A -. "coming soon" .-> V[("Chroma<br/>seller-policy sections")]
+    W -- "room photo, product" --> R["Room studio · FastAPI<br/>Claude vision + Gemini image model"]
+    R -- "products" --> S
 ```
 
-- **Four small services in Docker Compose**: the Django storefront, the AI service, the Store API and PostgreSQL, with Caddy in front in production.
+- **Five small services in Docker Compose**: the Django storefront, the AI service, Room studio, the Store API and PostgreSQL, with Caddy in front in production.
 - **The agent loop is written by hand** on the Anthropic Messages API (no LangChain), so every tool call, error and token count is visible. Each answer shows which tools CHEE used.
 - **The model never decides who you are.** The customer id comes from the server-side session and is added to every tool call by the backend. Tool arguments are validated again in code, because model output is untrusted.
 - **The Store API owns every business rule.** Ownership is part of each query, so another customer's order is simply "not found".
@@ -110,9 +113,9 @@ The policy PDFs, their ground-truth values and a validator (49 checks) are gener
 You need Docker and an [Anthropic API key](https://console.anthropic.com/).
 
 ```bash
-git clone https://github.com/soroush-ziaeinejad/ChidemanAI.git chideman
-cd chideman
-cp .env.example .env          # then add your ANTHROPIC_API_KEY
+git clone https://github.com/soroush-ziaeinejad/CheeBag.git cheebag
+cd cheebag
+cp .env.example .env          # then add your ANTHROPIC_API_KEY (and GEMINI_API_KEY for real room previews)
 docker compose up -d --build
 ```
 
@@ -121,6 +124,7 @@ docker compose up -d --build
 | http://localhost:8000 | The store. Pick a demo customer in the header, then ask CHEE. |
 | http://localhost:8001/docs | Store API (interactive docs) |
 | http://localhost:8002/docs | AI service (interactive docs) |
+| http://localhost:8003/docs | Room studio (interactive docs) |
 
 The database builds itself from the CSVs on first start. To reset the demo data: `docker compose down -v && docker compose up -d`.
 
@@ -129,6 +133,7 @@ The database builds itself from the CSVs on first start. To reset the demo data:
 ```
 ├── frontend/        Django storefront: pages, demo login, chat drawer, confirmation cards
 ├── agent/           AI service: Claude tool loop, tool definitions, typed UI payloads
+├── room_studio/     Room studio: room photos, Claude's room analysis and suggestions, product previews
 ├── store_api/       Store API: products, orders, cancel proposals and confirmations
 ├── data/
 │   ├── src/         data pipeline: products, sellers, customers and orders, policy PDFs
@@ -144,7 +149,7 @@ The database builds itself from the CSVs on first start. To reset the demo data:
 - [x] Storefront with demo customers and a mobile-friendly layout
 - [x] Tool-calling assistant for products and orders
 - [x] Cancel with a confirmation card, server-side checks and per-seller rules
-- [x] HTTPS deployment on AWS ([chidemanai.com](https://chidemanai.com))
+- [x] HTTPS deployment on AWS ([DOMAIN_TBD](https://DOMAIN_TBD))
 - [ ] Seller-policy RAG with citations (Chroma, all-MiniLM-L6-v2, seller filtering before search)
 - [ ] RAG evaluation: section recall@k, wrong-seller rate, groundedness, tokens and latency
 - [ ] Order from the chat with product cards and the same confirmation flow

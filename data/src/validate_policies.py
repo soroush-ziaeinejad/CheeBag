@@ -65,7 +65,7 @@ def main():
               len(reader.pages) == d["page_count"] and len(text) > 15000, f"{len(text)} characters")
         sh, r = f["shipping"], f["returns"]
         must_contain = [s["name"], s["legal_name"], f"Version {f['policy_version']}", f"Effective {f['effective_date']}",
-                        f"Chideman seller ID {s['seller_id']}", f"within {r['window_days']} days of the delivery date",
+                        f"CheeBag seller ID {s['seller_id']}", f"within {r['window_days']} days of the delivery date",
                         f"orders of {money(sh['free_threshold_cad'])} or more", money(sh["standard_fee_cad"]),
                         days_range(sh["standard_business_days"]), f"within {f['refund_processing_business_days']} business days",
                         f"within {f['damage_report_days']} days of the delivery date", f["cancellation"]["rule"][:60],

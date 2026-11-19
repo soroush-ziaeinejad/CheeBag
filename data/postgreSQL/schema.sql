@@ -1,4 +1,4 @@
--- Chideman store schema. Safe to re-run: drops and recreates all tables.
+-- CheeBag store schema. Safe to re-run: drops and recreates all tables.
 
 DROP TABLE IF EXISTS order_events, pending_actions, reviews, shipments, payments, order_items, orders, customers, products, sellers;
 

@@ -1,7 +1,7 @@
 -- 001: actions CHEE proposes and the customer confirms, plus an audit log of order changes.
 -- Safe to re-run. A fresh database runs it automatically (03_actions.sql in the compose files).
 -- Existing database:
---   docker compose exec -T postgres psql -U chideman -d chideman -f /data/postgreSQL/migrations/001_actions.sql
+--   docker compose exec -T postgres psql -U cheebag -d cheebag -f /data/postgreSQL/migrations/001_actions.sql
 
 -- One row per proposal. The token goes to the customer's browser only; we keep its SHA-256 hash.
 CREATE TABLE IF NOT EXISTS pending_actions (

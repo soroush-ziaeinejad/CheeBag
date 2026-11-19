@@ -1,12 +1,12 @@
-# Chideman AI, local development: run from the project folder with `docker compose up -d --build`
-name: chideman
+# CheeBag, local development: run from the project folder with `docker compose up -d --build`
+name: cheebag
 services:
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_USER: chideman
-      POSTGRES_PASSWORD: chideman #${DB_PASSWORD:-chideman}
-      POSTGRES_DB: chideman
+      POSTGRES_USER: cheebag
+      POSTGRES_PASSWORD: cheebag #${DB_PASSWORD:-cheebag}
+      POSTGRES_DB: cheebag
     ports:
       - "5432:5432"
     volumes:
@@ -17,7 +17,7 @@ services:
       - ./data/postgreSQL/load.sql:/docker-entrypoint-initdb.d/02_load.sql:ro
       - ./data/postgreSQL/migrations/001_actions.sql:/docker-entrypoint-initdb.d/03_actions.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U chideman -d chideman"]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U cheebag -d cheebag"]
       interval: 3s
       timeout: 3s
       retries: 30
@@ -28,9 +28,9 @@ services:
     environment:
       DEBUG: "True"
       DB_HOST: postgres
-      DB_NAME: chideman
-      DB_USER: chideman
-      DB_PASSWORD: chideman #${DB_PASSWORD:-chideman}
+      DB_NAME: cheebag
+      DB_USER: cheebag
+      DB_PASSWORD: cheebag #${DB_PASSWORD:-cheebag}
       AGENT_URL: http://agent:8000   # Django forwards chat messages here
     ports:
       - "8000:8000"
@@ -46,7 +46,7 @@ services:
     build: ./store_api
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     environment:
-      DATABASE_URL: postgresql+psycopg://chideman:chideman@postgres:5432/chideman
+      DATABASE_URL: postgresql+psycopg://cheebag:cheebag@postgres:5432/cheebag
     ports:
       - "8001:8000"
     volumes:
@@ -71,5 +71,22 @@ services:
     depends_on:
       - store-api
 
+  room-studio:
+    build: ./room_studio
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      STORE_API_URL: http://store-api:8000
+    env_file:
+      - path: .env
+        required: false   # ANTHROPIC_API_KEY; GEMINI_API_KEY for real AI previews; SERPAPI_KEY for online shops
+    ports:
+      - "8003:8000"
+    volumes:
+      - ./room_studio:/app   # code changes reload without rebuilding
+      - studio_data:/data    # room photos and previews, deleted after 6 hours
+    depends_on:
+      - store-api
+
 volumes:
   pgdata:
+  studio_data:

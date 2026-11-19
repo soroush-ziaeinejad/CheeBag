@@ -1,4 +1,4 @@
-# Chideman AI. DOMAIN comes from the server's .env (e.g. DOMAIN=chidemanai.com).
+# CheeBag. DOMAIN comes from the server's .env (e.g. DOMAIN=cheebag.com).
 # Caddy gets and renews the HTTPS certificate by itself and redirects http to https.
 {$DOMAIN} {
 	encode gzip

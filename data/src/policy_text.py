@@ -113,7 +113,7 @@ WARRANTY_EXCLUSIONS = {
 
 EXTRA_FAQ = {
     1: [("Are your kitchen shears really covered for life?",
-         "Yes. Under the Copperline Promise, stainless-steel hand tools such as shears, can openers and cherry pitters are replaced free of charge if they break in normal home use, for as long as you own them. Contact us with your Chideman order number and a photo."),
+         "Yes. Under the Copperline Promise, stainless-steel hand tools such as shears, can openers and cherry pitters are replaced free of charge if they break in normal home use, for as long as you own them. Contact us with your CheeBag order number and a photo."),
         ("Can I return food storage containers I have already used?",
          "No. For hygiene reasons, food storage containers can only be returned unused. Defective containers are always covered under Section 8."),
         ("My kitchen scale shows the wrong weight. What should I do?",
@@ -152,5 +152,5 @@ EXTRA_FAQ = {
          "For 60 months (5 years). If liquid leaks through the waterproof layer during that time, we replace the protector.")],
 }
 
-# how each seller's charges appear on card statements (CHIDEMAN*<descriptor>)
+# how each seller's charges appear on card statements (CHEEBAG*<descriptor>)
 DESCRIPTOR = {1: "COPPERLINE", 2: "KETTLECREMA", 3: "CORKPOUR", 4: "TRAILMATE", 5: "BREEZEWAY", 6: "NESTWELL"}

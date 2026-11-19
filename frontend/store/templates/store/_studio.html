@@ -1,0 +1,89 @@
+{% load static %}
+{# Room studio: the second tab of the CHEE panel. Behaviour in static/store/studio.js, styles in studio.css. #}
+<section class="studio" id="studio" role="tabpanel" aria-label="Room studio"
+         data-upload-url="{% url 'studio_upload' %}" data-products-url="{% url 'studio_products' %}"
+         data-shops-url="{% url 'studio_shops' %}"
+         data-sample-url="{% static 'store/img/hero_room.jpg' %}">
+
+  <div class="st-start" data-st-start>
+    <span class="st-kicker">Room studio</span>
+    <b class="st-title">See it in your room</b>
+    <p class="st-note" data-st-intro>Upload a photo of your room. CHEE looks at its style and colours, shows a product in it,
+      and suggests what else would suit it.</p>
+    <label class="st-drop" data-st-drop>
+      <input type="file" accept="image/jpeg,image/png,image/webp" data-st-file hidden>
+      <svg class="i" viewBox="0 0 24 24"><path d="M4 16l4-4 3 3 5-5 4 4"/><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="9" r="1.6"/></svg>
+      <b>Upload a room photo</b>
+      <small>JPG, PNG or WebP, up to 8 MB · deleted after 6 hours</small>
+    </label>
+    <button class="link-btn" type="button" data-st-sample>Or try our sample living room</button>
+  </div>
+
+  <div class="st-room" data-st-room hidden>
+    <figure class="st-photo">
+      <div class="st-frame">
+        <img alt="Your room" data-st-img>
+        <div class="st-pins" data-st-pins></div>
+      </div>
+      <div class="st-switch" data-st-switch></div>
+      <figcaption data-st-caption></figcaption>
+    </figure>
+    <div class="st-row"><button class="link-btn" type="button" data-st-reset>Use another photo</button></div>
+
+    <div class="st-card st-adjust" data-st-adjust hidden>
+      <b class="st-h">Adjust this preview</b>
+      <p class="st-small">Drag the numbered pins on the picture to move items, pick a colour, or describe a change. Then update the preview.</p>
+      <div class="st-adjust-items" data-st-adjust-items></div>
+      <input type="text" maxlength="300" placeholder="Anything else? e.g. put the kettle on the counter" aria-label="Other change" data-st-note>
+      <button class="st-go" type="button" data-st-update>Update preview</button>
+      <small class="st-small">Colours are only a preview: the product may not come in that colour.</small>
+    </div>
+
+    <div class="st-card st-analysis" data-st-analysis aria-live="polite"></div>
+
+    <div class="st-source" role="group" aria-label="Where products come from">
+      <span>Products from</span>
+      <button type="button" data-st-source="store" aria-pressed="true">CheeBag</button>
+      <button type="button" data-st-source="shops" aria-pressed="false">Online shops</button>
+    </div>
+    <p class="st-small st-shops-note" data-st-shops-note hidden>
+      Searching IKEA, Wayfair, Structube, Article, EQ3, Walmart, Best Buy, Amazon.ca, Canadian Tire, The Home Depot,
+      HomeSense, CB2, West Elm and Crate &amp; Barrel through Google Shopping. CheeBag doesn't sell these items;
+      prices are as listed when searched.</p>
+
+    <div class="st-card">
+      <b class="st-h">1 · Choose products <span class="st-sub">up to 6 in one preview</span></b>
+      <div class="st-selected" data-st-selected hidden></div>
+      <input type="search" placeholder="Search products, e.g. kettle" aria-label="Search products" enterkeyhint="search" data-st-search>
+      <div class="st-results" data-st-results></div>
+      <button class="st-go" type="button" data-st-render disabled>Show it in my room</button>
+      <small class="st-small" data-st-left></small>
+    </div>
+
+    <div class="st-card">
+      <b class="st-h">2 · Or let CHEE pick a set for your budget</b>
+      <form class="st-plan" data-st-plan>
+        <label class="st-budget"><span>$</span><input type="number" name="budget" min="10" max="10000" step="5" value="300" aria-label="Budget in Canadian dollars"><span>CAD</span></label>
+        <input type="text" name="wishes" maxlength="200" placeholder="Anything in mind? e.g. a coffee corner" aria-label="Wishes (optional)">
+        <button type="submit">Plan it</button>
+      </form>
+      <div class="st-plan-result" data-st-plan-result aria-live="polite"></div>
+    </div>
+
+    <div class="st-card">
+      <b class="st-h">3 · Ask about this room</b>
+      <div class="st-chips">
+        <button type="button" data-st-ask="What else from the store would suit this room?">What else would suit it?</button>
+        <button type="button" data-st-ask="Which products match the colours in my room?">Match my colours</button>
+        <button type="button" data-st-ask="Give me three ideas under $40 for this room.">Ideas under $40</button>
+      </div>
+      <div class="st-log" data-st-log aria-live="polite"></div>
+      <form class="st-form" data-st-form>
+        <textarea rows="1" placeholder="Ask CHEE about this room…" aria-label="Question about this room"></textarea>
+        <button type="submit" aria-label="Ask"><svg class="i" viewBox="0 0 24 24"><path d="M4 12 20 4l-6 16-3-7z"/></svg></button>
+      </form>
+    </div>
+  </div>
+
+  <p class="st-status" data-st-status role="status"></p>
+</section>

@@ -42,7 +42,7 @@ def home(request):
                  .exclude(pk__in=bought.values("product_id")))
     else:
         picks = best_sellers
-    picks = list(picks[:8]) or list(best_sellers[:8])
+    picks = list(picks[:12]) or list(best_sellers[:12])
 
     # one tile per category, pictured by its most-reviewed product, biggest categories first
     tiles, counts = {}, dict(products.values_list("category").annotate(n=Count("id")))

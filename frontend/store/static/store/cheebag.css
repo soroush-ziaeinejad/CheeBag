@@ -1,0 +1,170 @@
+/* CheeBag theme: saffron & pomegranate. Loaded after base.html's styles and before each page's own styles. */
+
+:root {
+  /* saffron & pomegranate: Persian-inspired colours on warm cream */
+  --bg:#fbf6ec; --card:#fffdf8; --ink:#2b1d2a; --ink-2:#4a3446; --muted:#6e5f69; --line:#e8ddcb;
+  --accent:#9e2b3a; --accent-2:#b8404f; --accent-soft:#f6e1e0; --warm:#f5ecdd;
+  --saffron:#e3a72f; --saffron-soft:#f8e3b0; --turq:#1f8a8a; --turq-ink:#176f6f; --turq-soft:#ddf0ee;
+  --sage:var(--turq-soft); --yellow:var(--saffron-soft);
+  --chat-w:0px;   /* width of the docked chat column (wide screens only) */
+}
+
+/* nothing may push the page sideways; clip (unlike hidden) keeps sticky elements working */
+html, body { overflow-x:clip; max-width:100%; }
+img, svg, video { max-width:100%; }
+
+body { font-family:"Avenir Next", Avenir, "Segoe UI", sans-serif; font-size:15px; -webkit-font-smoothing:antialiased; }
+h1, h2, .brand { font-family:"Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; font-weight:500; }
+
+button, .btn { min-height:42px; border-radius:12px; transition:background .18s, box-shadow .18s; }
+button:hover, .btn:hover { box-shadow:0 3px 12px #2b1d2a18; }
+button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+.btn.ghost { background:var(--card); }
+.card { border-radius:18px; }
+
+.skip-link { position:fixed; top:-80px; left:16px; background:var(--ink); color:#fff; padding:12px; z-index:100; }
+.skip-link:focus { top:12px; }
+
+/* header */
+.wrap { max-width:1320px; padding-left:32px; padding-right:32px; }
+.demo-banner { background:var(--ink); color:#f4eedf; font-size:11px; letter-spacing:.025em; padding:7px 16px; }
+header { background:var(--bg); }
+header .wrap { min-height:84px; gap:22px; }
+.brand { font-size:29px; gap:10px; letter-spacing:-1.2px; }
+.brand img.logo { width:46px; height:auto; }
+.brand .brand-bag { font-weight:inherit; font-style:italic; color:var(--accent); }
+.brand small { display:block; font:10px "Avenir Next", sans-serif; letter-spacing:1px; color:var(--muted); margin-top:1px; }
+nav > a, nav .drop > a { font-size:13px; padding:30px 10px; }
+.search { background:var(--card); max-width:320px; min-width:0; }
+.search input[type=search] { min-width:0; width:100%; font-size:13px; }
+main { padding-top:28px; }
+footer { padding-bottom:90px; background:var(--warm); }
+
+/* CHEE mascot colours */
+.mascot .m-eye { fill:#2b1d2a; }
+.mascot .m-smile { stroke:#2b1d2a; stroke-width:3; fill:none; }
+.mascot .m-cheek { fill:#e58a86; opacity:.65; }
+.mascot .m-bulb { fill:#e3a72f; }
+
+/* chat drawer */
+.as-launch { border:1px solid #ffffff40; }
+.assistant { width:min(460px, 100%); background:var(--card); height:100dvh; }
+/* the closed drawer sits just off-screen: hide it fully so its shadow doesn't show and Safari can't scroll to it */
+.assistant { visibility:hidden; box-shadow:none; transition:transform .22s ease, visibility 0s linear .22s; }
+body.as-open .assistant { visibility:visible; box-shadow:-10px 0 40px rgba(43,29,42,.15); transition:transform .22s ease; }
+body.as-open { overflow:hidden; }
+.as-avatar { width:48px; height:48px; background:#f5ecdd; border-radius:16px; }
+.as-head { padding:14px 16px; }
+.as-head b { font-size:16px; letter-spacing:.06em; }
+.as-head small { font-size:11px; color:#e6dce2; }
+.as-head .x button { font-size:12px; }
+.as-context { font-size:12px; line-height:1.5; }
+.as-log { padding:18px 16px; gap:14px; }
+.as-suggest button { background:var(--card); border-radius:12px; }
+.msg.bot { max-width:95%; }
+.msg.bot .b { background:var(--warm); padding:12px 14px; border:1px solid #eadfce; border-radius:16px 16px 16px 4px; }
+.as-compose textarea { min-width:0; }
+.as-compose button { min-height:44px; }
+.as-note { font-size:10.5px; }
+
+/* ---------- CHEE docked on the right (wide screens) ----------
+   On wide screens the chat is a column that is always open; the page makes room for it.
+   Narrower screens keep the floating button and the slide-in drawer. */
+@media (min-width: 1180px) {
+  :root { --chat-w:380px; }
+  body { padding-right:var(--chat-w); }
+  .as-launch, .as-backdrop, [data-close-assistant].x-close { display:none !important; }
+  .assistant { width:var(--chat-w); transform:none; visibility:visible; transition:none; box-shadow:none; border-left:1px solid var(--line); z-index:30; }
+  body.as-open { overflow:visible; }
+  footer { padding-bottom:22px; }
+}
+@media (min-width: 1500px) { :root { --chat-w:420px; } }
+/* the panel's left edge can be dragged to resize it (panel.js) */
+.as-resize { display:none; }
+@media (min-width: 1180px) {
+  .as-resize { display:block; position:absolute; left:-5px; top:0; bottom:0; width:10px; cursor:col-resize; z-index:5; touch-action:none; }
+  .as-resize::after { content:""; position:absolute; left:4px; top:0; bottom:0; width:2px; background:transparent; transition:background .15s; }
+  .as-resize:hover::after, .as-resize:focus-visible::after, body.panel-resizing .as-resize::after { background:var(--accent); }
+  .as-resize:focus-visible { outline:none; }
+  body.panel-resizing { cursor:col-resize; user-select:none; }
+  body.panel-resizing .assistant { transition:none; }
+  /* a wide panel leaves less room for the store: same header layout as on mid-size screens */
+  body.main-narrow header .wrap { flex-wrap:wrap; gap:12px; padding-top:14px; padding-bottom:14px; }
+  body.main-narrow .account { margin-left:auto; }
+  body.main-narrow .search { order:5; flex-basis:100%; max-width:none; }
+}
+/* the header has less room next to the chat column, so the search box gets its own row */
+@media (min-width: 1180px) and (max-width: 1379px) {
+  header .wrap { flex-wrap:wrap; gap:12px; padding-top:14px; padding-bottom:14px; }
+  .account { margin-left:auto; }
+  .search { order:5; flex-basis:100%; max-width:none; }
+  nav > a, nav .drop > a { padding:10px; }
+}
+
+@media (max-width: 1100px) {
+  header .wrap { flex-wrap:wrap; gap:12px; padding-top:14px; padding-bottom:14px; }
+  .search { order:5; flex-basis:100%; max-width:none; }
+  nav > a, nav .drop > a { padding:10px; }
+}
+
+@media (max-width: 760px) {
+  .wrap { padding-left:16px; padding-right:16px; }
+  header .wrap { gap:10px; padding-top:10px; padding-bottom:10px; }
+  .brand { font-size:24px; }
+  .brand img.logo { width:36px; }
+  .brand small { font-size:9px; }
+  nav { order:4; width:100%; justify-content:center; border-top:1px solid var(--line); }
+  nav > a, nav .drop > a { padding:8px 18px; }
+  .pm-text small { display:none; }
+
+  /* shop page */
+  .grid { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; }
+  .product .meta { flex-wrap:wrap; }
+  .toolbar > * { max-width:100%; }
+  .toolbar input[type=search] { min-width:0; flex-basis:100%; }
+  .toolbar select { flex:1; min-width:0; }
+
+  /* chat drawer takes the whole phone screen */
+  .assistant { width:100%; }
+
+  /* orders table becomes stacked rows: #id + status on top, date + total below */
+  table.orders thead { display:none; }
+  table.orders tbody tr { display:grid; grid-template-columns:1fr auto; align-items:center; row-gap:4px; padding:12px 16px; border-bottom:1px solid var(--line); }
+  table.orders tbody tr:last-child { border-bottom:0; }
+  table.orders td { padding:0; border:0; }
+  table.orders td:nth-child(1) { grid-column:1; grid-row:1; font-weight:700; }
+  table.orders td:nth-child(5) { grid-column:2; grid-row:1; text-align:right; }
+  table.orders td:nth-child(2) { grid-column:1; grid-row:2; color:var(--muted); font-size:14px; }
+  table.orders td:nth-child(4) { grid-column:2; grid-row:2; text-align:right; font-weight:650; }
+  table.orders td:nth-child(3) { display:none; }
+  table.orders td[colspan] { grid-column:1 / -1; }
+
+  /* any other wide table scrolls inside its own card instead of moving the page */
+  .card:has(> table:not(.orders)) { overflow-x:auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+}
+
+/* product cards in the CHEE chat (product_cards.js) */
+.pc-wrap { margin-top:8px; display:flex; flex-direction:column; gap:6px; max-width:100%; }
+.pc-head { display:flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--line); border-radius:12px; background:var(--card); color:var(--ink); text-decoration:none; font-size:13px; }
+.pc-head:hover { border-color:var(--accent); }
+.pc-status { font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--warm); color:var(--ink-2); }
+.pc-status.delivered { background:#e6f4ea; color:#2e7d32; } .pc-status.shipped { background:var(--turq-soft); color:var(--turq-ink); }
+.pc-status.cancelled { background:#f3f0f2; color:var(--muted); } .pc-status.pending, .pc-status.processing { background:var(--saffron-soft); color:#7a5a12; }
+.pc-go { margin-left:auto; color:var(--accent); font-weight:650; font-size:12px; white-space:nowrap; }
+.pc-row { display:flex; gap:8px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:4px; }
+.pc { flex:0 0 132px; scroll-snap-align:start; display:flex; flex-direction:column; gap:4px; padding:8px; border:1px solid var(--line); border-radius:14px;
+      background:var(--card); color:var(--ink); text-decoration:none; transition:border-color .15s, box-shadow .15s, transform .15s; }
+.pc:hover { border-color:var(--accent); box-shadow:0 4px 14px rgba(43,29,42,.10); transform:translateY(-1px); }
+.pc:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+.pc-pic { position:relative; display:block; height:96px; border-radius:10px; background:#fff; }
+.pc-pic img { width:100%; height:100%; object-fit:contain; mix-blend-mode:multiply; }
+.pc-qty { position:absolute; top:4px; right:4px; font-size:11px; font-weight:800; padding:1px 6px; border-radius:999px; background:var(--ink); color:#fff; }
+.pc-name { font-size:12px; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.6em; }
+.pc-meta { display:flex; justify-content:space-between; align-items:baseline; font-size:12.5px; }
+.pc-rate { font-size:11.5px; color:#c98a12; font-weight:700; }
+.pc-stock { font-size:10.5px; font-weight:700; color:var(--turq-ink); }
+.pc-stock.out { color:var(--muted); }

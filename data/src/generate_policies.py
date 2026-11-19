@@ -145,8 +145,8 @@ class PolicyDoc(BaseDocTemplate):
                          topMargin=0.95 * inch, bottomMargin=0.9 * inch,
                          title=f"{seller['name']} Customer Policy Handbook (version {facts['policy_version']})",
                          author=seller["legal_name"], subject="Customer policies - fictional demonstration data",
-                         keywords=f"Chideman seller {seller['seller_id']}; policies; returns; shipping; warranty",
-                         creator="Chideman generate_policies.py")
+                         keywords=f"CheeBag seller {seller['seller_id']}; policies; returns; shipping; warranty",
+                         creator="CheeBag generate_policies.py")
         self.seller, self.facts = seller, facts
         frame = Frame(self.leftMargin, self.bottomMargin, self.width, self.height, id="body")
         self.addPageTemplates([PageTemplate(id="page", frames=[frame], onPage=self.decorate)])
@@ -166,7 +166,7 @@ class PolicyDoc(BaseDocTemplate):
         c.setFont("Helvetica", 8)
         c.drawString(MARGIN, 0.55 * inch, f"Version {self.facts['policy_version']}  |  Effective {self.facts['effective_date']}")
         c.setFont("Helvetica-Oblique", 7)
-        c.drawString(MARGIN, 0.38 * inch, "Fictional demonstration document for the Chideman AI portfolio project. Not a legally reviewed policy.")
+        c.drawString(MARGIN, 0.38 * inch, "Fictional demonstration document for the CheeBag portfolio project. Not a legally reviewed policy.")
         c.restoreState()
 
     def beforeDocument(self):
@@ -207,14 +207,14 @@ class Handbook:
         toc.dotsMinLevel = 0
         return [Spacer(1, 0.1 * inch), P(s["name"], "title"), P("Customer Policy Handbook", "subtitle"),
                 *kv_table([("Seller", f"{s['name']} ({s['legal_name']})"),
-                           ("Chideman seller ID", str(s["seller_id"])),
+                           ("CheeBag seller ID", str(s["seller_id"])),
                            ("Policy version", f["policy_version"]),
                            ("Effective date", f["effective_date"]),
-                           ("Applies to", f"All orders for products sold by {s['name']} on the Chideman marketplace")]),
+                           ("Applies to", f"All orders for products sold by {s['name']} on the CheeBag marketplace")]),
                 P(f"This handbook explains how {s['name']} handles orders, payments, shipping, returns, refunds, "
                   "warranties and customer service. Please read it before you buy. Section 18 summarizes the key numbers "
                   "on one page."),
-                P("This is a fictional document created as demonstration data for the Chideman AI portfolio project. "
+                P("This is a fictional document created as demonstration data for the CheeBag portfolio project. "
                   "It is not a legally reviewed policy and does not describe a real company.", "small"),
                 Spacer(1, 6), P("Contents", "tochead"), toc, PageBreak()]
 
@@ -225,16 +225,16 @@ class Handbook:
         return [self.h1(f"About {s['name']} and These Policies"),
                 self.h2("Who we are"),
                 P(f"{s['name']} ({s['legal_name']}) is an independent retailer founded in {s['founded_year']} and based in "
-                  f"{s['headquarters']}. {s['description']} We sell and ship our products through the Chideman online "
+                  f"{s['headquarters']}. {s['description']} We sell and ship our products through the CheeBag online "
                   "marketplace, and every order is packed and shipped by our own team."),
                 *kv_table([("Legal name", s["legal_name"]), ("Headquarters", s["headquarters"]),
-                           ("Founded", str(s["founded_year"])), ("Chideman seller ID", str(s["seller_id"])),
+                           ("Founded", str(s["founded_year"])), ("CheeBag seller ID", str(s["seller_id"])),
                            ("Customer support", f"{s['support_email']}  |  {s['support_phone']}"),
                            ("Support hours", f["service"]["hours"]),
                            ("Product categories", "; ".join(cat["categories"])),
                            ("Products listed", f"{cat['count']} products")]),
                 self.h2("Sellers and brands"),
-                P(f"{s['name']} is the seller of the products listed under our name on Chideman. The products themselves are "
+                P(f"{s['name']} is the seller of the products listed under our name on CheeBag. The products themselves are "
                   f"made by many different brands, such as {brands}. Your purchase is from {s['legal_name']}, and this "
                   "handbook governs it. A brand's own manufacturer warranty may apply in addition to the warranty described "
                   "in Section 9."),
@@ -246,7 +246,7 @@ class Handbook:
                          "Return authorization: the approval and return label you receive after requesting a return."]),
                 self.h2("Changes to this handbook"),
                 P(f"This version ({f['policy_version']}) applies to orders placed on or after {f['effective_date']}. Orders placed "
-                  "earlier follow the version in force when they were placed. We announce material changes on our Chideman "
+                  "earlier follow the version in force when they were placed. We announce material changes on our CheeBag "
                   "seller page at least 14 days before they take effect.")]
 
     # ---- 2
@@ -260,15 +260,15 @@ class Handbook:
                     "as long as it has not shipped.")
         out = [self.h1("Ordering, Order Changes and Cancellation"),
                self.h2("Placing an order"),
-               P("When you place an order on Chideman, you receive an order confirmation email with your order number. "
+               P("When you place an order on CheeBag, you receive an order confirmation email with your order number. "
                  "Your payment is authorized immediately and the order starts in the Pending status. You can follow its "
-                 "status on the My orders page or by asking the Chideman AI assistant."),
+                 "status on the My orders page or by asking the CheeBag assistant."),
                self.h2("Changing an order"),
                P(mod_text + " After that, we cannot change the order; if it can still be cancelled (Section 2.3), you can "
                  "cancel it and place a new one."),
                self.h2("Cancelling an order"),
                P(c["rule"]),
-               P("To cancel, open the order on the My orders page or ask the Chideman AI assistant, and confirm the "
+               P("To cancel, open the order on the My orders page or ask the CheeBag assistant, and confirm the "
                  "cancellation when asked. You receive a confirmation email once it is done."),
                B("Refund of cancelled orders:", f"the payment authorization is released or refunded within "
                  f"{c['refund_business_days']} business day{'s' if c['refund_business_days'] > 1 else ''} of cancellation."
@@ -289,16 +289,16 @@ class Handbook:
         return [self.h1("Payments, Billing and Taxes"),
                 self.h2("Payment methods"),
                 P(f"We accept {', '.join(PLATFORM['payment_methods'][:-1])} and {PLATFORM['payment_methods'][-1]}, processed "
-                  "securely by Chideman. All prices are in Canadian dollars (CAD), including for orders shipped to the United States."),
+                  "securely by CheeBag. All prices are in Canadian dollars (CAD), including for orders shipped to the United States."),
                 self.h2("When you are charged"),
                 P("Your payment is authorized when you place the order and captured when the order moves to Processing. "
-                  f"Charges appear on your statement as CHIDEMAN*{short}. If a payment cannot be authorized within 48 hours, "
+                  f"Charges appear on your statement as CHEEBAG*{short}. If a payment cannot be authorized within 48 hours, "
                   "the order is cancelled automatically."),
                 self.h2("Taxes"),
                 P("Sales tax is calculated from the shipping address at checkout and shown before you pay: GST/HST, plus PST or "
                   "QST where it applies, for Canadian addresses, and state sales tax for US addresses. When you return "
                   "items, the sales tax on them is refunded in proportion. Tax-exempt purchases are not supported on "
-                  "Chideman at this time."),
+                  "CheeBag at this time."),
                 self.h2("Billing questions"),
                 P(f"For a charge you don't recognize, contact us at {s['support_email']} with the amount and date. We "
                   "never ask for full card numbers by email or phone.")]
@@ -389,7 +389,7 @@ class Handbook:
                P(fee),
                P(f"Return shipping: {r['return_shipping']}."),
                self.h2("How to return an item"),
-               bullets(["Start the return on the My orders page or ask the Chideman AI assistant, and choose the items and reason.",
+               bullets(["Start the return on the My orders page or ask the CheeBag assistant, and choose the items and reason.",
                         "You receive a return authorization and, where applicable, a prepaid label by email.",
                         "Pack the items securely, preferably in the original packaging, and ship them within 14 days of receiving the label.",
                         "We inspect the return when it arrives and process the refund as described in Section 7."]),
@@ -400,7 +400,7 @@ class Handbook:
         else:
             out.append(P(f"{s['name']} does not offer exchanges. Please return the item for a refund and place a new order."))
         out.append(P("Gifts: items bought as gifts can be returned by the recipient with the order number; the refund is "
-                     "issued as a Chideman gift card."))
+                     "issued as a CheeBag gift card."))
         return out
 
     # ---- 7
@@ -413,7 +413,7 @@ class Handbook:
                   "issuer may take another 3 to 10 business days to show the refund on your statement."),
                 self.h2("How you are refunded"),
                 bullets(["Refunds go back to the original payment method.",
-                         "Amounts paid with a Chideman gift card are refunded to the gift card balance.",
+                         "Amounts paid with a CheeBag gift card are refunded to the gift card balance.",
                          f"Cancelled orders are refunded within {f['cancellation']['refund_business_days']} business "
                          f"day{'s' if f['cancellation']['refund_business_days'] > 1 else ''} (Section 2.3)."]),
                 self.h2("What is refunded"),
@@ -435,7 +435,7 @@ class Handbook:
         return [self.h1("Damaged, Defective, Missing or Incorrect Items"),
                 self.h2("Damaged or defective on arrival"),
                 P(f"Report damaged or defective items within {d} days of the delivery date. Send photos of the item, the "
-                  "packaging and the shipping label to our support team or through the Chideman AI assistant. We send a "
+                  "packaging and the shipping label to our support team or through the CheeBag assistant. We send a "
                   "free replacement or a full refund, including original shipping. In most cases you don't need to send the "
                   "damaged item back; if we need it, we provide a prepaid label."),
                 *freight,
@@ -463,11 +463,11 @@ class Handbook:
                          "Cosmetic damage that does not affect how the product works."]
                         + [x + "." for x in WARRANTY_EXCLUSIONS[s["seller_id"]]]),
                 self.h2("How to make a warranty claim"),
-                bullets([f"Contact us at {s['support_email']} or through the Chideman AI assistant with your Chideman order "
+                bullets([f"Contact us at {s['support_email']} or through the CheeBag assistant with your CheeBag order "
                          "number, a description of the problem and a photo or short video.",
                          f"We reply within {f['service']['first_response_hours']} hours and decide whether to repair, replace "
                          "or refund the product.",
-                         "Approved replacements ship within 5 business days at no cost. Your Chideman order is your proof of purchase."]),
+                         "Approved replacements ship within 5 business days at no cost. Your CheeBag order is your proof of purchase."]),
                 P("Manufacturer warranties from the brand may give you additional rights; our warranty does not limit them.")]
 
     # ---- 10, 11, 12
@@ -499,7 +499,7 @@ class Handbook:
         s, f = self.s, self.f
         pr = f["promotions"]
         items = [f"Only {pr['codes_per_order']} promotional code can be used per order, and codes cannot be added after an order is placed.",
-                 "Promotions cannot be exchanged for cash and do not apply to Chideman gift cards."]
+                 "Promotions cannot be exchanged for cash and do not apply to CheeBag gift cards."]
         if pr.get("welcome_discount_percent"):
             items.insert(0, f"New customers who join our newsletter get {pr['welcome_discount_percent']}% off their first order (once per customer).")
         for key, label in (("bundle", "Bundle offer"), ("bulk_discount", "Bulk discount"), ("multi_buy", "Multi-buy offer"),
@@ -522,14 +522,14 @@ class Handbook:
         return [self.h1("Customer Service, Complaints and Escalation"),
                 self.h2("Contacting us"),
                 *kv_table([("Email", s["support_email"]), ("Phone", s["support_phone"]), ("Hours", sv["hours"]),
-                           ("Chideman AI assistant", "Available 24/7 for order status, returns and policy questions"),
+                           ("CheeBag assistant", "Available 24/7 for order status, returns and policy questions"),
                            ("First response", f"Within {sv['first_response_hours']} hours")]),
                 self.h2("Complaints and escalation"),
                 bullets(["Step 1: contact customer service with your order number and a short description.",
                          f"Step 2: if you are not satisfied with the answer, ask for an escalation. A team lead reviews the case "
                          f"and replies within {sv['escalation_business_days']} business days.",
                          f"Step 3: if the issue is still unresolved {sv['marketplace_mediation_after_days']} days after your first "
-                         "contact, you can ask Chideman marketplace support to mediate. Chideman reviews both sides and its "
+                         "contact, you can ask CheeBag marketplace support to mediate. CheeBag reviews both sides and its "
                          "decision on refunds is final for the marketplace."]),
                 P("We keep a record of every complaint and use them to improve our products and policies.")]
 
@@ -538,8 +538,8 @@ class Handbook:
         s, f = self.s, self.f
         return [self.h1("Privacy and Data Handling"),
                 self.h2("What we receive"),
-                P("To fulfil your order, Chideman shares with us your name, shipping address, email address, phone number "
-                  "and the details of your order. Payments are processed by Chideman: we never see or store full card numbers."),
+                P("To fulfil your order, CheeBag shares with us your name, shipping address, email address, phone number "
+                  "and the details of your order. Payments are processed by CheeBag: we never see or store full card numbers."),
                 self.h2("How we use it"),
                 bullets(["To pack, ship and track your order and handle returns, refunds and warranty claims.",
                          "To answer your questions and complaints.",
@@ -556,11 +556,11 @@ class Handbook:
     def legal(self):
         s, f = self.s, self.f
         return [self.h1("Legal Terms and Consumer Rights"),
-                bullets([f"Your purchase contract is with {s['legal_name']}. Chideman operates the marketplace and processes payments.",
+                bullets([f"Your purchase contract is with {s['legal_name']}. CheeBag operates the marketplace and processes payments.",
                          "Our liability for any order is limited to the amount you paid for it, except where the law does not allow this limitation.",
                          "If a product is recalled for safety reasons, we contact affected customers and offer a refund, repair or replacement.",
                          f"These policies are governed by the laws of the {f['governing_law']}. Disputes are handled first "
-                         "through customer service and Chideman mediation (Section 14); you may also bring a claim in small claims court.",
+                         "through customer service and CheeBag mediation (Section 14); you may also bring a claim in small claims court.",
                          "Nothing in this handbook limits your statutory rights as a consumer.",
                          "If any part of this handbook is found unenforceable, the rest remains in effect. If a product page and "
                          "this handbook disagree on a policy, this handbook applies."])]
@@ -604,9 +604,9 @@ class Handbook:
              f"Check around your home and with neighbors, then tell us within {f['lost_package_claim_days']} days of the delivery date. "
              "We investigate with the carrier (up to 5 business days) and then replace or refund the order."),
             ("How do I make a warranty claim?",
-             f"Email {s['support_email']} or ask the Chideman AI assistant with your order number, a description and a photo or video. "
+             f"Email {s['support_email']} or ask the CheeBag assistant with your order number, a description and a photo or video. "
              f"We reply within {f['service']['first_response_hours']} hours."),
-            ("I paid with a Chideman gift card. How am I refunded?",
+            ("I paid with a CheeBag gift card. How am I refunded?",
              "Amounts paid with a gift card are refunded to the gift card balance; the rest goes back to your other payment method."),
         ] + EXTRA_FAQ[s["seller_id"]]
         out = [self.h1("Frequently Asked Questions")]
@@ -709,7 +709,7 @@ def main():
         facts_out.append({"key_values": key_values(seller, f), "details": f})
         print(f"{seller['seller_id']} {seller['name']:28} {catalog['count']:>3} products  {doc.page:>2} pages  {name}")
 
-    note = "Fictional demonstration data for the Chideman AI portfolio project; not legally reviewed policies."
+    note = "Fictional demonstration data for the CheeBag portfolio project; not legally reviewed policies."
     with open(os.path.join(OUT_DIR, "manifest.json"), "w") as fh:
         json.dump({"note": note, "documents": manifest}, fh, indent=2, ensure_ascii=False)
     with open(os.path.join(OUT_DIR, "policy_facts.json"), "w") as fh:

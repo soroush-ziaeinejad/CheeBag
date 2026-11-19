@@ -1,6 +1,6 @@
 """Create the store's sellers and assign every product to exactly one of them.
 
-Sellers are the (fictional) retailers that sell and ship products through Chideman.
+Sellers are the (fictional) retailers that sell and ship products through CheeBag.
 They are not the same as brands: `products.brand` is the manufacturer (e.g. YETI, Instant Pot),
 and one seller sells many brands.
 

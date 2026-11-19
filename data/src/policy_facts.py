@@ -5,10 +5,10 @@ documents and the RAG evaluation ground truth can never disagree. All values are
 demonstration data, not legally reviewed policies.
 """
 
-# Rules every seller follows because they sell through the Chideman marketplace
+# Rules every seller follows because they sell through the CheeBag marketplace
 PLATFORM = {
     "currency": "CAD",
-    "payment_methods": ["credit card", "PayPal", "Chideman gift card"],
+    "payment_methods": ["credit card", "PayPal", "CheeBag gift card"],
     "carriers": ["Canada Post", "Purolator", "UPS", "FedEx", "USPS", "DHL"],
     "order_statuses": ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
     "ships_to": "all Canadian provinces and territories and all 50 US states (no other countries)",
@@ -112,7 +112,7 @@ POLICIES = {
                     "restocking_fee_percent": 0,
                     "return_shipping": "$6.50 prepaid label deducted from the refund; free for exchanges and defective items",
                     "return_label_fee_cad": 6.50,
-                    "non_returnable": ["items with dents or damage caused after delivery", "Chideman gift cards"]},
+                    "non_returnable": ["items with dents or damage caused after delivery", "CheeBag gift cards"]},
         "exchanges": {"allowed": True, "window_days": 90, "shipping": "free (color or size)"},
         "refund_processing_business_days": 3,
         "shipping": {"free_threshold_cad": 50, "standard_fee_cad": 5.50, "standard_business_days": [3, 5],
