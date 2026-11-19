@@ -17,13 +17,17 @@
   const COLOURS = ["black", "white", "grey", "beige", "brown", "red", "pink", "orange", "yellow", "sage green",
                    "green", "teal", "blue", "navy", "purple", "gold", "silver", "copper"];
 
-  // the studio survives page changes in this tab (e.g. going to a product page and back)
+  // the studio survives page changes in this tab (e.g. going to a product page and back), but it belongs to
+  // one demo customer: switching customers or pressing "New chat" starts it again (see the end of this file)
   const KEY = "cheebag-studio";
+  const owner = panel.dataset.customer || "guest";
   const fresh = () => ({ room: null, analysis: null, items: [], plan: null, renders: [], showing: null, chat: [], left: null,
-                         source: state?.source || "store" });   // "store": CheeBag's products, "shops": online shops
+                         source: state?.source || "store",      // "store": CheeBag's products, "shops": online shops
+                         owner });
   let state;
   state = fresh();
   try { state = { ...fresh(), ...JSON.parse(sessionStorage.getItem(KEY) || "{}") }; } catch (e) {}
+  if (state.owner !== owner) { state = undefined; state = fresh(); }    // another customer's studio: start clean
   if (!Array.isArray(state.items)) state.items = [];
   if (state.product) { if (!state.items.length) state.items = [state.product]; delete state.product; }   // older single-product state
   const newRoom = () => ({ ...fresh(), items: state.items });   // a new photo keeps the chosen products
@@ -448,6 +452,14 @@
     window.cheebagAsk?.();      // opens the CHEE panel (or focuses it when it's docked)
     showTab("studio"); draw();
     if (state.room) $("[data-st-render]").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  // "New chat" clears the studio too: a fresh start for the demo
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("[data-new-chat]") || busy) return;
+    state = undefined; state = fresh(); save();
+    $("[data-st-search]").value = ""; $("[data-st-note]").value = ""; $("[data-st-form] textarea").value = "";
+    status(""); draw();
   });
 
   draw();
