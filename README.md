@@ -13,7 +13,7 @@
 
 <p align="center">
   <b>A home and kitchen store with an AI assistant that can actually do things, safely.</b><br>
-  <b><a href="https://DOMAIN_TBD">Try the live demo at DOMAIN_TBD →</a></b><br>
+  <b><a href="https://chidemanai.com">Try the live demo at chidemanai.com →</a></b><br>
   <sub>Portfolio project · pick a demo customer and ask CHEE</sub>
 </p>
 
@@ -149,7 +149,7 @@ The database builds itself from the CSVs on first start. To reset the demo data:
 - [x] Storefront with demo customers and a mobile-friendly layout
 - [x] Tool-calling assistant for products and orders
 - [x] Cancel with a confirmation card, server-side checks and per-seller rules
-- [x] HTTPS deployment on AWS ([DOMAIN_TBD](https://DOMAIN_TBD))
+- [x] HTTPS deployment on AWS ([chidemanai.com](https://chidemanai.com))
 - [ ] Seller-policy RAG with citations (Chroma, all-MiniLM-L6-v2, seller filtering before search)
 - [ ] RAG evaluation: section recall@k, wrong-seller rate, groundedness, tokens and latency
 - [ ] Order from the chat with product cards and the same confirmation flow
