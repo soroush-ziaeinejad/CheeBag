@@ -17,8 +17,9 @@
   const COLOURS = ["black", "white", "grey", "beige", "brown", "red", "pink", "orange", "yellow", "sage green",
                    "green", "teal", "blue", "navy", "purple", "gold", "silver", "copper"];
 
-  // the studio survives page changes in this tab (e.g. going to a product page and back), but it belongs to
-  // one demo customer: switching customers or pressing "New chat" starts it again (see the end of this file)
+  // the studio survives page changes (e.g. going to a product page and back) and is shared with the bigger window
+  // (localStorage, kept in sync by the "storage" event at the end of this file), but it belongs to one demo
+  // customer: switching customers or pressing "New chat" starts it again
   const KEY = "cheebag-studio";
   const owner = panel.dataset.customer || "guest";
   const fresh = () => ({ room: null, analysis: null, items: [], plan: null, renders: [], showing: null, chat: [], left: null,
@@ -26,13 +27,15 @@
                          owner });
   let state;
   state = fresh();
-  try { state = { ...fresh(), ...JSON.parse(sessionStorage.getItem(KEY) || "{}") }; } catch (e) {}
+  try { state = { ...fresh(), ...JSON.parse(localStorage.getItem(KEY) || "{}") }; } catch (e) {}
   if (state.owner !== owner) { state = undefined; state = fresh(); }    // another customer's studio: start clean
+  state.night = false;
   if (!Array.isArray(state.items)) state.items = [];
   if (state.product) { if (!state.items.length) state.items = [state.product]; delete state.product; }   // older single-product state
   const newRoom = () => ({ ...fresh(), items: state.items });   // a new photo keeps the chosen products
-  const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
   let busy = false;
+  let selected = null;          // the item picked on the picture (its id), for the quick-edit box
 
   const status = (text) => { $("[data-st-status]").textContent = text || ""; };    // progress notes ("Uploading…")
 
@@ -55,7 +58,8 @@
 
   // ---------- the loading screen over the photo while a preview is made ----------
   let loadingTimer;
-  function loading(on, title) {
+  // steps: [[seconds, text], …] to change the title as the work goes on (the server does it all in one request)
+  function loading(on, title, steps = []) {
     clearInterval(loadingTimer);
     $("[data-st-loading]").hidden = !on;
     $(".st-photo").classList.toggle("is-busy", on);
@@ -65,7 +69,12 @@
     $("[data-st-loading-title]").textContent = title;
     const start = Date.now(), clock = $("[data-st-loading-time]");
     clock.textContent = "0";
-    loadingTimer = setInterval(() => { clock.textContent = String(Math.round((Date.now() - start) / 1000)); }, 1000);
+    loadingTimer = setInterval(() => {
+      const secs = Math.round((Date.now() - start) / 1000);
+      clock.textContent = String(secs);
+      const step = steps.filter(([at]) => secs >= at).pop();
+      if (step) $("[data-st-loading-title]").textContent = step[1];
+    }, 1000);
     $(".st-photo").scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
   // wait until the new picture has loaded, so the loading screen doesn't lift on the old one
@@ -145,7 +154,10 @@
   function drawPhoto() {
     const img = $("[data-st-img]"), sw = $("[data-st-switch]"), cap = $("[data-st-caption]");
     const shown = state.renders.find((r) => r.id === state.showing);
-    img.src = roomUrl("image") + (shown ? `?render=${shown.id}` : "");
+    const night = !!(shown && state.night && shown.nightId);
+    img.src = roomUrl("image") + (shown ? `?render=${night ? shown.nightId : shown.id}` : "");
+    $("[data-st-light]").hidden = !shown;
+    studio.querySelectorAll("[data-st-light-btn]").forEach((b) => b.setAttribute("aria-pressed", String((b.dataset.stLightBtn === "night") === night)));
     sw.replaceChildren();
     if (state.renders.length) {
       const [prev, last] = state.renders.slice(-2).length === 2 ? state.renders.slice(-2) : [null, state.renders[0]];
@@ -154,19 +166,27 @@
       choices.push([last.updated ? "Updated" : `With ${short(last.label)}`, last.id]);
       choices.forEach(([label, id]) => {
         const b = node("button", state.showing === id ? "on" : "", label); b.type = "button";
-        b.addEventListener("click", () => { state.showing = id; save(); drawPhoto(); });
+        b.addEventListener("click", () => { state.showing = id; selected = null; save(); drawPhoto(); });
         sw.append(b);
       });
     }
-    drawPins(); drawAdjust();
-    cap.textContent = shown ? (shown.demo ? "Demo preview: no image model is set up yet." : "AI preview: the real products and their sizes may differ.") : "";
+    drawPins(); drawAdjust(); drawLayout();
+    cap.textContent = !shown ? "" : shown.demo ? "Demo preview: no image model is set up yet."
+      : night ? "Night view (AI preview). Switch to Day to make changes." : "AI preview: the real products and their sizes may differ.";
   }
   const short = (name) => (name.length > 28 ? name.slice(0, 26) + "…" : name);
 
   // ---------- where products come from: CheeBag or online shops ----------
   const shopsMode = () => state.source === "shops";
+  // the customer picks a source: it's saved and the old budget plan goes (it was for the other source)
   function setSource(source) {
     state.source = source; state.plan = null; save();
+    showSource();
+  }
+  // drawing only, never saving: draw() calls this, and draw() runs when the other window changes the studio
+  // (saving here would make the two windows redraw each other forever)
+  function showSource() {
+    const source = state.source;
     studio.querySelectorAll("[data-st-source]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.stSource === source)));
     $("[data-st-shops-note]").hidden = !shopsMode();
     const box = $("[data-st-search]"); box.value = "";
@@ -245,11 +265,20 @@
     busy = true; clearBanner();
     const items = [...state.items];
     const go = $("[data-st-render]"); go.disabled = true; go.textContent = "Making your preview…"; go.classList.add("is-loading");
-    loading(true, items.length > 1 ? `Placing your ${items.length} products in the room…` : `Placing ${short(items[0].name)} in the room…`);
+    loading(true, items.length > 1 ? `CHEE is planning the layout for your ${items.length} products…`
+                                   : `CHEE is planning where ${short(items[0].name)} goes…`, PREVIEW_STEPS);
     try {
       const data = await api(roomUrl("render"), { json: { product_ids: items.map((i) => String(i.id)) } });
+      // CHEE's layout: items start where it put them (not "moved" until the customer drags them)
+      const edits = {}, warnings = [];
+      (data.layout || []).forEach((l) => {
+        edits[l.product_id] = { x: l.x, y: l.y };
+        const item = items.find((i) => String(i.id) === String(l.product_id));
+        if (l.warning && item) warnings.push({ name: item.name, text: l.warning });
+      });
       state.renders.push({ id: data.render_id, label: items.length > 1 ? `${items.length} products` : items[0].name,
-                           demo: data.demo, items, edits: {} });
+                           demo: data.demo, items, edits, notes: data.layout_notes || "", warnings,
+                           info: infoFrom(data, {}), checked: data.checked, fixed: data.fixed || [] });
       state.showing = data.render_id; state.left = data.renders_left;
       save(); drawPhoto();
       await pictureLoaded();
@@ -258,69 +287,214 @@
     busy = false; drawSelected();
   }
 
-  // ---------- adjusting a preview: drag pins, pick colours, add a note, update ----------
+  // ---------- adjusting a preview: click an item on the picture, recolour / remove / drag it, update ----------
   const current = () => state.renders.find((r) => r.id === state.showing);
+  const nightOn = () => !!(state.night && current()?.nightId);
+  const cap = (c) => c[0].toUpperCase() + c.slice(1);
+  const PREVIEW_STEPS = [[8, "Drawing your products into the room…"], [35, "Checking each product against its photo…"],
+                         [55, "Fixing what didn't match…"]];
 
-  // where a pin starts: where the customer last put it, or spread along the bottom like the first preview
-  function pinSpot(render, item, i) {
-    const e = render.edits[item.id];
-    if (e && e.x != null) return [e.x, e.y];
-    const n = render.items.length, slot = 100 / Math.max(n, 3), left = (100 - slot * n) / 2;
-    return [left + slot * (i + 0.5), 78];
+  // per product, from the server: its real colour, colours CHEE suggests for this room, and the check's result
+  // (where it is in the picture, and whether it matches the real product). Earlier suggestions are kept.
+  function infoFrom(data, before) {
+    const info = {};
+    (data.items || []).forEach((it) => {
+      const old = before[it.product_id] || {};
+      info[it.product_id] = { sold: it.colour_sold || old.sold || "", colours: it.colours?.length ? it.colours : old.colours || [],
+                              box: it.box || null, point: it.point || null, ok: it.ok, note: it.note || "" };
+    });
+    return info;
   }
 
+  // CHEE's layout notes and its check of each product, for the preview on screen
+  function drawLayout() {
+    const card = $("[data-st-layout]"), render = current();
+    const checks = render ? render.items.filter((i) => render.info?.[i.id]?.note) : [];
+    card.hidden = !render || (!render.notes && !(render.warnings || []).length && !checks.length);
+    if (card.hidden) return;
+    const parts = [];
+    if (render.notes || (render.warnings || []).length) parts.push(node("b", "st-h", "CHEE's layout"));
+    if (render.notes) parts.push(node("p", null, render.notes));
+    (render.warnings || []).forEach((w) => {
+      const p = node("p", "st-warn"); p.append(node("b", null, w.name + ": "), w.text); parts.push(p);
+    });
+    if (checks.length) {
+      parts.push(node("b", "st-h st-h2", "CHEE's check against the real products"));
+      const ul = node("ul", "st-checks");
+      checks.forEach((item) => {
+        const info = render.info[item.id], li = node("li", info.ok === false ? "bad" : "good");
+        li.append(node("span", "st-tick", info.ok === false ? "!" : "✓"), node("b", null, short(item.name)), " " + info.note);
+        ul.append(li);
+      });
+      parts.push(ul);
+      if ((render.fixed || []).length) parts.push(node("p", "st-small", `CHEE redrew ${render.fixed.map(short).join(", ")} because ${render.fixed.length > 1 ? "they" : "it"} didn't match the first time.`));
+    }
+    card.replaceChildren(...parts);
+  }
+
+  // where an item is on the picture, in % (left, top, right, bottom): the check's box, moved along if the item was
+  // dragged; without a box, a small area around CHEE's planned spot (or spread along the bottom)
+  function boxOf(render, item, i) {
+    const e = render.edits[item.id] || {}, b = render.info?.[item.id]?.box, p = render.info?.[item.id]?.point;
+    if (b) {
+      // centred on the spot where the marker goes: where it was dragged, else the check's point on the product
+      const w = b[2] - b[0], h = b[3] - b[1], [x, y] = e.moved ? [e.x, e.y] : p || [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2];
+      return [x - w / 2, y - h / 2, x + w / 2, y + h / 2];
+    }
+    let x = e.x, y = e.y;
+    if (x == null) { const n = render.items.length, slot = 100 / Math.max(n, 3); x = (100 - slot * n) / 2 + slot * (i + 0.5); y = 78; }
+    return [x - 7, y - 9, x + 7, y + 9];
+  }
+  const changeCount = (render) => render.items.filter((item) => {
+    const e = render.edits[item.id] || {};
+    return e.moved || e.remove || (e.colour || null) !== (e.shown || null);
+  }).length;
+
+  function setEdit(render, item, patch) {
+    render.edits[item.id] = { ...(render.edits[item.id] || {}), ...patch };
+    save(); drawPins(); drawAdjust();
+  }
+
+  // the colour list: the colour it is sold in, then AI-preview colours (CHEE's picks for this room first)
+  function colourSelect(render, item) {
+    const info = render.info?.[item.id] || {}, edit = render.edits[item.id] || {};
+    const select = node("select"); select.setAttribute("aria-label", `Colour for ${item.name}`);
+    const group = (label, options) => {
+      const g = node("optgroup"); g.label = label;
+      options.forEach(([value, text]) => { const o = node("option", null, text); o.value = value; o.selected = (edit.colour || "") === value; g.append(o); });
+      select.append(g);
+    };
+    const sold = (info.sold || "").slice(0, 30);
+    group("Available", [["", sold ? `${sold} (as sold)` : "Original colour (as sold)"]]);
+    const picks = (info.colours || []).filter((c) => COLOURS.includes(c));
+    if (picks.length) group("AI preview · suits your room", picks.map((c) => [c, `${cap(c)} ✦`]));
+    group("AI preview · other colours", COLOURS.filter((c) => !picks.includes(c)).map((c) => [c, cap(c)]));
+    select.addEventListener("change", () => setEdit(render, item, { colour: select.value || null }));
+    return select;
+  }
+  function removeButton(render, item) {
+    const removing = !!render.edits[item.id]?.remove;
+    const b = node("button", removing ? "st-undo" : "st-remove", removing ? "Undo remove" : "Remove"); b.type = "button";
+    b.addEventListener("click", () => setEdit(render, item, { remove: !removing }));
+    return b;
+  }
+
+  // the items on the picture: a box around each one with its photo as a handle. Click to edit, drag to move.
+  let showPins = true;   // the "Hide pointers" button: the picture on its own, without dots
   function drawPins() {
-    const layer = $("[data-st-pins]"), render = current();
-    layer.replaceChildren();
-    if (!render || !render.items) return;
+    const layer = $("[data-st-pins]"), quick = $("[data-st-quick]"), toggle = $("[data-st-pins-toggle]"), render = current();
+    layer.replaceChildren(); quick.replaceChildren(); quick.hidden = true;
+    const ready = render && render.items && !nightOn();
+    toggle.hidden = !ready;
+    toggle.textContent = showPins ? "Hide pointers" : "Show pointers";
+    toggle.setAttribute("aria-pressed", String(!showPins));
+    layer.hidden = !showPins;
+    if (!ready || !showPins) return;
     render.items.forEach((item, i) => {
-      const [x, y] = pinSpot(render, item, i);
-      const pin = node("button", "st-pin" + (render.edits[item.id]?.moved ? " moved" : ""), String(i + 1));
-      pin.type = "button"; pin.title = `Drag to move: ${item.name}`;
-      pin.setAttribute("aria-label", `Move ${item.name}. Use the arrow keys or drag.`);
-      pin.style.left = x + "%"; pin.style.top = y + "%";
-      const place = (nx, ny) => {
-        nx = Math.max(0, Math.min(100, nx)); ny = Math.max(0, Math.min(100, ny));
-        render.edits[item.id] = { ...(render.edits[item.id] || {}), x: Math.round(nx), y: Math.round(ny), moved: true };
-        pin.style.left = nx + "%"; pin.style.top = ny + "%"; pin.classList.add("moved");
+      const e = render.edits[item.id] || {}, info = render.info?.[item.id] || {};
+      const box = boxOf(render, item, i);
+      const mark = node("div", "st-mark" + (selected === item.id ? " on" : "") + (e.moved ? " moved" : "")
+                               + (e.remove ? " removing" : "") + (info.ok === false ? " bad" : ""));
+      // a dot on the item's centre; its photo shows above it (below it near the top, inwards near the sides)
+      const put = (b) => {
+        const cx = (b[0] + b[2]) / 2, cy = (b[1] + b[3]) / 2;
+        mark.style.left = cx + "%"; mark.style.top = cy + "%";
+        mark.classList.toggle("below", cy < 35); mark.classList.toggle("at-left", cx < 15); mark.classList.toggle("at-right", cx > 85);
       };
-      pin.addEventListener("pointerdown", (e) => {
-        e.preventDefault(); pin.setPointerCapture(e.pointerId); pin.classList.add("drag");
-        const box = layer.getBoundingClientRect();
-        const move = (ev) => place((ev.clientX - box.left) / box.width * 100, (ev.clientY - box.top) / box.height * 100);
-        const up = () => { pin.classList.remove("drag"); pin.removeEventListener("pointermove", move); save(); drawAdjust(); };
-        pin.addEventListener("pointermove", move);
-        pin.addEventListener("pointerup", up, { once: true });
+      put(box);
+      const chip = node("button", "st-chip"); chip.type = "button";
+      chip.setAttribute("aria-label", `${i + 1}: ${item.name}. Press to change its colour or remove it; arrow keys move it`);
+      chip.append(node("span", "st-dot-n", String(i + 1)));
+      const tip = node("span", "st-tip");
+      const img = node("img"); img.src = item.image_url || ""; img.alt = "";
+      tip.append(img, node("b", null, item.name), node("small", null, e.remove ? "Will be removed" : "Click to edit · drag to move"));
+      mark.append(chip, tip);
+
+      // drag the dot to move the item; a click without moving opens the quick-edit bar
+      mark.addEventListener("pointerdown", (ev) => {
+        if (ev.button > 0) return;
+        ev.preventDefault(); mark.setPointerCapture(ev.pointerId);
+        const area = layer.getBoundingClientRect(), x0 = ev.clientX, y0 = ev.clientY;
+        let moved = false, now = box;
+        const move = (m) => {
+          const dx = (m.clientX - x0) / area.width * 100, dy = (m.clientY - y0) / area.height * 100;
+          if (!moved && Math.hypot(m.clientX - x0, m.clientY - y0) < 4) return;
+          moved = true; mark.classList.add("drag");
+          const cx = Math.max(0, Math.min(100, (box[0] + box[2]) / 2 + dx)), cy = Math.max(0, Math.min(100, (box[1] + box[3]) / 2 + dy));
+          const w = box[2] - box[0], h = box[3] - box[1];
+          now = [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2]; put(now);
+        };
+        const up = () => {
+          mark.removeEventListener("pointermove", move);
+          if (!moved) { selected = selected === item.id ? null : item.id; drawPins(); return; }
+          selected = item.id;
+          setEdit(render, item, { x: Math.round((now[0] + now[2]) / 2), y: Math.round((now[1] + now[3]) / 2), moved: true });
+        };
+        mark.addEventListener("pointermove", move);
+        mark.addEventListener("pointerup", up, { once: true });
       });
-      pin.addEventListener("keydown", (e) => {           // keyboard: arrow keys move the pin
-        const step = { ArrowLeft: [-3, 0], ArrowRight: [3, 0], ArrowUp: [0, -3], ArrowDown: [0, 3] }[e.key];
+      chip.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); selected = selected === item.id ? null : item.id; drawPins(); return focusChip(item.id); }
+        if (ev.key === "Delete" || ev.key === "Backspace") { ev.preventDefault(); setEdit(render, item, { remove: !e.remove }); return focusChip(item.id); }
+        const step = { ArrowLeft: [-2, 0], ArrowRight: [2, 0], ArrowUp: [0, -2], ArrowDown: [0, 2] }[ev.key];
         if (!step) return;
-        e.preventDefault();
-        const [cx, cy] = pinSpot(render, item, i);
-        place(cx + step[0], cy + step[1]); save(); drawAdjust();
+        ev.preventDefault();
+        const cx = (box[0] + box[2]) / 2 + step[0], cy = (box[1] + box[3]) / 2 + step[1];
+        setEdit(render, item, { x: Math.round(Math.max(0, Math.min(100, cx))), y: Math.round(Math.max(0, Math.min(100, cy))), moved: true });
+        focusChip(item.id);
       });
-      layer.append(pin);
+      layer.append(mark);
+
+      if (selected === item.id) { quick.append(...quickEdit(render, item, i)); quick.hidden = false; }
     });
   }
+  $("[data-st-pins-toggle]").addEventListener("click", () => { showPins = !showPins; selected = null; drawPins(); drawAdjust(); });
+  const focusChip = (id) => {
+    const render = current(), i = render.items.findIndex((it) => it.id === id);
+    $("[data-st-pins]").querySelectorAll(".st-chip")[i]?.focus();
+  };
 
+  // the bar under the picture for the selected item: its colour, remove it, close (under the picture, so it never
+  // covers other items)
+  function quickEdit(render, item, i) {
+    const name = node("span", "st-quick-name");
+    const img = node("img"); img.src = item.image_url || ""; img.alt = "";
+    name.append(img, node("span", "st-chip-n", String(i + 1)), node("b", null, item.name));
+    const close = node("button", "st-pop-x", "×"); close.type = "button"; close.setAttribute("aria-label", "Close");
+    close.addEventListener("click", () => { selected = null; drawPins(); drawAdjust(); });
+    const info = render.info?.[item.id] || {};
+    const help = node("small", info.ok === false ? "st-pop-bad" : null,
+                      info.ok === false ? `${info.note}. Drag its dot on the picture to move it.` : "Drag its dot on the picture to move it.");
+    return [name, close, colourSelect(render, item), removeButton(render, item), help];
+  }
+
+  // the same controls in a list under the picture (easier on phones and with a keyboard)
   function drawAdjust() {
     const card = $("[data-st-adjust]"), render = current();
     card.hidden = !render || !render.items;
     if (card.hidden) return;
-    $("[data-st-adjust-items]").replaceChildren(...render.items.map((item, i) => {
-      const row = node("div", "st-adj");
-      const edit = render.edits[item.id] || {};
-      const select = node("select"); select.setAttribute("aria-label", `Colour for ${item.name}`);
-      [["", "Original"], ...COLOURS.map((c) => [c, c[0].toUpperCase() + c.slice(1)])].forEach(([value, label]) => {
-        const o = node("option", null, label); o.value = value; o.selected = (edit.colour || "") === value; select.append(o);
-      });
-      select.addEventListener("change", () => {
-        render.edits[item.id] = { ...(render.edits[item.id] || {}), colour: select.value || null }; save();
-      });
-      row.append(node("span", "st-num", String(i + 1)), node("span", "st-name", item.name),
-                 node("span", "st-moved", edit.moved ? "moved" : ""), select);
+    const night = nightOn();
+    $("[data-st-adjust-help]").textContent = night ? "This is the night view. Switch to Day to make changes."
+      : "Click a dot on the picture to change that item's colour or remove it, or drag the dot to move it. Then update the preview.";
+    $("[data-st-adjust-items]").replaceChildren(...(night ? [] : render.items.map((item, i) => {
+      const e = render.edits[item.id] || {}, info = render.info?.[item.id] || {};
+      const row = node("div", "st-adj" + (selected === item.id ? " on" : "") + (e.remove ? " removing" : ""));
+      const img = node("img"); img.src = item.image_url || ""; img.alt = "";
+      const name = node("button", "st-adj-name"); name.type = "button";
+      name.append(node("span", "st-chip-n", String(i + 1)), node("span", "st-name", item.name));
+      name.addEventListener("click", () => { selected = selected === item.id ? null : item.id; drawPins(); drawAdjust(); });
+      const tags = [e.moved && "moved", (e.colour || null) !== (e.shown || null) && "new colour", e.remove && "will be removed",
+                    info.ok === false && "doesn't match"].filter(Boolean);
+      const controls = node("div", "st-adj-controls");
+      controls.append(colourSelect(render, item), removeButton(render, item));
+      row.append(img, name, controls, node("span", "st-moved", tags.join(" · ")));
       return row;
-    }));
+    })));
+    $("[data-st-note]").hidden = night;
+    const btn = $("[data-st-update]"), n = changeCount(render);
+    btn.hidden = night;
+    if (!busy) btn.textContent = n ? `Update preview · ${n} change${n > 1 ? "s" : ""}` : "Update preview";
+    btn.classList.toggle("has-changes", n > 0);
   }
 
   async function updatePreview() {
@@ -329,23 +503,50 @@
     const note = $("[data-st-note]").value.trim().slice(0, 300);
     const edits = render.items.map((item) => {
       const e = render.edits[item.id] || {};
-      return { product_id: String(item.id), ...(e.moved ? { x: e.x, y: e.y } : {}), ...(e.colour ? { colour: e.colour } : {}) };
-    }).filter((e) => e.x != null || e.colour);
-    if (!edits.length && !note) return banner("warn", "Move a pin, pick a colour or describe a change first.", "Nothing to update yet");
-    busy = true; clearBanner();
+      const colour = (e.colour || null) !== (e.shown || null) ? { colour: e.colour || "original" } : {};
+      return { product_id: String(item.id), ...(e.moved ? { x: e.x, y: e.y } : {}), ...colour, ...(e.remove ? { remove: true } : {}) };
+    }).filter((e) => e.x != null || e.colour || e.remove);
+    if (!edits.length && !note) return banner("warn", "Move, recolour or remove an item, or describe a change first.", "Nothing to update yet");
+    busy = true; clearBanner(); selected = null;
     const btn = $("[data-st-update]"); btn.disabled = true; btn.textContent = "Updating your preview…"; btn.classList.add("is-loading");
-    loading(true, "Updating your preview…");
+    loading(true, "Updating your preview…", [[30, "Checking each product against its photo…"], [50, "Fixing what didn't match…"]]);
     try {
       const data = await api(roomUrl("render"), { json: { product_ids: render.items.map((i) => String(i.id)), edits, note, based_on: render.id } });
-      // the new preview keeps the colours and the pins where they are; nothing is "moved" again until dragged
-      const kept = Object.fromEntries(Object.entries(render.edits).map(([id, e]) => [id, { ...e, moved: false }]));
-      state.renders.push({ ...render, id: data.render_id, demo: data.demo, edits: kept, updated: true });
-      state.showing = data.render_id; state.left = data.renders_left;
+      const kept = render.items.filter((i) => data.product_ids.includes(String(i.id)));
+      // the new preview shows the chosen colours; items stay where they were; nothing is "changed" until edited again
+      const newEdits = {}, info = infoFrom(data, render.info || {});
+      kept.forEach((item) => {
+        const i = render.items.indexOf(item), e = render.edits[item.id] || {}, b = boxOf(render, item, i);
+        newEdits[item.id] = { x: Math.round((b[0] + b[2]) / 2), y: Math.round((b[1] + b[3]) / 2), colour: e.colour || null, shown: e.colour || null };
+        if (!data.checked && info[item.id]) info[item.id].box = b.slice();      // no check this time: keep the old spot
+        if (!info[item.id]) info[item.id] = { ...(render.info?.[item.id] || {}), box: render.info?.[item.id]?.box ? b : null };
+      });
+      state.renders.push({ ...render, id: data.render_id, demo: data.demo, items: kept, edits: newEdits, info, nightId: null,
+                           checked: data.checked, fixed: data.fixed || [], warnings: (render.warnings || []).filter((w) => kept.some((k) => k.name === w.name)),
+                           updated: true });
+      state.showing = data.render_id; state.left = data.renders_left; state.night = false;
       $("[data-st-note]").value = ""; save(); drawPhoto();
       await pictureLoaded();
     } catch (e) { showError(e); }
     loading(false); btn.classList.remove("is-loading");
-    btn.disabled = false; btn.textContent = "Update preview"; busy = false; drawSelected();
+    btn.disabled = false; busy = false; drawAdjust(); drawSelected();
+  }
+
+  // the same preview at night (made once, then it's a switch); "Day" is the preview as it was made
+  async function setLight(light) {
+    const render = current();
+    if (busy || !render) return;
+    selected = null;
+    if (light === "day" || render.nightId) { state.night = light === "night"; save(); return drawPhoto(); }
+    busy = true; clearBanner();
+    loading(true, "CHEE is turning the lights on…");
+    try {
+      const data = await api(roomUrl("render"), { json: { product_ids: render.items.map((i) => String(i.id)), based_on: render.id, light: "night" } });
+      render.nightId = data.render_id; state.night = true; state.left = data.renders_left;
+      save(); drawPhoto();
+      await pictureLoaded();
+    } catch (e) { showError(e); }
+    loading(false); busy = false; drawSelected();
   }
 
   // ---------- 3. let CHEE pick a set for a budget ----------
@@ -447,7 +648,7 @@
     if (hasRoom) {
       drawPhoto(); drawAnalysis(); drawPlan();
       $("[data-st-log]").replaceChildren(); state.chat.forEach(drawMessage);
-      setSource(state.source);
+      showSource();
     }
     drawSelected();
   }
@@ -466,14 +667,14 @@
   ["dragover", "dragenter"].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add("over"); }));
   ["dragleave", "drop"].forEach((t) => drop.addEventListener(t, () => drop.classList.remove("over")));
   drop.addEventListener("drop", (e) => { e.preventDefault(); if (e.dataTransfer.files[0]) upload(e.dataTransfer.files[0]); });
-  $("[data-st-sample]").addEventListener("click", async () => {
+  studio.querySelectorAll("[data-st-sample]").forEach((b) => b.addEventListener("click", async () => {
     try {
-      const res = await fetch(studio.dataset.sampleUrl);
+      const res = await fetch(b.dataset.stSample);
       const blob = await res.blob();
       if (!res.ok || !blob.type.startsWith("image/")) throw new Error("no sample photo");   // e.g. a 404 page
       upload(new File([blob], "sample-room.jpg", { type: "image/jpeg" }));
     } catch (e) { banner("error", "The sample room photo is missing from the site. Please upload your own photo.", "Couldn't load the sample room"); }
-  });
+  }));
   $("[data-st-reset]").addEventListener("click", () => { state = newRoom(); save(); clearBanner(); draw(); });
   $("[data-st-banner-close]").addEventListener("click", clearBanner);
   $("[data-st-search]").addEventListener("input", (e) => {
@@ -486,6 +687,10 @@
   studio.querySelectorAll("[data-st-source]").forEach((b) => b.addEventListener("click", () => setSource(b.dataset.stSource)));
   $("[data-st-render]").addEventListener("click", preview);
   $("[data-st-update]").addEventListener("click", updatePreview);
+  studio.querySelectorAll("[data-st-light-btn]").forEach((b) => b.addEventListener("click", () => setLight(b.dataset.stLightBtn)));
+  // a click on the picture outside the items closes the quick-edit box
+  $(".st-frame").addEventListener("pointerdown", (e) => { if (selected && !e.target.closest(".st-mark")) { selected = null; drawPins(); drawAdjust(); } });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && selected) { selected = null; drawPins(); drawAdjust(); } });
   $("[data-st-plan]").addEventListener("submit", (e) => {
     e.preventDefault();
     planRoom(Number(e.target.budget.value), e.target.wishes.value.trim().slice(0, 200) || null);
@@ -505,10 +710,31 @@
     if (state.room) $("[data-st-render]").scrollIntoView({ behavior: "smooth", block: "center" });
   });
 
+  // ---------- the bigger window: the same studio on its own page, the size of the screen ----------
+  const full = document.body.classList.contains("studio-full");
+  $("[data-st-popout]").addEventListener("click", () => {
+    const url = studio.dataset.fullUrl;
+    const win = window.open(url, "cheebag-studio", `popup,left=0,top=0,width=${screen.availWidth},height=${screen.availHeight}`);
+    if (win) win.focus(); else location.href = url;           // pop-ups blocked: open it here instead
+  });
+  if (full) {
+    showTab("studio");
+    // the panel's ✕ closes this window (or goes back to the store if it wasn't opened as a window)
+    panel.querySelector(".x-close")?.addEventListener("click", () => { if (window.opener) window.close(); else location.href = "/"; });
+  }
+  // the panel and the bigger window share the studio: when one changes it, the other redraws
+  window.addEventListener("storage", (e) => {
+    if (e.key !== KEY || busy || e.newValue === JSON.stringify(state)) return;
+    let next;
+    try { next = JSON.parse(e.newValue || "{}"); } catch (err) { return; }
+    if (next.owner && next.owner !== owner) return location.reload();    // another demo customer now: load them
+    state = { ...fresh(), ...next, night: state.night }; selected = null; draw();
+  });
+
   // "New chat" clears the studio too: a fresh start for the demo
   document.addEventListener("click", (e) => {
     if (!e.target.closest("[data-new-chat]") || busy) return;
-    state = undefined; state = fresh(); save();
+    state = undefined; state = fresh(); selected = null; save();
     $("[data-st-search]").value = ""; $("[data-st-note]").value = ""; $("[data-st-form] textarea").value = "";
     status(""); clearBanner(); draw();
   });

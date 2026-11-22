@@ -156,15 +156,19 @@ body.as-open { overflow:hidden; }
 .pc-status.cancelled { background:#f3f0f2; color:var(--muted); } .pc-status.pending, .pc-status.processing { background:var(--saffron-soft); color:#7a5a12; }
 .pc-go { margin-left:auto; color:var(--accent); font-weight:650; font-size:12px; white-space:nowrap; }
 .pc-row { display:flex; gap:8px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:4px; }
-.pc { flex:0 0 132px; scroll-snap-align:start; display:flex; flex-direction:column; gap:4px; padding:8px; border:1px solid var(--line); border-radius:14px;
-      background:var(--card); color:var(--ink); text-decoration:none; transition:border-color .15s, box-shadow .15s, transform .15s; }
+.pc { flex:0 0 132px; scroll-snap-align:start; display:flex; flex-direction:column; gap:6px; padding:8px; border:1px solid var(--line); border-radius:14px;
+      background:var(--card); color:var(--ink); transition:border-color .15s, box-shadow .15s, transform .15s; }
 .pc:hover { border-color:var(--accent); box-shadow:0 4px 14px rgba(43,29,42,.10); transform:translateY(-1px); }
-.pc:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+.pc-link { display:flex; flex-direction:column; gap:4px; color:inherit; text-decoration:none; border-radius:10px; }
+.pc-link:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+.pc-add { margin-top:auto; min-height:32px; padding:4px 8px; font-size:12px; font-weight:700; border-radius:999px; }
+.pc-add.added { background:var(--turq-soft); color:var(--turq-ink); border-color:transparent; }
+.pc-add:disabled { opacity:.6; cursor:default; }
+.pc-cart { align-self:flex-start; font-size:13px; font-weight:700; color:var(--accent); text-decoration:none; padding:2px 4px; }
+.pc-cart:hover { text-decoration:underline; }
 .pc-pic { position:relative; display:block; height:96px; border-radius:10px; background:#fff; }
 .pc-pic img { width:100%; height:100%; object-fit:contain; mix-blend-mode:multiply; }
 .pc-qty { position:absolute; top:4px; right:4px; font-size:11px; font-weight:800; padding:1px 6px; border-radius:999px; background:var(--ink); color:#fff; }
 .pc-name { font-size:12px; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.6em; }
 .pc-meta { display:flex; justify-content:space-between; align-items:baseline; font-size:12.5px; }
 .pc-rate { font-size:11.5px; color:#c98a12; font-weight:700; }
-.pc-stock { font-size:10.5px; font-weight:700; color:var(--turq-ink); }
-.pc-stock.out { color:var(--muted); }

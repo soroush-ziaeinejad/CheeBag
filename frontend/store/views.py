@@ -80,7 +80,7 @@ def product_list(request):
 
 
 def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk, active=True)
+    product = get_object_or_404(Product.objects.select_related("seller"), pk=pk, active=True)
     return render(request, "store/product_detail.html", {
         "product": product,
         "reviews": product.reviews.order_by("-helpful_count", "-review_date")[:10],
@@ -151,7 +151,7 @@ def order_detail(request, pk):
 
     return render(request, "store/order_detail.html", {
         "order": order,
-        "items": order.items.select_related("product").order_by("order_item_id"),
+        "items": order.items.select_related("product__seller").order_by("order_item_id"),
         "payment": payment,
         "shipment": shipment,
         "timeline": timeline,
@@ -207,15 +207,21 @@ def assistant_action(request, action):
     if customer is None:
         return JsonResponse({"error": "Choose a demo customer first."}, status=403)
     try:
-        token = json.loads(request.body)["token"]
+        body = json.loads(request.body)
+        token = body["token"]
     except (ValueError, KeyError, TypeError):
-        token = None
+        body, token = {}, None
     if not isinstance(token, str):
         return JsonResponse({"error": "Bad request."}, status=400)
+    data = {"customer_id": customer.pk, "token": token}
+    if isinstance(body.get("shipping_address"), str):   # a new order whose address was changed on the card
+        data["shipping_address"] = body["shipping_address"].strip()
+        if not 10 <= len(data["shipping_address"]) <= 200:
+            return JsonResponse({"error": "Please enter the full shipping address."}, status=400)
 
     store_request = urllib.request.Request(
         f"{settings.STORE_API_URL}/actions/{action}",
-        data=json.dumps({"customer_id": customer.pk, "token": token}).encode(),
+        data=json.dumps(data).encode(),
         headers={"Content-Type": "application/json"},
         method="POST",
     )

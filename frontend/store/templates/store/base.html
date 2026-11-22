@@ -120,6 +120,8 @@ body.as-open .assistant { transform:none; }
 .cc-sums { display:grid; grid-template-columns:1fr auto; gap:3px 12px; margin:0; padding:8px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 .cc-sums dt { color:var(--muted); }
 .cc-sums dd { margin:0; font-weight:650; text-align:right; }
+.cc-ship { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; padding:8px 0 0; font-size:13px; }
+.cc-ship textarea { width:100%; box-sizing:border-box; font:inherit; padding:6px 8px; border-radius:8px; border:1px solid var(--line); resize:vertical; }
 .cc-cons { margin:10px 0 12px; padding-left:18px; color:var(--muted); font-size:12.5px; line-height:1.5; }
 .cc-actions { display:flex; gap:8px; flex-wrap:wrap; }
 .cc-actions button { flex:1; justify-content:center; min-width:140px; }
@@ -230,6 +232,7 @@ body.as-open .assistant { transform:none; }
         </div>
       </div>
       <a href="{% url 'order_list' %}" class="{% if 'order' in page %}active{% endif %}">Orders</a>
+      <a href="{% url 'cart' %}" class="{% if 'cart' in page %}active{% endif %}">Cart{% if cart_count %} · {{ cart_count }}{% endif %}</a>
     </nav>
     {% endwith %}
 
@@ -392,8 +395,9 @@ body.as-open .assistant { transform:none; }
 
   function renderConfirmationCard(card) {
     const d = card.data;
+    const place = d.kind === "create_order";   // a new order (new_orders.py) instead of a cancellation
     const box = node("div", "cc");
-    box.append(node("b", "cc-title", `Cancel order #${d.order_id}?`));
+    box.append(node("b", "cc-title", place ? "Place this order?" : `Cancel order #${d.order_id}?`));
     const items = node("ul", "cc-items");
     d.items.slice(0, 4).forEach((i) => {
       const li = node("li"); li.append(node("span", null, `${i.quantity} × ${i.name}`), node("span", "amt", `$${i.line_total}`)); items.append(li);
@@ -402,40 +406,58 @@ body.as-open .assistant { transform:none; }
     const sums = node("dl", "cc-sums");
     const row = (k, v) => sums.append(node("dt", null, k), node("dd", null, v));
     row("Order total", `$${d.total} ${d.currency || "CAD"}`);
-    if (d.fee !== "0.00") row("Cancellation fee", `$${d.fee}`);
-    row("Refund", d.refund ? `$${d.refund}` : "Not charged yet");
+    if (!place) {
+      if (d.fee !== "0.00") row("Cancellation fee", `$${d.fee}`);
+      row("Refund", d.refund ? `$${d.refund}` : "Not charged yet");
+    }
+    // a new order ships to the saved address unless the customer changes it here
+    const ship = node("div", "cc-ship");
+    let addressBox = null;
+    if (place) {
+      const change = node("button", "link-btn", "Change"); change.type = "button";
+      ship.append(node("span", null, `${d.address_is_saved ? "Ships to your saved address" : "Ships to"}: ${d.shipping_address}`), change);
+      change.addEventListener("click", () => {
+        addressBox = node("textarea"); addressBox.rows = 2; addressBox.maxLength = 200; addressBox.value = d.shipping_address;
+        addressBox.setAttribute("aria-label", "Shipping address");
+        ship.replaceChildren(node("span", null, "Ship to:"), addressBox); addressBox.focus();
+      });
+    }
     const cons = node("ul", "cc-cons");
     d.consequences.forEach((c) => cons.append(node("li", null, c)));
     const actions = node("div", "cc-actions");
-    const yes = node("button", "cc-yes", "Confirm cancellation"); yes.type = "button";
-    const no = node("button", "cc-no", "Keep order"); no.type = "button";
+    const yes = node("button", "cc-yes", place ? "Place order" : "Confirm cancellation"); yes.type = "button";
+    const no = node("button", "cc-no", place ? "Not now" : "Keep order"); no.type = "button";
     actions.append(yes, no);
     const foot = node("div", "cc-foot");
-    box.append(items, sums, cons, actions, foot);
+    box.append(items, sums);
+    if (place) box.append(ship);
+    box.append(cons, actions, foot);
 
     let timer;
     const show = () => {   // a finished card keeps its outcome, also after a page reload
       box.dataset.state = card.state || "open";
       if (!card.state) return;
-      clearInterval(timer); actions.remove(); foot.textContent = card.note;
+      clearInterval(timer); actions.remove(); ship.remove(); foot.textContent = card.note;
     };
     const finish = (state, note) => { card.state = state; card.note = note; save(); show(); };
     const tick = () => {   // the countdown is a courtesy; the Store API enforces the expiry
       const left = Math.round((new Date(d.expires_at) - Date.now()) / 1000);
-      if (left <= 0) return finish("expired", "This confirmation expired. Ask CHEE again if you still want to cancel.");
+      if (left <= 0) return finish("expired", `This confirmation expired. Ask CHEE again if you still want to ${place ? "order it" : "cancel"}.`);
       foot.textContent = `Only you can confirm this · expires in ${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`;
     };
 
     async function act(kind) {
       if (card.state || box.classList.contains("working")) return;   // one click only
+      const address = kind === "confirm" && addressBox ? addressBox.value.trim() : null;
+      if (address !== null && address.length < 10) { foot.textContent = "Please enter the full shipping address."; addressBox.focus(); return; }
       box.classList.add("working"); yes.disabled = no.disabled = true;
       const label = kind === "confirm" ? yes : no, before = label.textContent;
-      label.textContent = kind === "confirm" ? "Cancelling…" : "Keeping…";
+      label.textContent = kind === "confirm" ? (place ? "Placing…" : "Cancelling…") : (place ? "Closing…" : "Keeping…");
       let res, out = {};
       try {
         res = await fetch(panel.dataset[kind + "Url"], {
           method: "POST", headers: { "Content-Type": "application/json", "X-CSRFToken": csrf() },
-          body: JSON.stringify({ token: d.token }),
+          body: JSON.stringify(address ? { token: d.token, shipping_address: address } : { token: d.token }),
         });
         out = await res.json().catch(() => ({}));
       } catch (e) { res = null; }
@@ -445,7 +467,16 @@ body.as-open .assistant { transform:none; }
         foot.textContent = (out.error || "Couldn't reach the store.") + " Nothing was changed; try again.";
         return;
       }
-      if (res.ok && kind === "confirm") {
+      if (place && res.ok && kind === "confirm") {
+        finish("confirmed", `${out.message} It ships to ${out.shipping_address}. You can follow it under Orders.`);
+        recordEvent(`Order #${out.order_id} is placed, shipping to ${out.shipping_address}. The customer clicked Place order.`, true);
+      } else if (place && res.ok) {
+        finish("kept", "Nothing was ordered.");
+        recordEvent("The customer clicked Not now, so nothing was ordered.", false);
+      } else if (place) {
+        finish("failed", out.error || "This order didn't go through.");
+        recordEvent(`The new order did not go through: ${out.error || "unknown reason"}`, false);
+      } else if (res.ok && kind === "confirm") {
         finish("confirmed", `${out.message} ${out.refund ? `$${out.refund} CAD will be refunded.` : "Nothing was charged."}`);
         recordEvent(`Order #${d.order_id} is cancelled. The customer clicked Confirm.`, true);
       } else if (res.ok) {
@@ -487,11 +518,13 @@ body.as-open .assistant { transform:none; }
     });
   }
 
-  // the conversation as Claude expects it: back-to-back messages from the same side (a reply, then the
-  // customer's click on its card) are joined into one
+  // the conversation as Claude expects it: back-to-back messages from the same side are joined into one.
+  // What the customer did on a card is sent as a store note on the customer's side, not added to CHEE's
+  // own reply (CHEE took those notes as its own words and kept correcting its earlier replies).
   function forModel() {
     const out = [];
-    history.forEach(({ role, content }) => {
+    history.forEach(({ role, content, event }) => {
+      if (event) { role = "user"; content = `(Store note, not written by the customer: ${content})`; }
       const last = out[out.length - 1];
       if (last && last.role === role) last.content += "\n\n" + content; else out.push({ role, content });
     });

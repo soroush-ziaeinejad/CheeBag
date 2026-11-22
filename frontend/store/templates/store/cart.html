@@ -1,0 +1,76 @@
+{% extends "store/base.html" %}
+{% block title %}Cart{% endblock %}
+{% block style %}
+.empty { padding:32px; max-width:480px; margin:32px auto; }
+.empty .muted { margin:4px 0 16px; }
+.cart { display:grid; grid-template-columns:minmax(0, 1fr) 340px; gap:24px; align-items:start; margin-top:18px; }
+.lines { padding:4px 18px; }
+.line { display:grid; grid-template-columns:64px minmax(0, 1fr) auto; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line); }
+.line:last-child { border-bottom:0; }
+.line img { width:64px; height:64px; object-fit:contain; background:#fff; border-radius:10px; }
+.line .name { font-weight:650; text-decoration:none; color:inherit; }
+.line .each { font-size:13px; }
+.line .qty { display:flex; gap:6px; align-items:center; margin-top:6px; }
+.line .qty input { width:64px; min-height:34px; padding:4px 8px; }
+.line .qty button { min-height:34px; padding:4px 12px; font-size:13px; }
+.line .sum { font-weight:650; font-variant-numeric:tabular-nums; }
+.checkout { padding:18px; position:sticky; top:16px; }
+.checkout h2 { margin:0 0 12px; font-size:18px; }
+.checkout .total { display:flex; justify-content:space-between; font-size:18px; font-weight:750; padding:10px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:14px; }
+.checkout label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; }
+.checkout textarea { width:100%; box-sizing:border-box; min-height:72px; resize:vertical; }
+.checkout button { width:100%; margin-top:12px; }
+.checkout .note { display:block; margin-top:6px; font-size:12px; }
+.demo-note { background:var(--warm); border-radius:12px; padding:10px 12px; font-size:13px; margin-top:14px; }
+.error { background:#fdecea; color:#8a1c1c; border-radius:12px; padding:10px 14px; margin-top:14px; }
+@media (max-width: 860px) { .cart { grid-template-columns:1fr; } .checkout { position:static; } }
+{% endblock %}
+{% block content %}
+{% if not customer %}
+  <div class="card empty">
+    <h1>Cart</h1>
+    <p class="muted">There's no real login in this demo. Pick a simulated shopper to fill a cart and place an order.</p>
+    {% include "store/_personas.html" with where="orders" %}
+  </div>
+{% elif not lines %}
+  <div class="card empty">
+    <h1>Your cart is empty</h1>
+    {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+    <p class="muted">Add products from their pages, then come back here to place the order.</p>
+    <a class="btn" href="{% url 'product_list' %}">Browse products</a>
+  </div>
+{% else %}
+  <h1>Cart</h1>
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  <div class="cart">
+    <div class="card lines">
+      {% for line in lines %}
+        <div class="line">
+          <img src="{{ line.product.image_url }}" alt="">
+          <div>
+            <a class="name" href="{% url 'product_detail' line.product.pk %}">{{ line.product.name }}</a>
+            <div class="each muted">${{ line.product.price }} each{% if line.product.stock_quantity < line.quantity %} · only {{ line.product.stock_quantity }} in stock{% endif %}</div>
+            <form class="qty" method="post" action="{% url 'cart_update' line.product.pk %}">{% csrf_token %}
+              <input type="number" name="quantity" value="{{ line.quantity }}" min="0" max="10" aria-label="Quantity of {{ line.product.name }}">
+              <button class="btn ghost" type="submit">Update</button>
+              <button class="link-btn" type="submit" name="quantity" value="0">Remove</button>
+            </form>
+          </div>
+          <span class="sum">${{ line.total }}</span>
+        </div>
+      {% endfor %}
+    </div>
+
+    <form class="card checkout" method="post" action="{% url 'cart_submit' %}">{% csrf_token %}
+      <h2>Order summary</h2>
+      <div class="total"><span>Total</span><span>${{ total }} <small class="muted">CAD</small></span></div>
+      <label for="address">Ship to</label>
+      <textarea id="address" name="shipping_address" maxlength="200" required>{{ address }}</textarea>
+      <small class="muted note">Filled in from {{ customer.first_name }}'s saved address in the demo data. You can change it.</small>
+      <p class="demo-note"><b>Demo only:</b> no real money is charged and nothing is shipped. The order is marked as paid
+        with {{ customer.first_name }}'s usual payment method, which is simulated too.</p>
+      <button type="submit">Submit order</button>
+    </form>
+  </div>
+{% endif %}
+{% endblock %}

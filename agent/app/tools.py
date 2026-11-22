@@ -75,6 +75,29 @@ TOOLS = [
     },
     },
     {
+    "name": "propose_create_order",
+    "description": "Offer to place a new order for the current customer. This does NOT order anything: the store "
+                   "checks stock and prices, and the customer sees a confirmation card with the items, total and "
+                   "shipping address, and Place order / Not now buttons. Only their click places the order. Use it "
+                   "only when the customer clearly asks to buy specific products; get product ids from "
+                   "search_products. Don't ask for the address: the card shows their saved address and they can "
+                   "change it there. Pass shipping_address only if the customer gives another one. If allowed is "
+                   "false, explain the reason in your own words. Never say an order is placed.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "items": {"type": "array", "minItems": 1, "maxItems": 6, "items": {
+                "type": "object",
+                "properties": {"product_id": {"type": "integer"},
+                               "quantity": {"type": "integer", "minimum": 1, "maximum": 10}},
+                "required": ["product_id", "quantity"]}},
+            "shipping_address": {"type": "string",
+                                 "description": "Only if the customer gave a different address: the full address, incl. postal code and country"},
+        },
+        "required": ["items"],
+    },
+    },
+    {
     "name": "show_products",
     "description": "Show the customer clickable product cards (photo, price, rating, stock) under your reply. Use it "
                    "whenever you talk about specific products: products you recommend from search_products, one "
@@ -188,6 +211,26 @@ def propose_cancel_order(customer_id, order_id):
                 "data": {**card, "token": proposal["token"], "expires_at": proposal["expires_at"]}},
     }
 
+def propose_create_order(customer_id, items, shipping_address=None):
+    body = {"items": items}
+    if shipping_address:
+        body["shipping_address"] = shipping_address
+    proposal = _post(f"/customers/{customer_id}/order-proposal", body, not_found="This customer was not found.")
+    if not proposal["allowed"]:
+        return {"allowed": False, "reason": proposal["reason"]}
+    card = proposal["card"]
+    return {
+        # what Claude sees: enough to explain the card, but no token
+        "allowed": True,
+        "items": card["items"],
+        "total": card["total"],
+        "shipping_address": card["shipping_address"],
+        "next_step": "A confirmation card is now shown to the customer. Nothing is ordered until they click Place order.",
+        # what the browser gets; agent.py removes this before the result goes back to Claude
+        "_ui": {"type": "confirmation_card", "version": 1,
+                "data": {**card, "token": proposal["token"], "expires_at": proposal["expires_at"]}},
+    }
+
 def search_products(customer_id, query=None, category=None, max_price=None, in_stock=None):
     params = {
         "limit": SEARCH_LIMIT,
@@ -251,7 +294,7 @@ def show_products(customer_id, product_ids, order_id=None):
     }
 
 
-HANDLERS = {"show_products": show_products, "list_orders": list_orders, "get_order": get_order, "search_products": search_products, "get_product": get_product, "propose_cancel_order": propose_cancel_order}
+HANDLERS = {"show_products": show_products, "list_orders": list_orders, "get_order": get_order, "search_products": search_products, "get_product": get_product, "propose_cancel_order": propose_cancel_order, "propose_create_order": propose_create_order}
 def _whole_number(value, name):
     # the schema asks for an integer, but the model's output is untrusted: enforce it here
     if not isinstance(value, int) or isinstance(value, bool):

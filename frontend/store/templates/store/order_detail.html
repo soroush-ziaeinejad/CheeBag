@@ -15,6 +15,7 @@
 dl { display:grid; grid-template-columns:auto 1fr; gap:6px 14px; margin:0; font-size:14px; }
 dt { color:var(--muted); }
 dd { margin:0; }
+.demo-note { background:var(--warm); border-radius:8px; padding:10px 12px; font-size:13px; margin:12px 0 0; }
 .alert { background:#fde6d4; color:#7c2d12; border-radius:8px; padding:10px 12px; font-size:13px; margin-bottom:12px; }
 .timeline { list-style:none; margin:0; padding:0; }
 .timeline li { position:relative; padding:0 0 16px 22px; font-size:14px; }
@@ -45,7 +46,7 @@ dd { margin:0; }
           <img src="{{ i.product.image_url }}" alt="">
           <div>
             <a href="{% url 'product_detail' i.product.pk %}">{{ i.product.name }}</a>
-            <div class="sub">{{ i.quantity }} × ${{ i.unit_price }}</div>
+            <div class="sub">{{ i.quantity }} × ${{ i.unit_price }} · Sold by {{ i.product.seller.name }}</div>
           </div>
           <div class="amt">${{ i.line_total }}</div>
         </div>
@@ -95,6 +96,7 @@ dd { margin:0; }
       {% else %}
         <p class="muted">No payment recorded.</p>
       {% endif %}
+      <p class="demo-note"><b>Demo only:</b> this payment is simulated. No real money was charged, and nothing is actually shipped.</p>
     </div>
 
     <div class="card box">

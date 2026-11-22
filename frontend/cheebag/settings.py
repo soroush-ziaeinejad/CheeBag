@@ -42,6 +42,7 @@ TEMPLATES = [{
     "OPTIONS": {"context_processors": [
         "django.template.context_processors.request",
         "store.context.demo_customer",
+        "store.cart.cart_count",
     ]},
 }]
 

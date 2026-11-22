@@ -5,6 +5,15 @@ managed = False: Django never creates or alters these tables; schema.sql owns th
 from django.db import models
 
 
+class Seller(models.Model):
+    seller_id = models.IntegerField(primary_key=True)
+    name = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = "sellers"
+
+
 class Product(models.Model):
     id = models.IntegerField(primary_key=True)
     source_asin = models.TextField()
@@ -26,6 +35,7 @@ class Product(models.Model):
     rating_count = models.IntegerField(null=True)
     stock_quantity = models.IntegerField()
     active = models.BooleanField()
+    seller = models.ForeignKey(Seller, models.DO_NOTHING, db_column="seller_id")
 
     class Meta:
         managed = False

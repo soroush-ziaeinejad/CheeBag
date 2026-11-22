@@ -5,8 +5,12 @@ visitor id from the visitor's session, and every room is tied to the visitor who
 
     POST /rooms?visitor=…                 body: the photo bytes   -> room id and size
     POST /rooms/{room_id}/analyze          {visitor}              -> room type, style, colours, free spots
-    POST /rooms/{room_id}/render           {visitor, product_ids, edits?, note?, based_on?}
-                                           -> a preview of the room with 1-6 products (based_on: adjust an earlier one)
+    POST /rooms/{room_id}/render           {visitor, product_ids, edits?, note?, based_on?, light?}
+                                           -> a preview of the room with 1-6 products (based_on: adjust an earlier one;
+                                              edits can move, recolour or remove items; light: "night" or "day").
+                                              A new preview is planned first (layout.py): the reply has CHEE's layout.
+                                              Every preview is checked against the real products (check.py) and
+                                              fixed once if needed: the reply says where each item is and how it matched.
     POST /rooms/{room_id}/ask              {visitor, messages, product_ids?, source?} -> reply + product cards
     POST /rooms/{room_id}/plan             {visitor, budget, wishes?, source?} -> a set of products within the budget
     GET  /rooms/{room_id}/image?visitor=…&render=r1                -> the photo or a preview (JPEG)
@@ -25,7 +29,7 @@ from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, Field
 
-from . import catalog, rooms, shops, store, vision
+from . import catalog, check, layout, rooms, shops, store, vision
 from .images import COLOURS, MAX_ITEMS, ImageError, get_provider
 
 app = FastAPI(title="CheeBag · Room studio")
@@ -33,9 +37,9 @@ provider = get_provider()
 CLAUDE_READY = bool(os.environ.get("ANTHROPIC_API_KEY"))
 
 # daily limits, so a public demo can't run up the image and Claude bills
-# (previews have no per-visitor limit, only the daily total for everyone in TOTALS)
 LIMITS = {
     "upload": int(os.environ.get("STUDIO_UPLOADS_PER_DAY", "10")),     # per visitor
+    "render": int(os.environ.get("STUDIO_RENDERS_PER_DAY", "10")),     # per visitor
     "ask": int(os.environ.get("STUDIO_QUESTIONS_PER_DAY", "30")),      # per visitor
     "shop_search": int(os.environ.get("STUDIO_SHOP_SEARCHES_PER_DAY", "8")),   # per visitor (only paid, not cached)
 }
@@ -107,12 +111,13 @@ Source = Literal["store", "shops"]
 
 
 class ItemEdit(BaseModel):
-    """How the customer adjusted one product: where they dragged it (% of the picture) and/or a colour."""
+    """How the customer adjusted one product: where they dragged it (% of the picture), a colour, or remove it."""
     model_config = ConfigDict(coerce_numbers_to_str=True)
     product_id: ItemId
     x: float | None = Field(None, ge=0, le=100)
     y: float | None = Field(None, ge=0, le=100)
-    colour: Literal[tuple(COLOURS)] | None = None
+    colour: Literal[(*COLOURS, "original")] | None = None      # "original": back to the colour it's sold in
+    remove: bool = False
 
 
 class RenderIn(VisitorIn):
@@ -120,6 +125,7 @@ class RenderIn(VisitorIn):
     edits: list[ItemEdit] = Field([], max_length=MAX_ITEMS)
     note: str | None = Field(None, max_length=300)                       # e.g. "put the kettle on the counter"
     based_on: str | None = Field(None, pattern=r"^r[0-9]{1,3}$")          # adjust this earlier preview
+    light: Literal["day", "night"] | None = None                         # the same preview at another time of day
 
 
 class Message(BaseModel):
@@ -199,28 +205,99 @@ def render(room_id: str, body: RenderIn):
     edits = {e.product_id: e for e in body.edits}
     if set(edits) - {p["id"] for p in products}:
         raise HTTPException(422, "An adjustment is for a product that isn't in this preview.")
+    if sum(e.remove for e in edits.values()) >= len(products):
+        raise HTTPException(422, "Keep at least one product in the preview. To see the empty room, choose 'Your room'.")
     note = (body.note or "").strip() or None
     previous = None
+    if body.light and not body.based_on:
+        raise HTTPException(422, "Day and night views are made from a preview.")
     if body.based_on:
-        if not edits and not note:
+        if not edits and not note and not body.light:
             raise HTTPException(422, "Tell CHEE what to change: move an item, pick a colour or write a note.")
         try:
             previous = rooms.image_path(meta, body.based_on).read_bytes()
         except rooms.RoomError as e:
             raise HTTPException(404, e.message)
     left = use("render", body.visitor)       # one preview counts once, however many products are in it
+    if body.light:
+        return relight(meta, body, products, previous, left)
+    plan = new_layout(meta, products) if previous is None and not edits else None
+    places = plan["places"] if plan else [None] * len(products)
     try:
-        items = [{"name": p["name"], "photo": catalog.photo(p),
-                  "x": edits[p["id"]].x if p["id"] in edits else None,
-                  "y": edits[p["id"]].y if p["id"] in edits else None,
-                  "colour": edits[p["id"]].colour if p["id"] in edits else None} for p in products]
+        items = []
+        for p, place in zip(products, places):
+            e = edits.get(p["id"])
+            items.append({"name": p["name"], "photo": catalog.photo(p), "size": layout.size(p),
+                          "x": e.x if e and e.x is not None else (place or {}).get("x"),
+                          "y": e.y if e and e.y is not None else (place or {}).get("y"),
+                          "placement": (place or {}).get("placement") if not (e and e.x is not None) else None,
+                          "colour": e.colour if e else None, "remove": bool(e and e.remove),
+                          "colour_sold": (p.get("product") or {}).get("color") or ""})
         preview = provider.render(rooms.room_photo(meta), items, note, previous)
     except (ImageError, store.StoreError) as e:
         give_back("render", body.visitor)
         raise HTTPException(502, str(e))
+
+    # the check: does each product look like the real one? If not, the image model fixes it once
+    kept = [(p, it, place) for p, it, place in zip(products, items, places) if not it["remove"]]
+    results = checked(preview, [it for _, it, _ in kept])
+    fixed = []
+    if results and not provider.is_demo and any(not r["ok"] and r["fix"] for r in results):
+        fixes = [{**it, "x": None, "y": None, "placement": None, "fix": "" if r["ok"] else r["fix"]}
+                 for (_, it, _), r in zip(kept, results)]
+        try:
+            preview = provider.render(rooms.room_photo(meta), fixes, None, preview)
+            fixed = [it["name"] for it in fixes if it["fix"]]
+            results = checked(preview, [it for _, it, _ in kept])
+        except ImageError:
+            pass                                   # keep the first preview and its check
+    results = results or [None] * len(kept)
+
+    render_id = rooms.save_render(meta, preview, [p for p, _, _ in kept])
+    return {"render_id": render_id, "product_ids": [p["id"] for p, _, _ in kept], "renders_left": left,
+            "provider": provider.label, "demo": provider.is_demo,
+            "layout": [{"product_id": p["id"], "x": place["x"], "y": place["y"], "warning": place["warning"]}
+                       for p, place in zip(products, places) if place],
+            "layout_notes": plan["notes"] if plan else "",
+            # per product: its real colour, colours CHEE suggests for this room, and the check's result
+            "items": [{"product_id": p["id"], "colour_sold": it["colour_sold"], "colours": (place or {}).get("colours", []),
+                       **({"box": r["box"], "point": r["point"], "ok": r["ok"], "note": r["note"]} if r else {})}
+                      for (p, it, place), r in zip(kept, results)],
+            "checked": any(results), "fixed": fixed}
+
+
+def relight(meta, body, products, previous, left):
+    """The same preview at night or in daylight. Nothing moves, so it isn't checked again."""
+    try:
+        preview = provider.render(rooms.room_photo(meta), [], None, previous, light=body.light)
+    except ImageError as e:
+        give_back("render", body.visitor)
+        raise HTTPException(502, str(e))
     render_id = rooms.save_render(meta, preview, products)
     return {"render_id": render_id, "product_ids": [p["id"] for p in products], "renders_left": left,
-            "provider": provider.label, "demo": provider.is_demo}
+            "provider": provider.label, "demo": provider.is_demo, "light": body.light}
+
+
+def checked(preview, items):
+    """The check's results (check.py), or None (no Claude key, or Claude failed: the preview is shown without them)."""
+    if not CLAUDE_READY:
+        return None
+    try:
+        return check.check_preview(preview, items)
+    except (anthropic.AnthropicError, StopIteration, KeyError, TypeError, ValueError) as e:
+        print(f"Preview check failed, showing the preview without it: {e!r}")
+        return None
+
+
+def new_layout(meta, products):
+    """CHEE's plan for where the products go, or None (no Claude key, or Claude failed: the preview goes ahead)."""
+    if not CLAUDE_READY:
+        return None
+    try:
+        return layout.plan_layout(rooms.room_photo(meta), meta["analysis"], products)
+    except (anthropic.AnthropicError, StopIteration, KeyError, TypeError, ValueError) as e:
+        print(f"Layout planning failed, making the preview without it: {e!r}")
+        return None
 
 
 @app.post("/rooms/{room_id}/ask")

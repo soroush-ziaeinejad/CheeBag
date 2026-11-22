@@ -36,7 +36,7 @@
 | ✅ **Cancel, safely** | Checks every seller's cancellation rules, shows a confirmation card with the refund and any fee, and changes nothing until the customer clicks **Confirm**. |
 | ✅ **Room studio** | Upload a photo of your room: CHEE describes its style and colours, shows products in it (an AI preview made with Google's Gemini image model) that you can move and recolour, picks a set for your budget, and suggests what else would suit it, from CheeBag's catalogue or from 14 Canadian online shops (via Google Shopping). |
 | 🔜 **Policy answers with sources** | Returns, shipping and warranty questions answered from each seller's policy PDF, citing the section and page (RAG). |
-| 🔜 **Order from the chat** | Pick products from cards in the chat and place a demo order after confirming. |
+| ✅ **Order from the chat** | Ask CHEE for products and she shows a confirmation card with the items, total and your saved address (which you can change). Nothing is ordered until you click **Place order**. You can also use the shopping cart. Demo only: no real money is charged. |
 
 <p align="center">
   <img src="assets/readme/landing.png" alt="The CheeBag landing page" width="88%">
@@ -152,7 +152,7 @@ The database builds itself from the CSVs on first start. To reset the demo data:
 - [x] HTTPS deployment on AWS ([chidemanai.com](https://chidemanai.com))
 - [ ] Seller-policy RAG with citations (Chroma, all-MiniLM-L6-v2, seller filtering before search)
 - [ ] RAG evaluation: section recall@k, wrong-seller rate, groundedness, tokens and latency
-- [ ] Order from the chat with product cards and the same confirmation flow
+- [x] Order from the chat with the same confirmation flow, plus a shopping cart
 - [ ] Automated test suite
 
 ## About

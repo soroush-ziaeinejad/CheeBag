@@ -14,4 +14,5 @@ urlpatterns = [
     path("assistant/actions/confirm/", views.assistant_action, {"action": "confirm"}, name="assistant_confirm"),
     path("assistant/actions/discard/", views.assistant_action, {"action": "discard"}, name="assistant_discard"),
     path("studio/", include("store.studio_urls")),   # Room studio (room photo + product preview)
+    path("cart/", include("store.cart_urls")),       # shopping cart and Submit order
 ]

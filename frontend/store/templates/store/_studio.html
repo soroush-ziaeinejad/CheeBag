@@ -2,8 +2,11 @@
 {# Room studio: the second tab of the CHEE panel. Behaviour in static/store/studio.js, styles in studio.css. #}
 <section class="studio" id="studio" role="tabpanel" aria-label="Room studio"
          data-upload-url="{% url 'studio_upload' %}" data-products-url="{% url 'studio_products' %}"
-         data-shops-url="{% url 'studio_shops' %}"
-         data-sample-url="{% static 'store/img/sample_room.jpg' %}">
+         data-shops-url="{% url 'studio_shops' %}" data-full-url="{% url 'studio_page' %}">
+
+  <div class="st-top">
+    <button class="link-btn" type="button" data-st-popout>Open in a bigger window <span aria-hidden="true">↗</span></button>
+  </div>
 
   <div class="st-banner" data-st-banner role="alert" hidden>
     <svg class="i st-banner-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg>
@@ -22,37 +25,61 @@
       <b>Upload a room photo</b>
       <small>JPG, PNG or WebP, up to 8 MB · deleted after 6 hours</small>
     </label>
-    <button class="st-sample" type="button" data-st-sample>
-      <img src="{% static 'store/img/sample_room_thumb.jpg' %}" alt="" width="96" height="64">
-      <span><b>Try our sample room</b><small>A bright, empty room, ready to furnish</small></span>
-    </button>
-    <p class="st-credit">Sample photo by <a href="https://unsplash.com/photos/empty-room-with-white-walls-hardwood-floor-and-high-windows-bG8rvtDeExE" target="_blank" rel="noopener noreferrer">Salvo Media</a> on Unsplash</p>
+    <b class="st-h st-samples-h">Or try one of our sample rooms</b>
+    <div class="st-samples">
+      <button class="st-sample" type="button" data-st-sample="{% static 'store/img/sample_room.jpg' %}">
+        <img src="{% static 'store/img/sample_room_thumb.jpg' %}" alt="" width="96" height="64">
+        <span><b>Empty room</b><small>Bright, with high windows</small></span>
+      </button>
+      <button class="st-sample" type="button" data-st-sample="{% static 'store/img/sample_attic.jpg' %}">
+        <img src="{% static 'store/img/sample_attic_thumb.jpg' %}" alt="" width="96" height="64">
+        <span><b>Attic bedroom</b><small>Empty, with a big window</small></span>
+      </button>
+      <button class="st-sample" type="button" data-st-sample="{% static 'store/img/sample_living.jpg' %}">
+        <img src="{% static 'store/img/sample_living_thumb.jpg' %}" alt="" width="96" height="64">
+        <span><b>Living room</b><small>Already furnished: add to it</small></span>
+      </button>
+    </div>
+    <p class="st-credit">Sample photos on Unsplash by
+      <a href="https://unsplash.com/photos/empty-room-with-white-walls-hardwood-floor-and-high-windows-bG8rvtDeExE" target="_blank" rel="noopener noreferrer">Salvo Media</a>,
+      <a href="https://unsplash.com/photos/an-empty-room-with-a-large-window-in-it-7ebJDMqjElU" target="_blank" rel="noopener noreferrer">Lisa Anna</a> and
+      <a href="https://unsplash.com/photos/cozy-living-room-with-plush-sofa-and-wooden-chest-E0pZm6b2z7A" target="_blank" rel="noopener noreferrer">Clay Banks</a></p>
   </div>
 
   <div class="st-room" data-st-room hidden>
+    <div class="st-stage">
     <figure class="st-photo">
       <div class="st-frame">
         <img alt="Your room" data-st-img>
         <div class="st-pins" data-st-pins></div>
+        <button class="st-pins-toggle" type="button" data-st-pins-toggle aria-pressed="false" hidden>Hide pointers</button>
+        <div class="st-light" role="group" aria-label="Time of day" data-st-light hidden>
+          <button type="button" data-st-light-btn="day" aria-pressed="true">☀ Day</button>
+          <button type="button" data-st-light-btn="night" aria-pressed="false">☾ Night</button>
+        </div>
         <div class="st-loading" data-st-loading role="status" aria-live="polite" hidden>
           <span class="st-spinner" aria-hidden="true"></span>
           <b data-st-loading-title>Making your preview…</b>
-          <small><span data-st-loading-time>0</span>s · usually 15–40 seconds</small>
+          <small><span data-st-loading-time>0</span>s · usually 30–90 seconds</small>
           <span class="st-bar" aria-hidden="true"></span>
         </div>
       </div>
+      <div class="st-quick" data-st-quick role="group" aria-live="polite" hidden></div>
       <div class="st-switch" data-st-switch></div>
       <figcaption data-st-caption></figcaption>
     </figure>
     <div class="st-row"><button class="link-btn" type="button" data-st-reset>Use another photo</button></div>
+    </div>
+
+    <div class="st-card st-layout" data-st-layout aria-live="polite" hidden></div>
 
     <div class="st-card st-adjust" data-st-adjust hidden>
       <b class="st-h">Adjust this preview</b>
-      <p class="st-small">Drag the numbered pins on the picture to move items, pick a colour, or describe a change. Then update the preview.</p>
+      <p class="st-small" data-st-adjust-help>Click a dot on the picture to change that item's colour or remove it, or drag the dot to move it. Then update the preview.</p>
       <div class="st-adjust-items" data-st-adjust-items></div>
       <input type="text" maxlength="300" placeholder="Anything else? e.g. put the kettle on the counter" aria-label="Other change" data-st-note>
       <button class="st-go" type="button" data-st-update>Update preview</button>
-      <small class="st-small">Colours are only a preview: the product may not come in that colour.</small>
+      <small class="st-small">"Available" is the colour the product is sold in. "AI preview" colours only show the idea: the product isn't sold in them.</small>
     </div>
 
     <div class="st-card st-analysis" data-st-analysis aria-live="polite"></div>

@@ -8,6 +8,7 @@
 Proposing changes nothing. Only confirm changes the order, and only after checking again that the
 token is valid and unused, belongs to this customer, hasn't expired, and that the order hasn't
 changed since the proposal. The token is returned once; only its SHA-256 hash is stored.
+New orders CHEE proposes (create_order) are confirmed and discarded here too; the rest is in new_orders.py.
 """
 import hashlib
 import secrets
@@ -31,6 +32,7 @@ PAYMENT_NAMES = {"credit_card": "credit card", "paypal": "PayPal", "gift_card": 
 class ActionIn(BaseModel):
     customer_id: int = Field(gt=0)
     token: str = Field(min_length=20, max_length=100)
+    shipping_address: str | None = Field(default=None, min_length=10, max_length=200)   # new orders: changed on the card
 
 
 def now_utc():
@@ -153,6 +155,9 @@ def confirm(body: ActionIn, db: Session = Depends(get_db)):
         raise HTTPException(409, {"code": action.status, "message": f"This request was already {action.status}."})
     if now_utc() > action.expires_at:
         reject(db, action, "expired", "This confirmation expired. Ask CHEE again to get a new one.", status="expired")
+    if action.action_type == "create_order":   # a new order, not a cancellation: new_orders.py
+        from .new_orders import confirm_order
+        return confirm_order(db, action, body.shipping_address)
 
     order = load_order(db, action.customer_id, action.order_id, lock=True)
     if order is None or order.status != action.expected_status or order.updated_at != action.expected_updated_at:
@@ -189,9 +194,11 @@ def confirm(body: ActionIn, db: Session = Depends(get_db)):
 def discard(body: ActionIn, db: Session = Depends(get_db)):
     action = find_action(db, body)
     if action.status == "confirmed":
-        raise HTTPException(409, {"code": "confirmed", "message": "This order was already cancelled."})
+        raise HTTPException(409, {"code": "confirmed", "message": "This order was already " +
+                                  ("placed." if action.action_type == "create_order" else "cancelled.")})
     if action.status == "pending":
         action.status, action.resolved_at = "discarded", now_utc()
-        log_event(db, "cancel_discarded", action.customer_id, action.order_id, action.action_id)
+        log_event(db, "order_discarded" if action.action_type == "create_order" else "cancel_discarded",
+                  action.customer_id, action.order_id, action.action_id)
         db.commit()
     return {"status": action.status, "order_id": action.order_id}
