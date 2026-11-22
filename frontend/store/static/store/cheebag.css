@@ -166,7 +166,8 @@ body.as-open { overflow:hidden; }
 .pc-status.delivered { background:#e6f4ea; color:#2e7d32; } .pc-status.shipped { background:var(--turq-soft); color:var(--turq-ink); }
 .pc-status.cancelled { background:#f3f0f2; color:var(--muted); } .pc-status.pending, .pc-status.processing { background:var(--saffron-soft); color:#7a5a12; }
 .pc-go { margin-left:auto; color:var(--accent); font-weight:650; font-size:12px; white-space:nowrap; }
-.pc-row { display:flex; gap:8px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:4px; }
+.pc-row { display:flex; gap:8px; overflow-x:auto; scroll-snap-type:x mandatory; padding:4px 3px 8px; margin:-4px -3px -4px; }
+/* the padding is room for a hovered card's lift and shadow: a sideways-scrolling row clips everything outside it */
 .pc { flex:0 0 132px; scroll-snap-align:start; display:flex; flex-direction:column; gap:6px; padding:8px; border:1px solid var(--line); border-radius:14px;
       background:var(--card); color:var(--ink); transition:border-color .15s, box-shadow .15s, transform .15s; }
 .pc:hover { border-color:var(--accent); box-shadow:0 4px 14px rgba(43,29,42,.10); transform:translateY(-1px); }
