@@ -84,9 +84,9 @@ def tools_for(source, planning=False):
 
 
 SOURCE_RULES = {
-    "store": "You suggest products from CheeBag's own catalogue. It is mostly kitchen, coffee, storage and small home "
-             "items, not large furniture. If they ask for something the store doesn't sell, say so kindly and suggest "
-             "the closest real items.",
+    "store": "You suggest products from CheeBag's own catalogue: kitchen, coffee, storage and small home items, plus "
+             "furniture (sofas, chairs, tables, beds, storage), rugs, lamps, mirrors, wall art, plants and TVs. If they "
+             "ask for something the store doesn't sell, say so kindly and suggest the closest real items.",
     "shops": "You suggest products from these online shops: {shops}. CheeBag doesn't sell these items: the customer "
              "buys them from the shop. Prices are what the listing showed when searched and can change. Mention the "
              "shop for each product.",

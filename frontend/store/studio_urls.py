@@ -4,6 +4,7 @@ from . import studio_views
 
 # included under /studio/ by store/urls.py
 urlpatterns = [
+    path("", studio_views.studio_page, name="studio_page"),   # the studio on its own page (a bigger window)
     path("upload/", studio_views.studio_upload, name="studio_upload"),
     path("products/", studio_views.studio_products, name="studio_products"),
     path("shops/", studio_views.studio_shop_search, name="studio_shops"),

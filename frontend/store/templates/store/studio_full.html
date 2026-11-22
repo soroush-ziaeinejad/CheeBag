@@ -1,0 +1,5 @@
+{% extends "store/base.html" %}
+{# Room studio on its own page, in a window the size of the screen ("Open in a bigger window" in the CHEE panel).
+   It is the same studio as in the panel; studio.css lays it out for a big screen and studio.js keeps both in sync. #}
+{% block title %}Room studio{% endblock %}
+{% block content %}<script>document.body.classList.add("studio-full");</script>{% endblock %}

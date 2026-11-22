@@ -11,6 +11,7 @@ import urllib.request
 
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 
 from .models import Product
@@ -46,6 +47,12 @@ def call_studio(path, body=None, raw=None, timeout=90):
         return 502, {"error": "Room studio is unavailable right now. Please try again."}
 
 
+@require_GET
+def studio_page(request):
+    """Room studio on its own page, opened from the CHEE panel in a window the size of the screen."""
+    return render(request, "store/studio_full.html")
+
+
 @require_POST
 def studio_upload(request):
     photo = request.FILES.get("photo")
@@ -78,7 +85,9 @@ def studio_render(request, room_id):
                                                             "product_ids": body.get("product_ids"),
                                                             "edits": body.get("edits") or [],      # moved / recoloured items
                                                             "note": body.get("note") or None,
-                                                            "based_on": body.get("based_on") or None}, timeout=180)
+                                                            "based_on": body.get("based_on") or None,
+                                                            "light": body.get("light") or None},   # "night" or "day"
+                           timeout=240)       # planning, the image, the check and maybe one fix
     return JsonResponse(data, status=status)
 
 
