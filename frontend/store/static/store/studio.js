@@ -700,6 +700,13 @@
   form.addEventListener("submit", (e) => { e.preventDefault(); ask(input.value); });
   input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); ask(input.value); } });
 
+  // "Try Room studio" on the landing page: open CHEE on the Room studio tab
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("[data-open-studio]")) return;
+    window.cheebagAsk?.();
+    showTab("studio");
+  });
+
   // "See it in your room" buttons on product pages
   document.addEventListener("click", (e) => {
     const b = e.target.closest("[data-studio-product]");

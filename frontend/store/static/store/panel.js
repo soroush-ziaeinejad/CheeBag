@@ -64,8 +64,8 @@
   handle.addEventListener("dblclick", () => { remember(null); apply(null); });
 })();
 
-// Hiding the docked CHEE panel to the right (wide screens only). The store then gets the full width, and the
-// "Ask CHEE" button comes back to open it again. Remembered in this browser only (localStorage); a small script
+// Hiding the docked CHEE panel to the right (wide screens only). It starts hidden: the store gets the full width,
+// and the "Ask CHEE" button opens it. Remembered in this browser only (localStorage); a small script
 // in base.html's <head> sets the class before the first paint, so a hidden panel doesn't flash open.
 (() => {
   const KEY = "cheebag-chat-hidden";
@@ -73,7 +73,7 @@
 
   function hide(hidden) {
     document.documentElement.classList.toggle("as-collapsed", hidden);
-    try { hidden ? localStorage.setItem(KEY, "1") : localStorage.removeItem(KEY); } catch (e) {}
+    try { localStorage.setItem(KEY, hidden ? "1" : "0"); } catch (e) {}   // nothing saved yet: hidden
   }
   window.cheebagPanel = { expand: () => hide(false) };   // base.html calls this when CHEE is opened
 

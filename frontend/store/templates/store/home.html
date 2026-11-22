@@ -1,40 +1,64 @@
 {% extends "store/base.html" %}
-{% load humanize %}
+{% load humanize static %}
 {% block title %}Home{% endblock %}
 {% block style %}
-/* the project box: what CheeBag is, what CHEE can do, how to try it */
-.about { display:grid; grid-template-columns:minmax(0, 1.5fr) minmax(0, 1fr); background:var(--card); border:1px solid var(--line); border-radius:24px; overflow:hidden; }
-.about-main { padding:34px 38px 30px; min-width:0; }
+/* hero: the whole project in the first view. Left: what it is and the two things to try. Right: Room studio at work. */
+.hero { position:relative; display:grid; grid-template-columns:minmax(0, 1.05fr) minmax(0, 1fr); gap:28px; align-items:start;
+        background:var(--card); border:1px solid var(--line); border-radius:28px; padding:26px; overflow:hidden; }
+.hero::before { content:""; position:absolute; width:420px; height:420px; left:-160px; top:-200px; border-radius:50%;
+                background:radial-gradient(circle, var(--saffron-soft), transparent 70%); opacity:.7; pointer-events:none; }
+.hero-copy { position:relative; display:flex; flex-direction:column; gap:12px; min-width:0; padding:6px 0 0 6px; }
 .eyebrow { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
-.about h1 { font-size:clamp(34px, 3.6vw, 52px); line-height:1.04; letter-spacing:-1.4px; margin:10px 0 12px; color:var(--ink); }
-.about h1 em { font-style:italic; font-weight:400; color:var(--accent); }
-.lead { color:var(--ink-2); font-size:15px; line-height:1.65; max-width:620px; margin:0 0 18px; }
-.label { display:block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
-.dock-hint { display:none; text-transform:none; letter-spacing:0; font-weight:500; color:var(--turq-ink); }
-.chips { display:flex; flex-wrap:wrap; gap:6px; }
-.chips button { min-height:34px; padding:4px 13px; border-radius:999px; background:var(--bg); border:1px solid var(--line); color:var(--ink); font-size:13px; font-weight:500; }
-.chips button:hover { border-color:var(--accent); box-shadow:none; }
-.who-line { margin-top:20px; padding-top:16px; border-top:1px solid var(--line); font-size:13px; color:var(--ink-2); }
-.who-line .personas { grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); margin-top:8px; }
+.hero h1 { font-size:clamp(34px, 3.4vw, 50px); line-height:1.02; letter-spacing:-1.4px; margin:0; color:var(--ink); }
+.hero h1 em { font-style:italic; font-weight:400; color:var(--accent); }
+.lead { color:var(--ink-2); font-size:14.5px; line-height:1.6; margin:0; max-width:560px; }
+.lead .fa { font-family:"Geeza Pro", "Noto Naskh Arabic", "Segoe UI", Tahoma, sans-serif; color:var(--accent); font-weight:700; }
 
-.about-side { background:var(--warm); border-left:1px solid var(--line); padding:28px 30px; display:flex; flex-direction:column; gap:10px; }
-.about-side h2 { font-size:19px; margin:0; }
-.can { list-style:none; margin:0 0 6px; padding:0; display:grid; gap:7px; font-size:13.5px; line-height:1.4; color:var(--ink-2); }
-.can li { display:flex; gap:9px; align-items:baseline; }
-.can li::before { content:"✓"; color:var(--turq-ink); font-weight:800; }
-.can li.soon { color:var(--muted); }
-.can li.soon::before { content:"○"; color:var(--muted); font-weight:400; }
-.can .tag { font-size:10px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:var(--saffron-soft); color:#7a5a12; white-space:nowrap; }
-.stack { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:18px; }
-.stack .label { margin:0 4px 0 0; padding:0; background:none; }
-.stack span:not(.label) { font-size:12px; font-weight:600; padding:4px 10px; border-radius:999px; background:var(--turq-soft); color:var(--turq-ink); }
-.name { display:flex; gap:14px; align-items:flex-start; margin-top:4px; padding-top:14px; border-top:1px solid var(--line); }
-.name .m { width:58px; height:58px; flex:none; }
-.name p { margin:0; font-size:13px; line-height:1.55; color:var(--ink-2); }
-.fa { font-family:"Geeza Pro", "Noto Naskh Arabic", "Segoe UI", Tahoma, sans-serif; color:var(--accent); font-weight:700; }
-.gh { font-size:13px; font-weight:650; color:var(--accent); text-decoration:none; margin-top:2px; }
+/* the two things to try */
+.duo { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.try { display:flex; flex-direction:column; gap:8px; padding:16px; border-radius:18px; border:1px solid var(--line); background:var(--bg); }
+.try.studio { background:linear-gradient(160deg, #fff7ea, var(--saffron-soft)); border-color:#efd8a6; }
+.try .k { display:flex; align-items:center; gap:8px; font-weight:750; font-size:15.5px; color:var(--ink); }
+.try .k i { width:28px; height:28px; border-radius:9px; display:grid; place-items:center; font-style:normal; font-size:14px; color:#fff; background:var(--accent); }
+.try.studio .k i { background:var(--turq); }
+.try ul { list-style:none; margin:0; padding:0; display:grid; gap:4px; font-size:13px; color:var(--ink-2); line-height:1.4; }
+.try li::before { content:"✓  "; color:var(--turq-ink); font-weight:800; }
+.try p { margin:0; font-size:13px; line-height:1.5; color:var(--ink-2); }
+.try button, .try .go { margin-top:auto; align-self:flex-start; min-height:36px; padding:6px 14px; font-size:13px; }
+.try .go { font-weight:650; color:var(--accent); text-decoration:none; padding:6px 0; }
+.chips { display:flex; flex-wrap:wrap; gap:6px; }
+.chips button { min-height:30px; padding:3px 11px; border-radius:999px; background:var(--card); border:1px solid var(--line); color:var(--ink); font-size:12.5px; font-weight:500; }
+.chips button:hover { border-color:var(--accent); box-shadow:none; }
+
+.hero-foot { display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; padding:0 4px; font-size:12.5px; color:var(--ink-2); }
+.stack { display:flex; flex-wrap:wrap; gap:5px; }
+.stack span { font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:999px; background:var(--turq-soft); color:var(--turq-ink); }
+.gh { font-weight:650; color:var(--accent); text-decoration:none; }
 .gh:hover { text-decoration:underline; }
-.all { text-align:center; margin:22px 0 0; }
+.who-line { font-size:12.5px; color:var(--ink-2); }
+.who-line .personas { grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); margin-top:8px; }
+.label { display:block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.dock-hint { display:none; color:var(--turq-ink); font-weight:600; }
+
+/* the picture: a room with Room studio's glowing pointers, and CHEE talking about it */
+.visual { position:relative; display:flex; flex-direction:column; gap:12px; min-width:0; }
+.scene { position:relative; aspect-ratio:4 / 3; border-radius:22px; overflow:hidden; background:#efe6d8; }
+.scene > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.scene::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 60%, rgba(43,29,42,.25)); pointer-events:none; }
+.badge { position:absolute; top:14px; left:14px; z-index:2; display:flex; align-items:center; gap:6px; padding:6px 11px; border-radius:999px;
+         background:rgba(255,253,248,.92); font-size:11.5px; font-weight:700; color:var(--ink); box-shadow:0 4px 14px rgba(43,29,42,.12); }
+.badge b { width:7px; height:7px; border-radius:50%; background:var(--turq); }
+.pin { position:absolute; z-index:2; width:22px; height:22px; margin:-11px 0 0 -11px; border-radius:50%; background:#fff; color:var(--ink);
+       display:grid; place-items:center; font-size:11px; font-weight:800; box-shadow:0 0 0 3px rgba(255,255,255,.45), 0 0 16px 4px rgba(255,255,255,.85);
+       animation:pin-glow 2.4s ease-in-out infinite; }
+.pin span { position:absolute; left:28px; white-space:nowrap; padding:3px 8px; border-radius:8px; background:rgba(255,253,248,.95);
+            font-size:11px; font-weight:650; box-shadow:0 2px 8px rgba(43,29,42,.15); }
+@keyframes pin-glow { 50% { box-shadow:0 0 0 6px rgba(255,255,255,.25), 0 0 22px 8px rgba(255,255,255,.95); } }
+.say { position:relative; margin:-46px 14px 0; z-index:3; display:flex; gap:10px; align-items:flex-start; padding:12px 14px;
+       border-radius:16px; background:rgba(255,253,248,.96); box-shadow:0 10px 30px rgba(43,29,42,.22); font-size:13px; line-height:1.45; color:var(--ink-2); }
+.say .m { width:38px; height:38px; flex:none; }
+.say b { color:var(--ink); }
+@media (prefers-reduced-motion: reduce) { .pin { animation:none; } }
 
 /* sections */
 .section-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin:38px 0 14px; }
@@ -64,16 +88,15 @@
 .pick .stars b { color:#c98a12; font-weight:400; }
 
 @media (min-width: 1180px) {
-  .dock-hint { display:inline; font-size:13px; }
-  .narrow-only, .about-main .chips { display:none !important; }
+  .dock-hint { display:inline; }
+  .narrow-only { display:none !important; }
 }
-@media (max-width: 1100px) {
-  .about { grid-template-columns:minmax(0, 1fr); }
-  .about-side { border-left:0; border-top:1px solid var(--line); }
-}
+@media (max-width: 1100px) { .duo { grid-template-columns:minmax(0, 1fr); } }
+@media (max-width: 860px) { .hero { grid-template-columns:minmax(0, 1fr); } .duo { grid-template-columns:1fr 1fr; } }
 @media (max-width: 760px) {
-  .about-main { padding:24px 20px 22px; }
-  .about-side { padding:22px 20px; }
+  .hero { padding:16px; border-radius:22px; gap:18px; }
+  .duo { grid-template-columns:minmax(0, 1fr); }
+  .pin span { display:none; }
   .who-line .personas { grid-template-columns:minmax(0, 1fr); }
   .section-head h2 { font-size:22px; }
   .picks { grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; }
@@ -82,45 +105,63 @@
 {% endblock %}
 
 {% block content %}
-<section class="about" aria-labelledby="about-title">
-  <div class="about-main">
-    <span class="eyebrow">Portfolio project · AI shopping assistant</span>
-    <h1 id="about-title">Your home, <em>in the bag.</em></h1>
-    <p class="lead">CheeBag is a demo home and kitchen store built around <b>CHEE</b>, an AI assistant powered by Claude. CHEE works with the live store: it finds products, tracks your orders and can cancel one, but only after you click <b>Confirm</b>. The products and reviews are real (from Amazon); the customers and orders are simulated.</p>
-    <span class="label"><span class="narrow-only">Try asking CHEE</span><span class="dock-hint">CHEE is ready in the chat on the right →</span></span>
-    <div class="chips">
-      <button type="button" data-ask="Where is my latest order?">Where is my latest order?</button>
-      <button type="button" data-ask="Find me a kettle under $40">A kettle under $40</button>
-      <button type="button" data-ask="Which of my orders are still on the way?">What's still on the way?</button>
-      <button type="button" data-ask="Can I cancel an order?">Can I cancel an order?</button>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <span class="eyebrow">Portfolio project · Agentic AI shopping assistant</span>
+    <h1 id="hero-title">Your home, <em>in the bag.</em></h1>
+    <p class="lead">CheeBag is a demo home store built around <b>CHEE</b> (<bdi class="fa" lang="fa" dir="rtl">چی؟</bdi>, Persian for
+      “what?”), an AI assistant powered by Claude that works with the live store. Real products and reviews from Amazon; simulated
+      customers and orders.</p>
+
+    <div class="duo">
+      <div class="try">
+        <span class="k"><i>✦</i>Ask CHEE</span>
+        <ul>
+          <li>Find products by need and budget</li>
+          <li>Track orders and deliveries</li>
+          <li>Order or cancel, with your click</li>
+        </ul>
+        <div class="chips">
+          <button type="button" data-ask="Find me a kettle under $40">A kettle under $40</button>
+          <button type="button" data-ask="Where is my latest order?">Latest order?</button>
+        </div>
+      </div>
+      <div class="try studio">
+        <span class="k"><i>⌂</i>Room studio</span>
+        <p>Upload a photo of your room. CHEE reads its style, places CheeBag products in it as an AI preview, and lets you
+          move or recolour each one.</p>
+        <button type="button" data-open-studio>Try Room studio</button>
+      </div>
     </div>
-    <div class="stack"><span class="label">Built with</span><span>Claude tool use</span><span>Django</span><span>FastAPI</span><span>PostgreSQL</span><span>Docker</span></div>
+
     <div class="who-line">
       {% if current_customer %}
-        Asking as <b>{{ current_customer.first_name }} {{ current_customer.last_name }}</b>. CHEE sees only this customer's orders.
+        Asking as <b>{{ current_customer.first_name }} {{ current_customer.last_name }}</b>; CHEE sees only this customer's orders.
         <button class="link-btn" type="button" data-switch-customer>Change</button>
       {% else %}
-        <b>Try it as a demo customer.</b> There's no real login; each one is a simulated shopper. <span class="dock-hint">Pick one in the chat on the right →</span>
+        <b>No real login:</b> pick a simulated shopper. <button class="link-btn dock-hint" type="button" data-open-assistant>Pick one in CHEE →</button>
         <div class="narrow-only">{% include "store/_personas.html" with compact=True %}</div>
       {% endif %}
     </div>
   </div>
 
-  <aside class="about-side" aria-label="About CHEE">
-    <h2>What CHEE can do</h2>
-    <ul class="can">
-      <li><span><b>Find products</b> by need, budget, category and stock</span></li>
-      <li><span><b>Track orders</b>: status, carrier, tracking and delivery dates</span></li>
-      <li><span><b>Cancel safely</b>: checks each seller's rules, then waits for your click</span></li>
-      <li><span><b>Order from the chat</b>: confirm the items and address, then click Place order</span></li>
-      <li class="soon"><span><b>Policy answers with sources</b> <span class="tag">Soon</span></span></li>
-    </ul>
-    <div class="name">
-      <span class="m">{% include "store/_mascot.html" %}</span>
-      <p><b>Why CheeBag?</b> CHEE comes from “<bdi class="fa" lang="fa" dir="rtl">چی؟</bdi>”, Persian for “what?”: the question you ask when you're not sure what to buy. It's also the name of our assistant, so feel free to ask her questions! <b>Bag</b> is your shopping bag.</p>
+  <div class="visual">
+    <div class="scene" role="img" aria-label="Room studio: CheeBag products marked with numbered pointers in a living-room photo">
+      <img src="{% static 'store/img/hero_room.jpg' %}" alt="" width="532" height="280">
+      <span class="badge"><b></b>Room studio · AI preview</span>
+      <span class="pin" style="left:59%; top:60%">1<span>Sofa</span></span>
+      <span class="pin" style="left:43%; top:76%">2<span>Coffee table</span></span>
+      <span class="pin" style="left:78%; top:17%">3<span>Wall art</span></span>
     </div>
-    <a class="gh" href="https://github.com/soroush-ziaeinejad/CheeBag">How it works, on GitHub →</a>
-  </aside>
+    <div class="say">
+      <span class="m">{% include "store/_mascot.html" %}</span>
+      <span><b>CHEE:</b> Warm, light and minimal. A brass floor lamp would balance the sofa (1). Drag any dot to move it.</span>
+    </div>
+    <div class="hero-foot">
+      <div class="stack"><span>Claude tool use</span><span>Django</span><span>FastAPI</span><span>PostgreSQL</span><span>Docker on AWS</span></div>
+      <a class="gh" href="https://github.com/soroush-ziaeinejad/CheeBag">How it works, on GitHub →</a>
+    </div>
+  </div>
 </section>
 
 <div class="section-head"><h2>Shop by category</h2><a href="{% url 'product_list' %}">All products →</a></div>

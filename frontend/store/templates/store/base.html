@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>try { if (localStorage.getItem("cheebag-chat-hidden") === "1") document.documentElement.classList.add("as-collapsed"); } catch (e) {}</script>  <!-- CHEE panel hidden (panel.js) -->
+<script>try { if (localStorage.getItem("cheebag-chat-hidden") !== "0") document.documentElement.classList.add("as-collapsed"); } catch (e) {}</script>  <!-- CHEE panel hidden unless opened before (panel.js) -->
 <title>{% block title %}Shop{% endblock %} · CheeBag</title>
 <meta name="description" content="CheeBag: a demo home store with CHEE, an AI shopping assistant that finds products and answers questions about your orders.">
 <meta name="theme-color" content="#2b1d2a">
