@@ -93,6 +93,17 @@ body.as-open { overflow:hidden; }
   body.main-narrow .account { margin-left:auto; }
   body.main-narrow .search { order:5; flex-basis:100%; max-width:none; }
 }
+/* the docked panel can be hidden to the right (panel.js); the Ask CHEE button then opens it again */
+.as-head .x .x-collapse { display:none; }
+@media (min-width: 1180px) {
+  .as-head .x .x-collapse { display:inline-flex; align-items:center; gap:4px; }
+  body { transition:padding-right .22s ease; }
+  .assistant { transition:transform .22s ease, visibility 0s; }
+  .as-collapsed body { padding-right:0; }
+  .as-collapsed .assistant { transform:translateX(100%); visibility:hidden; transition:transform .22s ease, visibility 0s .22s; }
+  .as-collapsed .as-launch { display:inline-flex !important; }
+  body.panel-resizing { transition:none; }
+}
 /* the header has less room next to the chat column, so the search box gets its own row */
 @media (min-width: 1180px) and (max-width: 1379px) {
   header .wrap { flex-wrap:wrap; gap:12px; padding-top:14px; padding-bottom:14px; }

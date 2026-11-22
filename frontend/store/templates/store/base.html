@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try { if (localStorage.getItem("cheebag-chat-hidden") === "1") document.documentElement.classList.add("as-collapsed"); } catch (e) {}</script>  <!-- CHEE panel hidden (panel.js) -->
 <title>{% block title %}Shop{% endblock %} · CheeBag</title>
 <meta name="description" content="CheeBag: a demo home store with CHEE, an AI shopping assistant that finds products and answers questions about your orders.">
 <meta name="theme-color" content="#2b1d2a">
@@ -284,6 +285,8 @@ body.as-open .assistant { transform:none; }
     <div><b>CHEE</b><small><i></i>AI shopping assistant</small></div>
     <div class="x">
       <button type="button" data-new-chat title="Start a new conversation">New chat</button>
+      <button type="button" class="x-collapse" data-collapse-assistant aria-label="Hide CHEE" title="Hide CHEE">Hide
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 6 6-6 6M12 6l6 6-6 6"/></svg></button>
       <button type="button" class="x-close" data-close-assistant aria-label="Close">✕</button>
     </div>
   </div>
@@ -585,7 +588,7 @@ body.as-open .assistant { transform:none; }
 
   let previousFocus;
   const open = () => {
-    if (docked.matches) return focusChat();
+    if (docked.matches) { window.cheebagPanel?.expand(); return focusChat(); }   // shows it again if it was hidden (panel.js)
     previousFocus = document.activeElement; panel.inert = false; panel.setAttribute("aria-modal", "true");
     document.body.classList.add("as-open"); setTimeout(focusChat, 230);
   };
