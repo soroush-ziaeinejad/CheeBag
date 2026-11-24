@@ -122,7 +122,7 @@
       await analyze();
     } catch (e) { status(""); showError(e); }
     $("[data-st-start]").classList.remove("is-busy");
-    busy = false;
+    busy = false; drawSelected();   // the button was drawn while busy: draw it again now that the photo is in
   }
 
   async function analyze() {
